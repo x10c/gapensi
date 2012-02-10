@@ -1,0 +1,299 @@
+/**
+ * Copyright 2011 - Kementerian Pendidikan Nasional - Dit.PSMP
+ *
+ * Author(s):
+ * + x10c-Lab
+ *   - m.shulhan (ms@kilabit.org)
+ *   - agus sugianto (agus.delonge@gmail.com)
+ */
+
+/*
+ * list of all icons
+ */
+.add16 {background-image: url(../images/add16.png) !important;}
+.del16 {background-image: url(../images/del16.png) !important;}
+.edit16 {background-image: url(../images/edit16.png) !important;}
+.refresh16 {background-image: url(../images/refresh16.png) !important;}
+.save16 {background-image: url(../images/save16.png) !important;}
+.print16 {background-image: url(../images/print16.png) !important;}
+.export16 {background-image: url(../images/export16.png) !important;}
+.back16 {background-image: url(../images/back16.png) !important;}
+.upload16 {background-image: url(../images/upload16.png) !important;}
+.dir16 {background-image: url(../images/dir16.png) !important;}
+.dirup16 {background-image: url(../images/dirup16.png) !important;}
+.setting16 {background-image: url(../images/setting16.png) !important;}
+.account16 {background-image: url(../images/account16.png) !important;}
+.password16 {background-image: url(../images/password16.png) !important;}
+
+.app {background-image: url(../images/app16.png) !important;}
+.module {background-image: url(../images/module16.png) !important;}
+.report {background-image: url(../images/report16.png) !important;}
+.logout {background-image: url(../images/logout16.png) !important;}
+.menu_leaf {background-image: url(../images/menu_leaf16.png) !important;}
+
+.beranda {background-image: url(../images/beranda16.png) !important;}
+.users {background-image: url(../images/user16.png) !important;}
+.export_data {background-image: url(../images/export_data16.png) !important;}
+.monev {background-image: url(../images/monev16.png) !important;}
+
+.referensi {background-image: url(../images/referensi16.png) !important;}
+.adm_sekolah {background-image: url(../images/adm_sekolah16.png) !important;}
+.adm_kepegawaian {background-image: url(../images/adm_kepegawaian16.png) !important;}
+.psb {background-image: url(../images/psb16.png) !important;}
+.adm_kesiswaan {background-image: url(../images/adm_kesiswaan16.png) !important;}
+.adm_akademik {background-image: url(../images/adm_akademik16.png) !important;}
+.akademik {background-image: url(../images/akademik16.png) !important;}
+.keuangan {background-image: url(../images/keuangan16.png) !important;}
+.administrator {background-image: url(../images/administrator16.png) !important;}
+
+/*
+ * set default element style
+ */
+
+html {
+	background-color	: #fff;
+	background-image	: url(../images/bg.png);
+	background-position	: left top;
+	background-repeat	: repeat;
+	font-family		: Tahoma, sans-serif;
+	text-shadow		: 0 2px 2px rgba(255, 255, 255, 0.9);
+}
+
+.header_logo {
+	background-color	: #f4f4f4;
+	border-left		: 1px solid #ccc;
+	border-bottom		: 1px solid #ccc;
+	display			: block;
+	float			: left;
+	height			: 66px;
+	margin			: 0px 20px 0px 2px;
+	padding			: 0px 4px 8px 0px;
+	top			: 0;
+	width			: 70px;
+	-moz-border-radius	: 0px 0px 0px 10px;
+	-webkit-border-radius	: 0px 0px 0px 10px;
+	border-radius		: 0px 0px 0px 10px;
+}
+
+#header {
+	display			: block;
+	float			: left;
+	font-size		: 18;
+	padding			: 0;
+	right			: 8px;
+	text-shadow		: 0px 1px 1px rgba(250, 250, 250, 0.8);
+}
+
+.title {
+	background-color	: #1A4071;
+	border-bottom		: 2px solid #004F78;
+	border-right		: 2px solid #003E67;
+	color			: white;
+	display			: block;
+	margin			: 0 0 0 2px;
+	padding			: 8px 8px 8px 90px;
+	text-shadow		: 0px 1px 2px rgba(180, 180, 180, 0.9);
+}
+
+.subtitle {
+	background-color	: #f4f4f4;
+	border-bottom		: 1px solid #ccc;
+	border-right		: 2px solid #ddd;
+	display			: block;
+	font-size		: 16;
+	margin			: 0 0 0 2px;
+	padding			: 8px 6px 8px 90px;
+	text-shadow		: 1px 1px 1px rgba(180, 180, 180, 0.9);
+	-moz-border-radius	: 0px 0px 10px 10px;
+	-webkit-border-radius	: 0px 0px 10px 10px;
+	border-radius		: 0px 0px 10px 10px;
+}
+
+.user {
+	background-color	: #ddd;
+	border			: 1px solid #ccc;
+	display			: block;
+	float			: right;
+	font-size		: 11;
+	margin-right		: 20px;
+	padding			: 4px 8px 6px 8px;
+	position		: absolute;
+	right			: 0;
+	top			: 0;
+	opacity			: 0.7;
+	-moz-border-radius	: 0px 0px 5px 5px;
+	-webkit-border-radius	: 0px 0px 5px 5px;
+	border-radius		: 0px 0px 5px 5px;
+}
+
+.logout {
+	background-image	: url(../images/logout16.png);
+	background-position	: 100%;
+	background-repeat	: no-repeat;
+	padding-right		: 20px;
+}
+
+#nav {
+	font-size		: 12;
+	display			: block;
+	background-color	: #f9f9f9;
+	border-top		: 1px solid silver;
+	border-bottom		: 1px solid silver;
+	margin-top		: 8px;
+	padding			: 4px 8px 4px 16px;
+	text-shadow		: 2px 2px 2px rgba(120, 120, 120, 0.9);
+	opacity			: 0.5;
+}
+
+#footer {
+	background-color	: #1A4071;
+	border-top		: 2px solid #103667;
+	color			: white;
+	font-size		: 9px;
+	padding			: 4px;
+	text-align		: center;
+	text-shadow		: 0px 1px 2px rgba(50, 50, 50, 0.8);
+}
+
+.x-panel-header {
+	-moz-border-radius	: 5px 5px 0 0;
+	-webkit-border-radius	: 5px 5px 0 0;
+	border-radius		: 5px 5px 0 0;
+}
+
+.x-panel-body {
+	-moz-border-radius		: 0 0 5px 5px;
+	-webkit-border-radius	: 0 0 5px 5px;
+	border-radius			: 0 0 5px 5px;
+}
+
+.rounded-border {
+	-moz-border-radius	: 5px;
+	-webkit-border-radius	: 5px;
+	border-radius		: 5px;
+}
+
+.input_cb_all_safe,
+.x-panel-header,
+.x-panel-header-text,
+.x-grid3-hd-inner {
+	text-align		: center;
+}
+
+.x-grid3-hd-inner {
+	font-weight		: bold;
+	color			: #333;
+}
+
+/* wrap cell content if it does not fit in column */
+.x-grid3-cell-inner, .x-grid3-hd-inner {
+	white-space: normal;
+}
+
+/* grid stripe rows color */
+.x-grid3-row-alt {
+	background-color	: #DAE8FF;
+}
+
+.x-grid3-body .x-grid3-summary-row {
+	background	: #FFFD8A;
+}
+
+.x-grid3-gridsummary-row-inner .x-grid3-summary-row {
+	background	: #9BB4DE;
+}
+
+.stop-panel-form {
+	padding				: 5px;
+	background-color	: #F0F6FD;
+}
+
+.stop-header-form {
+	text-align		: center;
+	padding			: 5px;
+	background-color	: #FFFD8A;
+	border			: 1px solid #ccc;
+	-moz-border-radius	: 5px 5px 0 0;
+	-webkit-border-radius	: 5px 5px 0 0;
+	border-radius		: 5px 5px 0 0;
+}
+
+.rca-header-form {
+	text-align		: center;
+	padding			: 5px;
+	background-color	: #6cff00;
+	border			: 1px solid #ccc;
+	-moz-border-radius	: 5px 5px 0 0;
+	-webkit-border-radius	: 5px 5px 0 0;
+	border-radius		: 5px 5px 0 0;
+}
+
+#loading-mask{
+	background-color:#A3B5CC;
+	position	:absolute;
+	left		:0;
+	top		:0;
+	width		:100%;
+	height		:100%;
+	z-index		:20000;
+}
+
+#loading{
+	position	:absolute;
+	left		:45%;
+	top		:40%;
+	padding		:2px;
+	z-index		:20001;
+	height		:auto;
+}
+
+#loading img {
+	margin-bottom	:5px;
+}
+
+#loading .loading-indicator{
+	background		:#A3B5CC;
+	color			:white;
+	font			:bold 13px helvetica,arial,tahoma,sans-serif;
+	text-shadow		:none;
+	padding			:10px;
+	margin			:0;
+	text-align		:center;
+	height			:auto;
+}
+
+.safe {
+	background-color	:#CBFFBB;
+}
+
+.midsafe {
+	background-color	:#FDFFA7;
+}
+
+.unsafe {
+	background-color	:#FFB5C1;
+}
+
+.dir {
+	background-image	:url(../images/dir16.png);
+	background-position	:0;
+	background-repeat	:no-repeat;
+	padding				:4px 0px 4px 20px;
+	margin				:0px
+}
+
+.doc {
+	background-image	:url(../images/doc16.png);
+	background-position	:0;
+	background-repeat	:no-repeat;
+	padding				:4px 0px 4px 20px;
+	margin				:0px
+}
+
+.dirup {
+	background-image	:url(../images/dirup16.png);
+	background-position	:0;
+	background-repeat	:no-repeat;
+	padding				:4px 0px 4px 20px;
+	margin				:0px
+}

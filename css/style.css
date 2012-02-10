@@ -1,0 +1,308 @@
+/* CSS Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin		: 0;
+	padding		: 0;
+	border		: 0;
+	outline		: 0;
+	font-weight	: inherit;
+	font-style	: inherit;
+	font-size	: 100%;
+	font-family	: inherit;
+	vertical-align	: baseline;
+}
+
+body {
+	font		: 100% Arial, Helvetica;
+	background	: url(../images/bg_main.jpg) repeat;
+	font-family	: verdana;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfloat {
+	height		: 1%;
+}
+*+html .clearfloat {
+	height		: 1%;
+}
+
+.clearfloat {
+	display		: block;
+}
+
+#back { }
+
+#wrap {
+	background				: #fff;
+	margin-bottom			: 0px;
+	-moz-border-radius		: 0px 0px 10px 10px;
+	-webkit-border-radius	: 0px 0px 10px 10px;
+	border-radius			: 0px 0px 10px 10px;
+	width					: 960px; margin:0px auto;
+}
+
+#header {
+	height	: 95px;
+	float	: none;
+	width	: 960px;
+	margin	: 0px auto;
+}
+
+#main {
+	width	: 690px;
+	float	: left;
+}
+
+#sidebar {
+	width		: 250px;
+	float		: right;
+	display		: inline;
+	margin-right	: 20px;
+	margin-bottom	: 40px;
+}
+
+#footer {
+	float	: none;
+	clear	: both;
+	width	: 960px;
+	margin	: 0px;
+}
+
+#header img {
+	float					: left;
+	background				: #F2F2F2;
+	margin-top				: 4px;
+	padding					: 4px;
+	width					: 79px;
+	height					: 80px;
+	-moz-border-radius		: 0px 0px 10px 10px;
+	-webkit-border-radius	: 0px 0px 10px 10px;
+	border-radius			: 0px 0px 10px 10px;
+}
+
+#header h1 {
+	float		: left;
+	margin		: 12px 12px 0px;
+	color		: #006da6;
+	font-size	: 24px;
+}
+
+#header h2 {
+	margin		: 0px 0px 0px 100px;
+	color		: #006da6;
+	font-size	: 20px;
+	padding		: 60px 0px 0px 0px;
+}
+
+#top {
+	margin		: 0px 0px 0px;
+}
+
+#main .image-display {
+	width					: 460px;
+	height					: 225px;
+	background				: #fff;
+	border					: 2px solid #2a8619;
+	margin					: 0px auto;
+	-moz-border-radius		: 8px;
+	-webkit-border-radius	: 8px;
+	-moz-box-shadow			: 5px 5px 5px #ccc;
+	-webkit-box-shadow		: 5px 5px 5px #ccc;
+	box-shadow				: 5px 5px 5px #ccc;
+}
+
+#main .image-display img {
+	margin	: 5px;
+	width	: 450px;
+	height	: 215px;
+}
+
+#main .image-list {
+	float		: left;
+	margin		: 0px 0px 0px 18px;
+	width		: 74px;
+	height		: 230px;
+	overflow	: scroll;
+}
+
+#main .image-list img.activeSlide {
+	border	: 2px solid #a2232e;
+	opacity	: 1;
+}
+
+#main .image-list img {
+	margin	: 2px 0px;
+	border	: 2px solid #006da6;
+	cursor	: pointer;
+	opacity	: 0.5;
+}
+
+#sidebar .login-section {
+	border					: 0px solid #171717;
+	padding					: 0px;
+	margin-bottom			: 10px;
+	-moz-border-radius		: 8px;
+	-webkit-border-radius	: 8px;
+	border-radius			: 8px;
+}
+
+#sidebar .login-section form {
+	font-size				: 14px;
+	background				: url(../images/bg.png)repeat;
+	margin					: 0px;
+	padding					: 10px;
+	-moz-box-shadow			: 5px 5px 5px #ccc;
+	-webkit-box-shadow		: 5px 5px 5px #ccc;
+	box-shadow				: 5px 5px 5px #ccc;
+	-moz-border-radius		: 0px 0px 8px 8px;
+	-webkit-border-radius	: 0px 0px 8px 8px;
+	border-radius			: 0px 0px 8px 8px;
+}
+
+#sidebar .login-section h3 {
+	color					: #fff;
+	padding					: 10px 10px 5px 10px;
+	margin-bottom			: 0px;
+	background				: #23408c;
+	text-align				: center;
+	-moz-border-radius		: 8px 8px 0px 0px;
+	-webkit-border-radius	: 8px 8px 0px 0px;
+	-moz-box-shadow			: 5px 5px 5px #ccc;
+	-webkit-box-shadow		: 5px 5px 5px #ccc;
+	box-shadow				: 5px 5px 5px #ccc;
+}
+
+#sidebar .news h3 {
+	color					: #fff;
+	padding					: 10px 10px 5px 10px;
+	margin-bottom			: 0px;
+	background				: #23408c;
+	text-align				: center;
+	-moz-border-radius		: 8px 8px 0px 0px;
+	-webkit-border-radius	: 8px 8px 0px 0px;
+	border-radius			: 8px 8px 0px 0px;
+	-moz-box-shadow			: 5px 5px 5px #ccc;
+	-webkit-box-shadow		: 5px 5px 5px #ccc;
+	box-shadow				: 5px 5px 5px #ccc;
+}
+
+#sidebar .news div {
+	background				: url(../images/bg.png)repeat;
+	margin					: 0px;
+	-moz-box-shadow			: 5px 5px 5px #ccc;
+	-webkit-box-shadow		: 5px 5px 5px #ccc;
+	box-shadow				: 5px 5px 5px #ccc;
+	-moz-border-radius		: 0px 0px 8px 8px;
+	-webkit-border-radius	: 0px 0px 8px 8px;
+	border-radius			: 0px 0px 8px 8px;
+}
+
+.news_header {
+	margin			:0px;
+	padding			:10px 10px 2px 10px;
+	font-weight		:bold;
+	font-size		:14px;
+	border-bottom	:1px dashed #ccc;
+}
+
+.news_header a {
+	text-decoration	:none;
+}
+
+.news_content {
+	font-size				: 11px;
+	margin					: 0px;
+	padding					: 8px;
+}
+
+#footer p {
+	padding		: 10px 5px;
+	color		: #fff;
+	font-size	: 10px;
+}
+
+.left{
+	float	: left;
+}
+
+.right{
+	float	: right;
+}
+
+.right a {
+	text-decoration	: none;
+	color		: #fff;
+}
+
+.right a:hover {
+	text-decoration	: underline;
+}
+
+div.horizontal_scroller {
+	position	: relative;
+	height		: 10px;
+	width		: 960px;
+	display		: block;
+	overflow	: hidden;
+	border-top	: #CCCCCC 0px solid;
+	border-bottom	: #CCCCCC 0px solid;
+}
+
+div.scrollingtext{
+	position	: absolute;
+	white-space	: nowrap;
+	font-size	: 16px;
+	padding		: 5px;
+	color		: #999;
+}
+
+form {
+	-moz-border-radius	: 11px 11px 11px 11px;
+	-moz-box-shadow		: 0 4px 18px #C8C8C8;
+	background			: url("../images/bg.png") repeat scroll 0 0 transparent;
+	border				: 1px solid #E5E5E5;
+	font-weight			: normal;
+	margin-left			: 0px;
+	padding				: 5px 16px 15px;
+}
+
+#user_pass,
+#user_login {
+	background				: none repeat scroll 0 0 #FBFBFB;
+	border					: 1px solid #E5E5E5;
+	font-size				: 22px;
+	margin-bottom			: 16px;
+	margin-right			: 6px;
+	margin-top				: 2px;
+	padding					: 4px 4px 4px 8px;
+	width					: 97%;
+	-moz-border-radius		: 8px;
+	-webkit-border-radius	: 8px;
+	border-radius			: 8px;
+}
+
+label {
+	color		: #777777;
+	font-size	: 13px;
+}
+
+.bt_login{
+	background		: #21759B;
+	border-color	: #298CBA;
+	color			: #FFFFFF;
+	font-weight		: bold;
+	text-shadow		: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	margin-top		: 8px;
+	cursor			: pointer;
+	padding			: 4px;
+}
+
+#main_charts {
+	margin		: 10px;
+}

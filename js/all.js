@@ -1,12 +1,10 @@
 /**
- * Copyright 2011 - Kementerian Pendidikan Nasional - Dit.PSMP
+ * Copyright 2012 - GAPENSI.ORG
  *
  * Author(s):
  * + x10c-Lab
  *   - agus sugianto (agus.delonge@gmail.com)
  */
-
-var set_win_thn_ajaran;
 
 /* fix for hidden button in RowEditor when grid height is set to auto */
 Ext.override(Ext.grid.GridView, {
@@ -187,6 +185,15 @@ Ext.override(Ext.grid.GridPanel,{
 		}
 	}
 ,	loadMask: true
+});
+
+/* masking NPWP */
+Ext.apply(Ext.form.VTypes, {
+    NPWP:  function(v) {
+        return /^\d{2,2}\.\d{3,3}\.\d{3,3}\.\d{1,1}\-\d{3,3}\.\d{3,3}$/.test(v);
+    },
+    NPWPText: 'Format NPWP harus sesuai.',
+    NPWPMask: /[\d\.\-]/i
 });
 
 function left(str, n){

@@ -5,6 +5,7 @@ licensing@sencha.com
 
 http://www.sencha.com/license
 
+
 Open Source License
 ------------------------------------------------------------------------------------------
 Ext JS is licensed under the terms of the Open Source GPL 3.0 license. 

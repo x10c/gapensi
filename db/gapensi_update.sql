@@ -45,29 +45,6 @@ ALTER TABLE KTA_NOMOR_URUT ADD CONSTRAINT FK_KTA_BADAN_USAHA_KTA_NOMOR_URUT FORE
 ALTER TABLE KTA_NOMOR_URUT ADD CONSTRAINT FK_PROPINSI_KTA_NOMOR_URUT FOREIGN KEY (ID_Propinsi)
       REFERENCES PROPINSI (ID_Propinsi) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-DELIMITER $$
-
-CREATE TRIGGER KTA_NOMOR_URUT_BIR
-BEFORE INSERT ON KTA_NOMOR_URUT
-FOR EACH ROW
-BEGIN
-	DECLARE	vi_nomor_urut	INT(10);
-	
-	IF (ISNULL(new.ID_Nomor_Urut_Badan_Usaha)) THEN
-		SELECT	IFNULL(MAX(ID_Nomor_Urut_Badan_Usaha), 0)
-		INTO	vi_nomor_urut
-		FROM 	kta_nomor_urut
-		WHERE	ID_Propinsi = new.ID_Propinsi;
-		
-		SET vi_nomor_urut	= vi_nomor_urut + 1;
-		
-		SET new.ID_Nomor_Urut_Badan_Usaha	= vi_nomor_urut;
-	END IF;
-END
-$$
-
-DELIMITER ;
-
 INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
@@ -365,6 +342,25 @@ SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	NRBU
 FROM 	KTA_NOMOR_URUT_33;
 
+DELIMITER $$
+
+CREATE TRIGGER KTA_NOMOR_URUT_BIR
+BEFORE INSERT ON KTA_NOMOR_URUT
+FOR EACH ROW
+BEGIN
+	DECLARE	vi_nomor_urut	INT(10);
+	
+	SELECT	IFNULL(MAX(ID_Nomor_Urut_Badan_Usaha), 0) + 1
+	INTO	vi_nomor_urut
+	FROM 	kta_nomor_urut
+	WHERE	ID_Propinsi = new.ID_Propinsi;
+	
+	SET new.ID_Nomor_Urut_Badan_Usaha	= vi_nomor_urut;
+END
+$$
+
+DELIMITER ;
+
 CREATE TABLE JENIS_USAHA
 (
 	ID_Jenis_Usaha		SMALLINT	NOT NULL AUTO_INCREMENT
@@ -405,6 +401,8 @@ insert into __MENU values ('01.03'	,'Pengaturan Hak Akses'						,'app_adm'						
 insert into __MENU values ('02'		,'Pendaftaran'								,'pendaftaran'						,'0',1,'00','app');
 insert into __MENU values ('02.01'	,'Pendaftaran Anggota'						,'pendaftaran_anggota'				,'1',2,'02','menu_leaf');
 insert into __MENU values ('02.02'	,'Pendaftaran Komputer Pengguna'			,'pendaftaran_komputer_pengguna'	,'1',2,'02','menu_leaf');
+insert into __MENU values ('03'		,'Persetujuan'								,'persetujuan'						,'0',1,'00','app');
+insert into __MENU values ('03.01'	,'Persetujuan Anggota'						,'persetujuan_anggota'				,'1',2,'03','menu_leaf');
 
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.01',4);
@@ -413,3 +411,5 @@ insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.03',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.02',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03.01',4);

@@ -188,13 +188,13 @@ Ext.override(Ext.grid.GridPanel,{
 });
 
 /* masking NPWP */
-Ext.apply(Ext.form.VTypes, {
-    NPWP:  function(v) {
-        return /^\d{2,2}\.\d{3,3}\.\d{3,3}\.\d{1,1}\-\d{3,3}\.\d{3,3}$/.test(v);
-    },
-    NPWPText: 'Format NPWP harus sesuai.',
-    NPWPMask: /[\d\.\-]/i
-});
+// Ext.apply(Ext.form.VTypes, {
+    // NPWP:  function(v) {
+        // return /^\d{2,2}\.\d{3,3}\.\d{3,3}\.\d{1,1}\-\d{3,3}\.\d{3,3}$/.test(v);
+    // },
+    // NPWPText: 'Format NPWP harus sesuai.',
+    // NPWPMask: /[\d\.\-]/i
+// });
 
 function left(str, n){
     if (n <= 0)
@@ -216,3 +216,33 @@ function right(str, n){
     }
 }
 
+// don't call this function if not IE browser
+function get_mac_address()
+{
+	var locator		= new ActiveXObject("WbemScripting.SWbemLocator");
+	var service		= locator.ConnectServer(".");
+	var properties	= service.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
+	var e = new Enumerator (properties);
+	
+	var mac_address		= "";
+
+	for (;!e.atEnd();e.moveNext ())	{
+		var p = e.item ();
+
+		var mystring	= new String(p.Caption);
+		var myregExp	= 'PCI';
+		var answerIdx	= mystring.search(myregExp)
+		if(answerIdx != -1 && p.MACAddress != null)	{
+			mac_address		= p.MACAddress;
+		} else {
+			var mystring	= new String(p.Caption);
+			var myregExp	= 'NIC';
+			var answerIdx	= mystring.search(myregExp)
+			if(answerIdx != -1 && p.MACAddress != null) {
+				mac_address		= p.MACAddress;
+			}
+		}
+	}
+	
+	return mac_address;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Dynamic Filter Demo</title>
+  <link rel="stylesheet" type="text/css" href="../ext/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="../resources/cherryonext.css" />
+  <script type="text/javascript" src="../ext/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../ext/ext-all.js"></script>
+  <script type="text/javascript" src="../cherryonext.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="myStylesheet.css" />
+  <script type="text/javascript" src="mydata.js"></script>
+
+  <script language="JavaScript" type="text/javascript">
+
+    Ext.BLANK_IMAGE_URL="../ext/resources/images/default/s.gif";
+
+    var fieldManager;
+    var filterModel;
+    var localFilterResolver;
+    var win;
+    var availableValuesStore=new Ext.data.SimpleStore({fields: ['label', 'value'],
+      data: [
+        ["Yes","0"],
+        ["No","1"],
+        ["I don't remember","2"]
+      ]});
+    Ext.onReady(function(){
+
+      var filterCfg=[
+        {id: 'company',label: 'Company'},
+        {id: 'price',label: 'Price', type: 'float'},
+        {id: 'change',label: 'Change', type: 'float'},
+        {id: 'pctChange',label: '% Change', type: 'float'},
+        {id: 'lastChange',label: 'Last Updated', type: 'date', format: 'd/m/Y H:i'},
+        {id: 'inPortfolio',label: 'In Portfolio', type: 'enum', availableValues: availableValuesStore, remoteStore: false}
+      ];
+
+      //You can instantiate the filterModel directly passing to it the config for the fieldManager
+      //fieldManager=new Ext.ux.netbox.core.FieldManager(filterCfg);
+      filterModel=new Ext.ux.netbox.core.FilterModel(filterCfg);
+      localFilterResolver=new Ext.ux.netbox.core.LocalStoreFilterResolver(filterModel);
+
+      // create the Grid
+      var grid = new Ext.grid.GridPanel({
+        store: store,
+        columns: [
+          {id:'company',header: "Company", width: 160, sortable: true, dataIndex: 'company'},
+          {header: "Price", width: 75, sortable: true, renderer: 'usMoney', dataIndex: 'price'},
+          {header: "Change", width: 75, sortable: true, renderer: change, dataIndex: 'change'},
+          {header: "% Change", width: 75, sortable: true, renderer: pctChange, dataIndex: 'pctChange'},
+          {header: "Last Updated", width: 95, sortable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i'), dataIndex: 'lastChange'},
+          {header: "In Portfolio", width: 85, sortable: true, renderer: inPortfolio, dataIndex: 'inPortfolio'}
+        ],
+        stripeRows: true,
+        plugins: [new Ext.ux.netbox.core.FilterHeaderPlugin(filterModel)],
+        autoExpandColumn: 'company',
+        tbar: [{
+           text: 'Filters...',
+           handler: function(){
+             win.show();
+           }
+        }],
+        width: 800,
+        height: 500
+      });
+
+      var button2=new Ext.Button({text: "Apply"});
+
+      button2.on("click",filterTable);
+      grid.render("mettiloQui");
+
+      win = new Ext.Window({
+            title: 'Filters',
+            width:600,
+            height:350,
+            layout: 'border',
+            closeAction: 'hide',
+            items: [{ filterModel: filterModel,
+               region: "center",
+               xtype: 'dynamicFilter',
+               buttons: [button2]
+             }
+           ]
+        });
+
+
+    });
+
+    function displayFilter(){
+      document.getElementById('debugInfo').innerHTML=Ext.util.JSON.encode(filterModel.getFilterObj());
+    }
+
+    function filterTable(){
+     localFilterResolver.apply(store);
+    }
+
+    </script>
+</head>
+
+<body>
+<h1> Dynamic Filter </h1>
+<p> In this demo you can add or remove filters on the table clicking on the Filters... button. In the window that appears pushing the Apply button applies the filter to the table.</p>
+<div id="mettiloQui"></div>
+</body>
+</html>

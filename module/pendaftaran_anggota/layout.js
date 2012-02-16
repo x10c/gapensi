@@ -58,11 +58,13 @@ function M_PendaftaranAnggotaDetail()
 			]
 	});
 
+	this.mask_npwp = new Ext.ux.netbox.InputTextMask('99.999.999.9-999.999', true);
+	
 	this.form_npwp = new Ext.form.TextField({
 			fieldLabel		: 'NPWP'
-		,	vtype			: 'NPWP'
 		,	allowBlank		: false
 		,	width			: 200
+		,	plugins			: [ this.mask_npwp ]
 		,	msgTarget		: 'side'
 	});
 

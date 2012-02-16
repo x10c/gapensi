@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Preference Manager Demo</title>
+  <link rel="stylesheet" type="text/css" href="../ext/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="../resources/cherryonext.css" />
+  <script type="text/javascript" src="../ext/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../ext/ext-all.js"></script>
+  <script type="text/javascript" src="../cherryonext.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="myStylesheet.css" />
+  <script type="text/javascript" src="mydata.js"></script>
+
+  <!--Ajax call simulation-->
+  <script language="JavaScript" type="text/javascript" src="jsUnitAjax.js"></script>
+  <script language="JavaScript" type="text/javascript" src="simulateAjaxCall.js"></script>
+  <!--End ajax call simulation-->
+
+  <script language="JavaScript" type="text/javascript">
+
+    Ext.BLANK_IMAGE_URL="../ext/resources/images/default/s.gif";
+
+    var fieldManager;
+    var filterModel;
+    var localFilterResolver;
+    var grid;
+    var availableValuesStore=new Ext.data.SimpleStore({fields: ['label', 'value'],
+      data: [
+        ["Yes","0"],
+        ["No","1"],
+        ["I don't remember","2"]
+      ]});
+
+    Ext.onReady(function(){
+
+      var filterCfg=[
+        {id: 'company',label: 'Company'},
+        {id: 'price',label: 'Price', type: 'float'},
+        {id: 'change',label: 'Change', type: 'float'},
+        {id: 'pctChange',label: '% Change', type: 'float'},
+        {id: 'lastChange',label: 'Last Updated', type: 'date', format: 'd/m/Y H:i'},
+        {id: 'inPortfolio',label: 'In Portfolio', type: 'enum', availableValues: availableValuesStore, remoteStore: false}
+      ];
+
+      //FilterModel
+      fieldManager=new Ext.ux.netbox.core.FieldManager(filterCfg);
+      filterModel=new Ext.ux.netbox.core.FilterModel(fieldManager);
+      localFilterResolver=new Ext.ux.netbox.core.LocalStoreFilterResolver(filterModel);
+
+      // Preference Manager
+      prefManager=new Ext.ux.netbox.PreferenceManager({
+        id: 'prefManagerId',
+        userName: 'user',
+        getFn: provaGetFunc,
+        setFn: provaSetFunc,
+        fnScope: this,
+        getAllPrefURL:'http://getAllPrefURL',
+        applyDefaultPrefURL:'http://applyDefaultPrefURL',
+        loadPrefURL:'http://loadPrefURL',
+        savePrefURL:'http://savePrefURL',
+        deletePrefURL:'http://deletePrefURL'
+      });
+
+      prefManagView = new Ext.ux.netbox.PreferenceManagerView({preferenceManager: prefManager});
+
+      // create the Grid
+      grid = new Ext.grid.GridPanel({
+        store: store,
+        columns: [
+          {id:'company',header: "Company", width: 160, sortable: true, dataIndex: 'company'},
+          {header: "Price", width: 75, sortable: true, renderer: 'usMoney', dataIndex: 'price'},
+          {header: "Change", width: 75, sortable: true, renderer: change, dataIndex: 'change'},
+          {header: "% Change", width: 75, sortable: true, renderer: pctChange, dataIndex: 'pctChange'},
+          {header: "Last Updated", width: 95, sortable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i'), dataIndex: 'lastChange'},
+          {header: "In Portfolio", width: 85, sortable: true, renderer: inPortfolio, dataIndex: 'inPortfolio'}
+        ],
+        stripeRows: true,
+        plugins: [new Ext.ux.netbox.core.FilterHeaderPlugin(filterModel)],
+        autoExpandColumn: 'company',
+        region: "center",
+        tbar: [{text: 'Preferences', menu: prefManagView}],
+        width: 800,
+        height: 500
+      });
+
+      grid.render("mettiloQui");
+
+      prefManager.applyDefaultPreference();
+
+    });
+
+    function filterTable(){
+     localFilterResolver.apply(store);
+    }
+
+    function provaGetFunc(){
+      return({grid:grid.getState(),filter: filterModel.getFilterObj()});
+    }
+
+    function provaSetFunc(pref){
+      if(pref.filter){
+        filterModel.setFilterObj(pref.filter);
+      }
+      if(pref.grid){
+        grid.getView().userResized=true;
+        grid.applyState(pref.grid);
+        grid.getColumnModel().setConfig(grid.getColumnModel().config);
+      }
+      filterTable();
+    }
+
+    </script>
+</head>
+
+<body>
+<h1> Preferences Manager </h1>
+<p> In this demo you can apply some preferences one the table using the Prefereces menu. As you see a preferences can change both the content and the state of a grid.
+In fact a preference can manage the state of more or less everything you want.</p>
+<div id="mettiloQui"></div>
+</body>
+</html>

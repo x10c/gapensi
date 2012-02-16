@@ -1,0 +1,1141 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.core.FilterModel</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.core.FilterModel</h2>
+
+
+<i>Defined in <a href="FilterModel.src.html">FilterModel.js</a></i>
+
+<p>
+The filter model is the core class of the whole filter design, and probably the one you will interact most. It's the class that mantains the filter, it's the class used to obtain
+an export of the filter in a predefined way (look at getFilterObj for more information about the format), to import a filter, to add or remove a filter and so on. All the views (for example QuickFilterModelView, StaticFilterModelView and DynamicFilterModelView)
+just shows the data contained in the filter model, and use the filterModel to perform some operation on the filter.
+A filter model only manages elementary filters that have their field inside the fieldManager that is used to build the filterModel.
+<h4> Examples </h4>
+Build a filter model given the fieldManager
+<pre>
+var fieldManager=new Ext.ux.netbox.core.FieldManager(fieldManager);
+</pre>
+Build a filter model using the config to a fieldManager:
+<pre>
+ var filterCfg=[
+   {id: 'company',label: 'Company'},
+   {id: 'price',label: 'Price', type: 'float'},
+   {id: 'change',label: 'Change', type: 'float'},
+   {id: 'pctChange',label: '% Change', type: 'float'},
+   {id: 'lastChange',label: 'Last Updated', type: 'date', format: 'd/m/Y H:i'},
+   {id: 'shouldBuy',label: 'Should Buy', type: 'enum', availableValues: availableValuesStore, remoteStore: false}
+ ];
+ var fieldManager=new Ext.ux.netbox.core.FieldManager(filterCfg);
+</pre></p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#filter">filter</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The filter
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.core.FilterModel">Ext.ux.netbox.core.FilterModel</a></b>(fieldManager)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  Creates a new FilterModel.
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#_addFilter">_addFilter</a></b>(elementaryFilter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#_createFilter">_createFilter</a></b>(fieldId, operator, values) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#_decodeFilter">_decodeFilter</a></b>(filterObject) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#_encodeFilter">_encodeFilter</a></b>(filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#_findAndRemoveFilter">_findAndRemoveFilter</a></b>(parentExpression, expression, matchFn, toRemove) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#addElementaryFilter">addElementaryFilter</a></b>(filterObject) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method add an elementaryFilter receiving an object that represents it.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#addElementaryFilterByFieldId">addElementaryFilterByFieldId</a></b>(fieldId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method add an elementaryFilter by field Id.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#each">each</a></b>(fn, scope, filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method calls the function with the scope on the filter passed as parameters.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Array of Ext.ux.netbox.core.ElementaryFilter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getAllElementaryFilters">getAllElementaryFilters</a></b>(filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns all the elementaryFilter stored in the filter expression or an empty array if filter is null.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.ElementaryFilter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getElementaryFilterById">getElementaryFilterById</a></b>(id) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns an elementaryFilter by Id.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Array of Ext.ux.netbox.core.ElementaryFilter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getElementaryFiltersByFieldId">getElementaryFiltersByFieldId</a></b>(fieldId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns an array of elementaryFilter by fieldId or an empty array if not found.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.FieldManager
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getFieldManager">getFieldManager</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the FieldManager associated to this filterModel.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.Filter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getFilter">getFilter</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the filter setted in this filterModel or null if is not setted.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Object
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getFilterObj">getFilterObj</a></b>(evenInvalid, additionalFilterObj, additionalLogicalOper) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns an object representing the actual filter or null if is not setted.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getLogicalOperator">getLogicalOperator</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the logical operator setted in the filter model.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#onBeforeFieldRemoved">onBeforeFieldRemoved</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It doesn't allow the removal of a field if there are filters on that field
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#removeElementaryFilterById">removeElementaryFilterById</a></b>(filterId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method remove an elementaryFilter from the FilterModel by Id.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setFilterObj">setFilterObj</a></b>(filterObject) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the filter with an object formatted:
+<PRE>
+Filter::=ElementaryFilter|CompositeFilter
+ElementaryFilter::={fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setLogicalOperator">setLogicalOperator</a></b>(logicalOperator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the logical operator in the filter model.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+<a name="event_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Event Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#elementaryFilterAdded">elementaryFilterAdded</a></b>(filterModel, elementaryFilter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when an elementaryFilter is added
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#elementaryFilterRemoved">elementaryFilterRemoved</a></b>(filterModel, elementaryFilter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when an elementaryFilter is removed
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#filterChanged">filterChanged</a></b>(filterModel) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when the filter managed by this filterModel is changed
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="filter">
+	<!-- -->
+	</a> <h3>filter</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>filter</b></pre> 
+	<ul>
+		
+		The filter
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.core.FilterModel"> </a>
+<h3>Ext.ux.netbox.core.FilterModel</h3>
+
+	<pre><b>Ext.ux.netbox.core.FilterModel</b>(fieldManager)</pre>
+	<ul>
+		
+		Creates a new FilterModel. It can have as input parametr a fieldManager or the config to build the fieldManager
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i>Mixed</i>&nbsp;fieldManager</code> - A Ext.ux.netbox.core.FieldManager or a config to create a FieldMAnager. In this last case the fieldManager will be built directly by the filter model 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="_addFilter"> </a> <h3>_addFilter</h3>
+		<pre>&lt;private&gt;&nbsp;<b>_addFilter</b>(elementaryFilter)</pre> 
+	<ul>
+		
+		
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>elementaryFilter</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="_createFilter"> </a> <h3>_createFilter</h3>
+		<pre>&lt;private&gt;&nbsp;<b>_createFilter</b>(fieldId, operator, values)</pre> 
+	<ul>
+		
+		
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>fieldId</code> 
+		</ul>
+		<ul>
+			<code>operator</code> 
+		</ul>
+		<ul>
+			<code>values</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="_decodeFilter"> </a> <h3>_decodeFilter</h3>
+		<pre>&lt;private&gt;&nbsp;<b>_decodeFilter</b>(filterObject)</pre> 
+	<ul>
+		
+		
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>filterObject</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="_encodeFilter"> </a> <h3>_encodeFilter</h3>
+		<pre>&lt;private&gt;&nbsp;<b>_encodeFilter</b>(filter)</pre> 
+	<ul>
+		
+		
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>filter</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="_findAndRemoveFilter"> </a> <h3>_findAndRemoveFilter</h3>
+		<pre>&lt;private&gt;&nbsp;<b>_findAndRemoveFilter</b>(parentExpression, expression, matchFn, toRemove)</pre> 
+	<ul>
+		
+		
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>parentExpression</code> 
+		</ul>
+		<ul>
+			<code>expression</code> 
+		</ul>
+		<ul>
+			<code>matchFn</code> 
+		</ul>
+		<ul>
+			<code>toRemove</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="addElementaryFilter"> </a> <h3>addElementaryFilter</h3>
+		<pre>String&nbsp;<b>addElementaryFilter</b>(filterObject)</pre> 
+	<ul>
+		
+		This method add an elementaryFilter receiving an object that represents it. If this succeeds the event "filterAdded" is triggered.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;filterObject</code> - &#123;fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [...]&#125; 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>id of elementaryFilter added 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="addElementaryFilterByFieldId"> </a> <h3>addElementaryFilterByFieldId</h3>
+		<pre>String&nbsp;<b>addElementaryFilterByFieldId</b>(fieldId)</pre> 
+	<ul>
+		
+		This method add an elementaryFilter by field Id. If this succeeds the event "elementaryFilterAdded" is triggered.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;fieldId</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>id of elementaryFilter added 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="each"> </a> <h3>each</h3>
+		<pre><b>each</b>(fn, scope, filter)</pre> 
+	<ul>
+		
+		This method calls the function with the scope on the filter passed as parameters.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Function</i>&nbsp;fn</code> - The function to call 
+		</ul>
+		<ul>
+			<code><i>Object</i>&nbsp;scope</code> - (optional) The scope in which to execute the function 
+		</ul>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;filter</code> - The filter on which execute the function 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getAllElementaryFilters"> </a> <h3>getAllElementaryFilters</h3>
+		<pre>Array of <a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a>&nbsp;<b>getAllElementaryFilters</b>(filter)</pre> 
+	<ul>
+		
+		This method returns all the elementaryFilter stored in the filter expression or an empty array if filter is null.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;filter</code> - The filter from which the elementaryFilters must be extracted. Optional. If not supplied the filter in the filterModel is used 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Array of <a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;</code> 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getElementaryFilterById"> </a> <h3>getElementaryFilterById</h3>
+		<pre><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a>&nbsp;<b>getElementaryFilterById</b>(id)</pre> 
+	<ul>
+		
+		This method returns an elementaryFilter by Id. If not found returns null.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The id of the filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;</code>The elementaryFilter with the given id or null if it is not found 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getElementaryFiltersByFieldId"> </a> <h3>getElementaryFiltersByFieldId</h3>
+		<pre>Array of <a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a>&nbsp;<b>getElementaryFiltersByFieldId</b>(fieldId)</pre> 
+	<ul>
+		
+		This method returns an array of elementaryFilter by fieldId or an empty array if not found.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;fieldId</code> - The id of the field 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Array of <a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;</code>array of elementaryFilter setted with the same fieldId 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getFieldManager"> </a> <h3>getFieldManager</h3>
+		<pre><a href="Ext.ux.netbox.core.FieldManager.html">Ext.ux.netbox.core.FieldManager</a>&nbsp;<b>getFieldManager</b>()</pre> 
+	<ul>
+		
+		This method returns the FieldManager associated to this filterModel.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.FieldManager.html">Ext.ux.netbox.core.FieldManager</a></i>&nbsp;</code>The FieldManager 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getFilter"> </a> <h3>getFilter</h3>
+		<pre><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a>&nbsp;<b>getFilter</b>()</pre> 
+	<ul>
+		
+		This method returns the filter setted in this filterModel or null if is not setted.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;</code>The filter setted 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getFilterObj"> </a> <h3>getFilterObj</h3>
+		<pre>Object&nbsp;<b>getFilterObj</b>(evenInvalid, additionalFilterObj, additionalLogicalOper)</pre> 
+	<ul>
+		
+		This method returns an object representing the actual filter or null if is not setted.
+<PRE>
+Filter::=ElementaryFilter|CompositeFilter
+ElementaryFilter::={fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [...]}
+CompositeFilter::={left : Ext.ux.netbox.core.Filter, logicalOperator : String, right : Ext.ux.netbox.core.Filter}
+logicalOperator::="AND"|"OR"
+</PRE>
+<h4> Example </h4>
+<PRE>
+{
+   left:{
+     left:{fieldId:"field4",operatorId:"DATE_EQUAL",values:[{label:"12/10/2009 12:12",value:"2009-10-12 12:12:00"}]},
+     logicalOperator:"AND",
+     right:{fieldId:"field3",operatorId:"STRING_EQUAL",values:[{label:"label1",value:"valore1"}]}
+   },
+   logicalOperator:"AND",
+   right:{fieldId:"field",operatorId:"NUMBER_EQUAL",values:[{label:5,value:5}]}
+}
+</pre>
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;evenInvalid</code> - (optional) default false 
+		</ul>
+		<ul>
+			<code><i>Object</i>&nbsp;additionalFilterObj</code> - (optional) 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;additionalLogicalOper</code> - Ext.ux.netbox.core.CompositeFilter.AND/OR (optional) 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;</code>the filter object 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getLogicalOperator"> </a> <h3>getLogicalOperator</h3>
+		<pre>String&nbsp;<b>getLogicalOperator</b>()</pre> 
+	<ul>
+		
+		This method returns the logical operator setted in the filter model. The default is Ext.ux.netbox.core.CompositeFilter.AND
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>The logical operator setted 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="onBeforeFieldRemoved"> </a> <h3>onBeforeFieldRemoved</h3>
+		<pre>&lt;private&gt;&nbsp;<b>onBeforeFieldRemoved</b>(field)</pre> 
+	<ul>
+		
+		It doesn't allow the removal of a field if there are filters on that field
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>field</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="removeElementaryFilterById"> </a> <h3>removeElementaryFilterById</h3>
+		<pre><b>removeElementaryFilterById</b>(filterId)</pre> 
+	<ul>
+		
+		This method remove an elementaryFilter from the FilterModel by Id. If this succeeds the event "elementaryFilterRemoved" is triggered.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;filterId</code> - The id of elementaryFilter to remove 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> if the elementaryFilter to remove is not found 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setFilterObj"> </a> <h3>setFilterObj</h3>
+		<pre><b>setFilterObj</b>(filterObject)</pre> 
+	<ul>
+		
+		This method sets the filter with an object formatted:
+<PRE>
+Filter::=ElementaryFilter|CompositeFilter
+ElementaryFilter::={fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [...]}
+CompositeFilter::={left : Ext.ux.netbox.core.ElementaryFilter, logicalOperator : String, right : Ext.ux.netbox.core.ElementaryFilter}
+logicalOperator::="AND"|"OR"
+</PRE>
+If this succeeds the event "filterChanged" is triggered.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;filterObject</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setLogicalOperator"> </a> <h3>setLogicalOperator</h3>
+		<pre><b>setLogicalOperator</b>(logicalOperator)</pre> 
+	<ul>
+		
+		This method sets the logical operator in the filter model.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;logicalOperator</code> - The logical operator to set in the filter model 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Event Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="elementaryFilterAdded"> </a> <h3>elementaryFilterAdded</h3>
+		<pre><b>elementaryFilterAdded</b>(filterModel, elementaryFilter)</pre> 
+	<ul>
+		
+		Fires when an elementaryFilter is added
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.FilterModel.html">Ext.ux.netbox.core.FilterModel</a></i>&nbsp;filterModel</code> - The filterModel containing the added elementaryFilter 
+		</ul>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;elementaryFilter</code> - The added elementaryFilter 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="elementaryFilterRemoved"> </a> <h3>elementaryFilterRemoved</h3>
+		<pre><b>elementaryFilterRemoved</b>(filterModel, elementaryFilter)</pre> 
+	<ul>
+		
+		Fires when an elementaryFilter is removed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.FilterModel.html">Ext.ux.netbox.core.FilterModel</a></i>&nbsp;filterModel</code> - The filterModel containing the removed elementaryFilter 
+		</ul>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;elementaryFilter</code> - The removed elementaryFilter 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="filterChanged"> </a> <h3>filterChanged</h3>
+		<pre><b>filterChanged</b>(filterModel)</pre> 
+	<ul>
+		
+		Fires when the filter managed by this filterModel is changed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.FilterModel.html">Ext.ux.netbox.core.FilterModel</a></i>&nbsp;filterModel</code> - The filterModel that has the new filter 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:17 GMT+0100 (CET)</div>
+</body>
+</html>

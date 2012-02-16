@@ -394,10 +394,22 @@ UPDATE	kta_badan_usaha 	AS A
 SET 	A.ID_Jenis_Usaha = B.ID_Jenis_Usaha
 WHERE	B.Nama_Jenis_Usaha = TRIM(SUBSTRING(A.Nama, IF(LOCATE(',', A.Nama) <> 0, LOCATE(',', A.Nama) + 1, 100)))
 
+CREATE TABLE __KOMPUTER_USER
+(
+   ID_Admin_User		VARCHAR(32) NOT NULL,
+   MAC_ADDRESS			VARCHAR(20) NOT NULL,
+   STATUS             	CHAR(1) NOT NULL DEFAULT '0' COMMENT '0 = Belum Disetujui; 1 = Disetujui',
+   PRIMARY KEY (ID_Admin_User)
+);
+
+ALTER TABLE __KOMPUTER_USER ADD CONSTRAINT FK_ADMIN_USER___KOMPUTER_USER FOREIGN KEY (ID_Admin_User)
+      REFERENCES ADMIN_USER (ID_Admin_User) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
 insert into __MENU values ('01'		,'Aplikasi'									,'app'								,'0',1,'00','beranda');
 insert into __MENU values ('01.01'	,'Beranda'									,'app_home'							,'1',2,'01','beranda');
 insert into __MENU values ('01.02'	,'Pengaturan User'							,'app_adm_user'						,'1',2,'01','users');
 insert into __MENU values ('01.03'	,'Pengaturan Hak Akses'						,'app_adm'							,'1',2,'01','users');
+insert into __MENU values ('01.04'	,'Pengaturan Komputer Pengguna'				,'app_adm_komputer'					,'1',2,'01','computer');
 insert into __MENU values ('02'		,'Pendaftaran'								,'pendaftaran'						,'0',1,'00','app');
 insert into __MENU values ('02.01'	,'Pendaftaran Anggota'						,'pendaftaran_anggota'				,'1',2,'02','menu_leaf');
 insert into __MENU values ('02.02'	,'Pendaftaran Komputer Pengguna'			,'pendaftaran_komputer_pengguna'	,'1',2,'02','menu_leaf');
@@ -408,6 +420,7 @@ insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.02',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.03',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.04',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.02',4);

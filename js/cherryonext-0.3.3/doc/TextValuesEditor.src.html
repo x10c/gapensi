@@ -1,0 +1,62 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: TextValuesEditor.js 100 2008-02-26 09:38:02Z bobbicat71 $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox.core'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** It creates a new TextValuesEditor. For an error the order of the parameter is reversed because we want the second field to be optional (the default value is a new Ext.form.TextField)
+<span class='linenumber'>  6</span>   * @class This class extends Editor to manage an array of {label: originalValue, value: originalValue} as value.
+<span class='linenumber'>  7</span>   * It should be used to manage all the form field that doesn't have a value different from the label (for example a TextField or a checkbox,
+<span class='linenumber'>  8</span>   * but not a ComboBox where label and value are different)
+<span class='linenumber'>  9</span>   * @constructor
+<span class='linenumber'> 10</span>   * @param {Object} config The config object. For more info look at the config options of Ext.Editor
+<span class='linenumber'> 11</span>   * @param {Ext.form.Field} The field inside the editor. Optional. The default value is a new Ext.form.TextField
+<span class='linenumber'> 12</span>   * @extends Ext.ux.netbox.FilterEditor
+<span class='linenumber'> 13</span>   */</span><span class="WHIT">
+<span class='linenumber'> 14</span> </span><span class="NAME">Ext.ux.netbox.core.TextValuesEditor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">field</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">config</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 15</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">field</span><span class="PUNC">==</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 16</span> </span><span class="WHIT">    </span><span class="NAME">field</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.form.TextField</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 17</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 18</span> </span><span class="WHIT">  </span><span class="NAME">Ext.ux.netbox.core.TextValuesEditor.superclass.constructor.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">field</span><span class="PUNC">,</span><span class="NAME">config</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 19</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 20</span> 
+<span class='linenumber'> 21</span> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.netbox.core.TextValuesEditor</span><span class="PUNC">,</span><span class="NAME">Ext.ux.netbox.FilterEditor</span><span class="PUNC">,</span><span class="COMM">/** @scope Ext.ux.netbox.core.TextValuesEditor.prototype */</span><span class="WHIT">
+<span class='linenumber'> 22</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 23</span> </span><span class="WHIT">  </span><span class="COMM">/** This method sets the value
+<span class='linenumber'> 24</span>     * @param (Array) value
+<span class='linenumber'> 25</span>     */</span><span class="WHIT">
+<span class='linenumber'> 26</span> </span><span class="WHIT">  </span><span class="NAME">setValue</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 27</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">val</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 28</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">!==</span><span class="NAME">undefined</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">!==</span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">Ext.type</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">===</span><span class="STRN">"array"</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="WHIT">
+<span class='linenumber'> 29</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">value.length</span><span class="PUNC">==</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 30</span> </span><span class="WHIT">        </span><span class="NAME">val</span><span class="PUNC">=</span><span class="STRN">""</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 31</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">value</span><span class="PUNC">!==</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 32</span> </span><span class="WHIT">        </span><span class="NAME">val</span><span class="PUNC">=</span><span class="NAME">value</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">value</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 33</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 34</span> </span><span class="WHIT">        </span><span class="NAME">val</span><span class="PUNC">=</span><span class="NAME">value</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 35</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 36</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 37</span> </span><span class="WHIT">      </span><span class="NAME">val</span><span class="PUNC">=</span><span class="STRN">""</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 38</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 39</span> </span><span class="WHIT">    </span><span class="NAME">Ext.ux.netbox.FilterEditor.superclass.setValue.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">val</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 40</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 41</span> 
+<span class='linenumber'> 42</span> </span><span class="WHIT">  </span><span class="COMM">/** This method gets the value
+<span class='linenumber'> 43</span>     * @return Array of Objects containing the values {label: ..., value: ...}
+<span class='linenumber'> 44</span>     */</span><span class="WHIT">
+<span class='linenumber'> 45</span> </span><span class="WHIT">  </span><span class="NAME">getValue</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 46</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">val</span><span class="PUNC">=</span><span class="NAME">Ext.ux.netbox.FilterEditor.superclass.getValue.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 47</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">val</span><span class="PUNC">===</span><span class="STRN">""</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 48</span> </span><span class="WHIT">      </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 49</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 50</span> </span><span class="WHIT">      </span><span class="NAME">val</span><span class="PUNC">=</span><span class="PUNC">[</span><span class="PUNC">{</span><span class="NAME">label</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">val</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">:</span><span class="NAME">val</span><span class="PUNC">}</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 51</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 52</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">val</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 53</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 54</span> 
+<span class='linenumber'> 55</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

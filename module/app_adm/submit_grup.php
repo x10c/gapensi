@@ -5,6 +5,7 @@
 	$id_grup	= $_REQUEST['id_grup'];
 	$nama_grup	= $_REQUEST['nama_grup'];
 	$catatan	= $_REQUEST['catatan'];
+	$sektor		= $_REQUEST['sektor'];
 	
 	$dbh->beginTransaction();
 	
@@ -13,7 +14,7 @@
 			case "2" :
 				$dbh->exec("
 					insert into admin_grup (nama_grup, catatan, tgl_dibuat, tgl_perubahan, sektor, sektor_asosiasi, direktori_grup)
-					values ('$nama_grup', '$catatan', now(), now(), '', '', '')
+					values ('$nama_grup', '$catatan', now(), now(), '$sektor', '', '')
 				");
 
 				break;
@@ -22,6 +23,7 @@
 					update	admin_grup
 					set		nama_grup		= '$nama_grup'
 						,	catatan			= '$catatan'
+						,	sektor			= '$sektor'
 						,	tgl_perubahan	= now()
 					where	id_grup			= $id_grup
 				");

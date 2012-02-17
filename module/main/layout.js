@@ -97,7 +97,7 @@ function menu_item_on_click(node)
 	Ext.Ajax.request({
 			url		: _g_root +'module/main/get_menu_access.php'
 		,	params	: {
-				menu_id : n.menu_id
+				menu : n.menu_id
 			}
 		,	failure	: function(r) {
 				Ext.MessageBox.alert('Error', r.responseText);

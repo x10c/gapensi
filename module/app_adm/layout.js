@@ -7,12 +7,11 @@
  */
 
 var m_app_adm;
-var m_app_adm_d = _g_root + 'module/app_adm/';
-
 var m_adm_grup;
 var m_adm_menu;
 var m_adm_ha_level	= 0;
 var m_adm_grup_id	= '';
+var m_app_adm_d 	= _g_root + 'module/app_adm/';
 
 function grup_on_select_load_others()
 {
@@ -33,6 +32,7 @@ function M_AdmGrup()
 			{ name	: 'id_grup' }
 		,	{ name	: 'nama_grup' }
 		,	{ name	: 'catatan' }
+		,	{ name	: 'sektor' }
 	]);
 
 	this.store = new Ext.ux.data.PagingArrayStore({
@@ -42,6 +42,13 @@ function M_AdmGrup()
 		,	idIndex		: 0
 	});
 
+	this.store_sektor = new Ext.data.ArrayStore({
+			url			: m_app_adm_d + 'data_propinsi.php'
+		,	fields		: ['id', 'name']
+		,	autoLoad	: false
+		,	idIndex		: 0
+	});
+	
 	this.form_nama_grup = new Ext.form.TextField({
 		allowBlank	: false
 	});
@@ -50,6 +57,18 @@ function M_AdmGrup()
 		allowBlank	: true
 	});
 
+	this.form_sektor = new Ext.form.ComboBox({
+			store			: this.store_sektor
+		,	valueField		: 'id'
+		,	displayField	: 'name'
+		,	mode			: 'local'
+		,	forceSelection	: true
+		,	typeAhead		: true
+		,	selectOnFocus	: true
+		,	triggerAction	: 'all'
+		,	listWidth		: 300
+	});
+	
 	this.filters = new Ext.ux.grid.GridFilters({
 			encode	: true
 		,	local	: true
@@ -61,8 +80,22 @@ function M_AdmGrup()
 			,	dataIndex	: 'nama_grup'
 			,	sortable	: true
 			,	editor		: this.form_nama_grup
-			,	width		: 200
+			,	width		: 175
 			,	filterable	: true
+			}
+		,	{
+				header		: 'Sektor'
+			,	dataIndex	: 'sektor'
+			,	sortable	: true
+			,	editor		: this.form_sektor
+			,	renderer	: combo_renderer(this.form_sektor)
+			,	width		: 175
+			,	filter		: {
+						type		: 'list'
+					,	store		: this.store_sektor
+					,	labelField	: 'name'
+					,	phpMode		: false
+				}
 			}
 		,	{
 				id			: 'catatan'
@@ -165,6 +198,7 @@ function M_AdmGrup()
 				id_grup		: ''
 			,	nama_grup	: ''
 			,	catatan		: ''
+			,	sektor		: ''
 		});
 
 		this.editor.stopEditing();
@@ -211,6 +245,7 @@ function M_AdmGrup()
 						id_grup			: record.data['id_grup']
 					,	nama_grup		: record.data['nama_grup']
 					,	catatan			: record.data['catatan']
+					,	sektor			: record.data['sektor']
 					,	dml_type		: this.dml_type
 				}
 			,	waitMsg	: 'Mohon Tunggu ...'
@@ -240,6 +275,23 @@ function M_AdmGrup()
 		return false;
 	}
 
+	this.do_load = function()
+	{
+		this.store_sektor.load({
+				scope		: this
+			,	callback	: function() {
+					delete this.store.lastParams;
+
+					this.store.load({
+						params	: {
+							start	: 0
+						,	limit	: 50
+						}
+					});			
+				}
+		});
+	}
+	
 	this.do_refresh = function()
 	{
 		if (m_adm_ha_level <= 1) {
@@ -248,14 +300,7 @@ function M_AdmGrup()
 			this.btn_add.setDisabled(false);
 		}
 
-		delete this.store.lastParams;
-
-		this.store.load({
-			params	: {
-				start	: 0
-			,	limit	: 50
-			}
-		});
+		this.do_load();
 	}
 }
 
@@ -279,11 +324,11 @@ function M_AdmMenu()
 	this.store_ha_level = new Ext.data.ArrayStore({
 			fields	: ['id', 'name']
 		,	data	: [
-					['0', 'No Access']
-				,	['1', 'View']
-				,	['2', 'Insert']
-				,	['3', 'Update']
-				,	['4', 'Delete']
+					[0, 'No Access']
+				,	[1, 'View']
+				,	[2, 'Insert']
+				,	[3, 'Update']
+				,	[4, 'Delete']
 			]
 	});
 
@@ -415,7 +460,7 @@ function M_AdmMenu()
 				url		: m_app_adm_d + 'submit_menu.php'
 			,	params  : {
 						id_grup			: m_adm_grup_id
-					,	menu_id			: record.data['menu_id']
+					,	menu			: record.data['menu_id']
 					,	ha_level		: ha_level
 					,	ha_level_org	: ha_level_org
 				}
@@ -486,6 +531,14 @@ function M_Administrasi()
 	this.do_refresh = function(ha_level)
 	{
 		m_adm_ha_level = ha_level;
+
+		if (m_adm_ha_level < 4) {
+			Ext.MessageBox.alert('Hak Akses', 'Maaf, Anda tidak memiliki hak akses untuk melihat menu ini!');
+			this.panel.setDisabled(true);
+			return;
+		} else {
+			this.panel.setDisabled(false);
+		}
 
 		m_adm_grup.do_refresh();
 	}

@@ -187,6 +187,20 @@ Ext.override(Ext.grid.GridPanel,{
 ,	loadMask: true
 });
 
+/**
+* Prints the contents of an Ext.Panel
+*/
+Ext.ux.Printer.PanelRenderer = Ext.extend(Ext.ux.Printer.BaseRenderer, {
+	/**
+	* Generates the HTML fragment that will be rendered inside the <html> element of the printing window
+	*/
+	generateBody	: function(panel) {
+		return String.format("<div class='x-panel-print'>{0}</div>", panel.body.dom.innerHTML);
+	}
+});
+
+Ext.ux.Printer.registerRenderer("panel", Ext.ux.Printer.PanelRenderer);
+
 /* masking NPWP */
 // Ext.apply(Ext.form.VTypes, {
     // NPWP:  function(v) {
@@ -216,7 +230,7 @@ function right(str, n){
     }
 }
 
-// don't call this function if not IE browser
+// don't call this function if browser is not IE
 function get_mac_address()
 {
 	var locator		= new ActiveXObject("WbemScripting.SWbemLocator");

@@ -6,11 +6,9 @@
 		$data	= "[";
 
 		$rows	= $dbh->query("
-			select	id_grup		as id_grup
-				,	nama_grup	as nama_grup
-				,	catatan		as catatan
-				,	sektor		as sektor
-			from	admin_grup
+			select	id_propinsi		as id_propinsi
+				,	nama			as nama
+			from	kta_mstr_propinsi
 		");
 		
 		foreach ($rows as $row) {
@@ -21,10 +19,8 @@
 			}
 
 			$data.= "[";
-			$data.= "".$row['id_grup'].",";
-			$data.=	"'".$row['nama_grup']."',";
-			$data.=	"'".$row['catatan']."',";
-			$data.=	"'".$row['sektor']."'";
+			$data.= "'".$row['id_propinsi']."',";
+			$data.=	"'".$row['nama']."',";
 			$data.=	"]";			
 		}
 		

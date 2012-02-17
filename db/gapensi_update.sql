@@ -415,8 +415,8 @@ insert into __MENU values ('02.01'	,'Pendaftaran Anggota'						,'pendaftaran_ang
 insert into __MENU values ('02.02'	,'Pendaftaran Komputer Pengguna'			,'pendaftaran_komputer_pengguna'	,'1',2,'02','menu_leaf');
 insert into __MENU values ('03'		,'Persetujuan'								,'persetujuan'						,'0',1,'00','app');
 insert into __MENU values ('03.01'	,'Persetujuan Anggota'						,'persetujuan_anggota'				,'1',2,'03','menu_leaf');
-insert into __MENU values ('05'		,'Cetak KTA'								,'cetak_kta'						,'0',1,'00','app');
-insert into __MENU values ('05.01'	,'Print KTA'								,'print_kta'				,'1',2,'05','menu_leaf');
+insert into __MENU values ('04'		,'Pencetakan'								,'pencetakan'						,'0',1,'00','app');
+insert into __MENU values ('04.01'	,'Print KTA'								,'print_kta'						,'1',2,'04','menu_lead');
 
 
 
@@ -430,5 +430,5 @@ insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.02',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03.01',4);
-insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'05',4);
-insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'05.01',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'04',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'04.01',4);

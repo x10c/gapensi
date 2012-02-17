@@ -7,7 +7,7 @@
  */
 
 var m_app_home;
-var m_app_home_d = _g_root +'module/app_home/';
+var m_app_home_d = _g_root + 'module/app_home/';
 
 function M_HomeWinChange(title, form_old_title, form_new_title, form_new_confirm_title, form_type, url)
 {

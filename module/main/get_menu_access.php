@@ -2,7 +2,7 @@
 	include('../../config/db_config.php');
 	
 	$user	= $_COOKIE['username'];
-	$menu	= $_REQUEST['menu_id'];
+	$menu	= $_REQUEST['menu'];
 
 	if ($menu == null || ($menu != null && $menu == "")){
 		echo "{success:true, info:'0'}"; 

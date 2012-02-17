@@ -2,7 +2,7 @@
 	include('../../config/db_config.php');
 	
 	$id_grup		= $_REQUEST['id_grup'];
-	$menu_id		= $_REQUEST['menu_id'];
+	$menu			= $_REQUEST['menu'];
 	$ha_level		= $_REQUEST['ha_level'];
 	$ha_level_org	= $_REQUEST['ha_level_org'];
 	
@@ -10,29 +10,31 @@
 	
 	try {
 		$result = $dbh->query("
-			select	*
+			select	ha_level
 			from	__hak_akses
 			where	id_grup	= $id_grup
-			and		menu_id	= '$menu_id'
+			and		menu_id	= '$menu'
 		")->fetchAll();
 
-		if (count($result) == 0) {
+		$jml = count($result);
+		
+		if ($jml == 0) {
 			$dbh->exec("
 				insert into __hak_akses (id_grup, menu_id, ha_level)
-				values ($id_grup, '$menu_id', $ha_level)
+				values ($id_grup, '$menu', $ha_level)
 			");
 		} else {
 			$dbh->exec("
 				update __hak_akses
 				set    ha_level	= $ha_level
 				where  id_grup  = $id_grup
-				and    menu_id  = '$menu_id';
+				and    menu_id  = '$menu'
 			");		
 		}
 
 		$dbh->commit();
 		
-		echo "{success:true, info:'Data telah tersimpan.'}";
+		echo "{success:true, info:'Data telah tersimpan.".$jml."'}";
 	} catch (PDOexception $e) {
 		$dbh->rollBack();
 		

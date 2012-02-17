@@ -26,18 +26,17 @@
 	Ext.QuickTips.init();
 </script>
 
+<script type="text/javascript" src="<?php echo $base_url; ?>js/cherryonext-0.3.3/src/netbox/InputTextMask.js"></script>
+<script type="text/javascript" src="<?php echo $base_url; ?>js/Ext.ux.Printer/Printer.js"></script>
+<script type="text/javascript" src="<?php echo $base_url; ?>js/Ext.ux.Printer/renderers/Base.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>js/all.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>js/MD5.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>js/NumericField.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>js/cbColumn.js"></script>
-<script type="text/javascript" src="<?php echo $base_url; ?>js/cherryonext-0.3.3/src/netbox/InputTextMask.js"></script>
-<script type="text/javascript" src="<?php echo $base_url; ?>js/miframe/mif.js"></script>
+<!-- <script type="text/javascript" src="<?php echo $base_url; ?>js/miframe/mif.js"></script> -->
 
 <script type="text/javascript" src="<?php echo $base_url; ?>module/app_home/layout.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>module/main/layout.js"></script>
-<script type="text/javascript" src="<?php echo $base_url; ?>module/pendaftaran_komputer_pengguna/layout.js"></script>
-
-<script type="text/javascript" src="<?php echo $base_url; ?>/module/print_kta/layout.js"></script>
 
 </head>
 

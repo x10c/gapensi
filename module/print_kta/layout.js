@@ -4,20 +4,22 @@
  * Author(s):
  * + x10c-Lab
  *   - prasetya yanuar (prasetya.yanuar@googlemail.com)
+ *   - agus sugianto (agus.delonge@gmail.com)
  */
 
-var m_entry_form_print;
 var m_print_kta;
-var m_print_kta_d = _g_root + 'module/print_kta/';
-var m_pendaftaran_anggota_d 				= _g_root + 'module/pendaftaran_anggota/';
-var badan_usaha = 0;
-var id_pro = '';
+var m_print_kta_list;
+var m_print_kta_detail;
+var m_print_kta_id_badan_usaha	= 0;
+var m_print_kta_id_propinsi		= 0;
+var m_print_kta_d 				= _g_root + 'module/print_kta/';
+var m_print_kta_ha_level		= 0;
 
-function M_EntryFormPrint(){
-	this.ha_level = 0;
-	
+function M_PrintKTADetail()
+{
 	this.form_badan_usaha = new Ext.form.TextField({
 			fieldLabel	: 'Nama Badan Usaha'
+		,	readOnly	: true
 		,	allowBlank	: false
 		,	width		: 300
 	});
@@ -25,95 +27,91 @@ function M_EntryFormPrint(){
 	this.form_no_sert = new Ext.form.TextField({
 			fieldLabel	: 'Nomor Sertifikat'
 		,	allowBlank	: false
-		,	width		: 200	
+		,	width		: 300	
 	});
 	
 	this.form_no_blanko = new Ext.form.TextField({
 			fieldLabel	: 'Nomor Blanko'
 		,	allowBlank	: false
-		,	width		: 200	
+		,	width		: 300	
 	});
 	
 	this.form_no_iujk = new Ext.form.TextField({
 			fieldLabel	: 'Nomor IUJK'
 		,	allowBlank	: false
-		,	width		: 200	
+		,	width		: 300	
 	});
-	
-	this.btn_tampilkan = new Ext.Button({
-			text		: 'Tampilkan'
-		,	scope		: this
-		,	handler		: function() {
-				this.do_display();
-			}
-	});
-	
-	this.print_panel = new Ext.Panel({
-			title	: 'KTA'
-		,	region : 'center'
-		,	height : 350
-		,	autoScroll : true
-		,	xtype	: 'box'
-		,	autoLoad :{
-				url:''
-					}
-			
-	});
-	
-	this.btn_print = new Ext.Button({
-			text		: 'Print'
+
+	this.btn_proses = new Ext.Button({
+			text		: 'Preview'
 		,	iconCls		: 'print16'
 		,	scope		: this
 		,	handler		: function() {
-				this.do_print();
-			}	
+				this.do_proses();
+			}
 	});
 	
-	this.do_print = function(){  
-		Ext.Ajax.request({
-				url:'../print_kta/print_template.html'
-			,	params:{
-						id_bu:badan_usaha
-					,	id_pro:id_pro
-					,	no_sert:this.form_no_sert.getValue()
-					}
-			,	success: function(response){
-						Ext.MessageBox.alert(this.print_panel.body.dom.innerHTML);
-					}
-				
-		});
-		return;
-		var myWindow = window.open('', '', 'width=200,height=100');
-		myWindow.document.write('<html><head>');
-		myWindow.document.write('<title>' + 'KTA' + '</title>');
-		myWindow.document.write('<link rel="Stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.1/resources/css/ext-all.css" />');
-		myWindow.document.write('<script type="text/javascript" src="http://dev.sencha.com/deploy/ext-4.0.1/bootstrap.js"></script>');
-		myWindow.document.write('</head><body>');
-		myWindow.document.write(this.print_panel.body.dom.innerHTML);
-		myWindow.document.write('</body></html>');
-		myWindow.print();
-	}
-	
-	this.panel = new Ext.form.FormPanel({
-			labelAlign		: 'right'
-		,	labelWidth		: 175
-		,	autoWidth		: true
+	this.form_panel = new Ext.form.FormPanel({
+			title			: 'Parameter'
+		,	labelAlign		: 'right'
+		,	labelWidth		: 140
+		,	buttonAlign		: 'center'
+		,	width			: 500
 		,	autoHeight		: true
+		,	collapsible		: true
+		,	frame			: true
 		,	style			: 'margin: 8px;'
 		,	bodyCssClass	: 'stop-panel-form'
+		,	buttons			: [
+				this.btn_proses
+			]
 		,	items			: [
 					this.form_badan_usaha
-				,	this.form_no_sert
+				,	this.form_no_sert		
 				,	this.form_no_blanko		
-				,	this.form_no_iujk	
-				,	{ xtype : 'panel'
-					,	layout: 'column'
-					,	border: false
-					,	items : [
-							{columnWidth: 0.95, layout:'form', baseCls:'stop-panel-form', items : [this.btn_tampilkan]}
-						,	{columnWidth: 0.05, layout:'anchor', baseCls:'stop-panel-form', items : [this.btn_print]}
-					]
-					}
+				,	this.form_no_iujk
+			]
+	});
+
+	this.btn_back = new Ext.Button({
+			text	: 'Kembali'
+		,	iconCls	: 'back16'
+		,	scope	: this
+		,	handler	: function() {
+				this.do_back();
+			}
+	});
+
+	this.toolbar = new Ext.Toolbar({
+		items	: [
+			this.btn_back
+		]
+	});
+
+	this.print_panel = new Ext.Panel({
+			title		: 'KTA'
+		,	height 		: 500
+		,	autoScroll	: true
+		,	xtype		: 'box'
+		// ,	autoLoad 	: {
+				// url	: ''
+			// }
+	});
+	
+	this.panel = new Ext.Panel({
+			autoWidth	: true
+		,	autoScroll	: true
+		,	padding		:'6'
+		,	tbar		: this.toolbar
+		,	defaults	:{
+				style		:{
+					marginLeft		:'auto'
+				,	marginRight		:'auto'
+				,	marginBottom	:'8px'
+				}
+			}
+		,	items		: [
+					this.form_panel
 				,	this.print_panel
 			]
 	});
@@ -135,31 +133,74 @@ function M_EntryFormPrint(){
 		return true;
 	}
 	
-	this.do_display = function(){
-		if(this.is_valid()){
-			this.print_panel.load({url:'../print_kta/print_template.html'
-				,	scripts:true
-				,	params:{
-						id_bu:badan_usaha
-					,	id_pro:id_pro
-					,	no_sert:this.form_no_sert.getValue()
-					}
-				
-			});
-			
+	this.do_preview = function(){
+		if(!this.is_valid()){
+			Ext.MessageBox.alert('Kesalahan', 'Parameter belum terisi dengan benar.');
+			return;
+		}
+		
+		this.print_panel.load({
+				url		: m_print_kta_d + 'print_template.html'
+			,	scripts	: true
+			,	params	: {
+					id_bu	: m_print_kta_id_badan_usaha
+				,	id_pro	: m_print_kta_id_propinsi
+				,	no_sert	: this.form_no_sert.getValue()
+				}
+			,	scope	: this
+		});
+		
+		this.btn_proses.setText('Print');
+	}
+	
+	this.do_print = function(){  
+		// method 1
+		Ext.ux.Printer.print(this.print_panel);
+		
+		// method 2
+		// var myWindow = window.open('', '', 'width=200,height=100');
+		// myWindow.document.write('<html><head>');
+		// myWindow.document.write('<title>' + 'KTA' + '</title>');
+		// myWindow.document.write('</head><body>');
+		// myWindow.document.write(this.print_panel.body.dom.innerHTML);
+		// myWindow.document.write('</body></html>');
+		// myWindow.print();
+	}
+
+	this.do_proses = function()
+	{
+		if (this.btn_proses.getText() == 'Preview') {
+			this.do_preview();
+		} else if (this.btn_proses.getText() == 'Print') {
+			this.do_print();
 		}
 	}
-	this.do_refresh = function(nm_badan_usaha){
-		this.form_badan_usaha.setValue(nm_badan_usaha);
+	
+	this.do_back = function()
+	{
+		m_print_kta.panel.layout.setActiveItem(0);
+	}
+
+	this.do_refresh = function(nama_badan_usaha){
+		this.form_badan_usaha.setValue(nama_badan_usaha);
+		this.form_no_sert.setValue('');
+		this.form_no_blanko.setValue('');
+		this.form_no_iujk.setValue('');
+		
+		this.btn_proses.setText('Preview');
+		
+		this.print_panel.load({
+				scope	: this
+			,	url		: ''
+			,	script	: true
+		})
 	}
 	
 }
 
-function M_PrintKTA()
+function M_PrintKTAList()
 {
-	this.ha_level	= 0;
-	this.nm_badan_usaha = '';
-	m_entry_form_print = new M_EntryFormPrint();
+	this.pageSize	= 50;
 
 	this.record = new Ext.data.Record.create([
 			{ name	: 'id_badan_usaha' }
@@ -172,39 +213,14 @@ function M_PrintKTA()
 	]);
 
 	this.store = new Ext.data.JsonStore({
-			url			: m_pendaftaran_anggota_d + 'data_list.php'
+			url			: m_print_kta_d + 'data_list.php'
 		,	root		: 'data'
 		,	fields		: this.record
 		,	autoLoad	: false
 	});
-	
-	this.prov_store = new Ext.data.ArrayStore({
-			url			: m_print_kta_d + 'data_prov.php'
-		,	fields		: ['id','name']
-		,	autoLoad	: false
-	});
-	
-	this.form_prov = new Ext.form.ComboBox({
-			fieldLabel		: 'Provinsi'
-		,	store			: this.prov_store
-		,	valueField		: 'id'
-		,	displayField	: 'name'
-		,	mode			: 'local'
-		,	triggerAction	: 'all'
-		,	allowBlank		: false
-		,	editable		: false
-		,	width			: 200
-	});
-	
-	this.form_npwp = new Ext.form.TextField({
-			fieldLabel	: 'NPWP'
-		,	allowBlank	: false
-		,	width		: 200
-		,	plugins		: [new Ext.ux.netbox.InputTextMask('99.999.999.9-999.999', false)]
-	});
-	
+
 	this.store_jenis_usaha = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_jenis_usaha.php'
+			url			: m_print_kta_d + 'data_jenis_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -222,7 +238,7 @@ function M_PrintKTA()
 	});
 
 	this.store_bentuk_badan_usaha = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_bentuk_badan_usaha.php'
+			url			: m_print_kta_d + 'data_bentuk_badan_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -240,7 +256,7 @@ function M_PrintKTA()
 	});
 
 	this.store_propinsi = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_propinsi.php'
+			url			: m_print_kta_d + 'data_propinsi.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -257,27 +273,20 @@ function M_PrintKTA()
 		,	triggerAction	: 'all'
 	});
 	
+	this.filters = new Ext.ux.grid.GridFilters({
+			encode	: true
+		,	local	: true
+	});
+
 	this.cm = new Ext.grid.ColumnModel({
-			columns: [
+			columns	: [
 					new Ext.grid.RowNumberer()
-				,	{
-						header		: 'ID Badan Usaha'
-					,	dataIndex	: 'id_badan_usaha'
-					,	width		: 200
-					,   hidden		: true
+				,	{ 
+						header		: 'NPWP'
+					,	dataIndex	: 'npwp'
+					,	align		: 'center'
+					,	width		: 140
 					,	filterable	: true
-					}
-				,	{
-						id			: 'nama'
-					,	header		: 'Nama Perusahaan'
-					,	dataIndex	: 'nama'
-					,	width		: 200
-					,	filterable	: true
-					}
-				,	{
-						header		: 'Alamat'
-					,	dataIndex	: 'alamat'
-					, 	width		: 200
 					}
 				,	{ 
 						header		: 'Jenis'
@@ -294,6 +303,12 @@ function M_PrintKTA()
 						}
 					}
 				,	{ 
+						header		: 'Nama Badan Usaha'
+					,	dataIndex	: 'nama'
+					,	width		: 200
+					,	filterable	: true
+					}
+				,	{ 
 						header		: 'Bentuk Badan Usaha'
 					,	dataIndex	: 'bentuk_bu'
 					,	editor		: this.form_bentuk_badan_usaha
@@ -308,6 +323,12 @@ function M_PrintKTA()
 						}
 					}
 				,	{ 
+						id			: 'alamat'
+					,	header		: 'Alamat'
+					, 	dataIndex	: 'alamat'
+					, 	filterable	: true
+					}
+				,	{ 
 						header		: 'Propinsi'
 					,	dataIndex	: 'id_propinsi'
 					,	editor		: this.form_propinsi
@@ -320,8 +341,8 @@ function M_PrintKTA()
 						,	phpMode		: false
 						}
 					}
-			]
-		,	defaults: {
+				]
+		,	defaults : {
 				sortable	: true
 			}
 	});
@@ -334,123 +355,204 @@ function M_PrintKTA()
 					var data = sm.getSelections();
 					
 					if (data.length){
-						badan_usaha = data[0].data['id_badan_usaha'];
-						nm_badan_usaha = data[0].data['nama'];
-						id_pro	= data[0].data['id_propinsi'];
+						m_print_kta_id_badan_usaha	= data[0].data['id_badan_usaha'];
+						m_print_kta_id_propinsi		= data[0].data['id_propinsi'];
 					} else {
-						badan_usaha = 0;
-						nm_badan_usaha = '';
-						id_pro = '';
+						m_print_kta_id_badan_usaha 	= 0;
+						m_print_kta_id_propinsi 	= 0;
 					}
 				}
 			}
 	});
 
-	this.filters = new Ext.ux.grid.GridFilters({
-			encode	: true
-		,	local	: true
-	});
-	
-	this.btn_cari = new Ext.Button({
-			text		: 'Refresh'
-		,	iconCls		: 'refresh16'
-		,	scope		: this
-		,	handler		: function() {
-				this.do_cari();
+	this.btn_ref = new Ext.Button({
+			text	: 'Refresh'
+		,	iconCls	: 'refresh16'
+		,	scope	: this
+		,	handler	: function() {
+				this.do_load();
 			}
 	});
-	
-	this.do_cari = function(){
-	
-	}
-	
+
 	this.btn_print = new Ext.Button({
-			text		: 'Print'
-		,	iconCls		: 'print16'
-		,	scope		: this
-		,	handler		: function() {
+			text	: 'Print'
+		,	iconCls	: 'print16'
+		,	scope	: this
+		,	handler	: function() {
 				this.do_print();
 			}
 	});
-	
-	this.do_print = function(){
-		m_entry_form_print.do_refresh(nm_badan_usaha);
-		this.panel.layout.setActiveItem(1);
-	}
 
 	this.tbar = new Ext.Toolbar({
 		items	: [
-				this.form_prov
-			,	'-'
-			,	this.form_npwp
-			,	'-'
-			,	this.btn_cari
+				this.btn_ref
 			,	'->'
-			, 	this.btn_print
+			,	this.btn_print
 		]
 	});
-	
-	this.bbar = new Ext.PagingToolbar({
-			store		: this.store
-		,	pageSize	: 50
-		,	displayInfo	: true
-		,	displayMsg	: 'Menampilkan data ke {0} - {1} dari {2} data'
-		,	plugins		: [this.filters]
-	});
 
-	this.list_panel = new Ext.grid.GridPanel({
-			autoExpandColumn	: 'nama'
+	this.bbar = new Ext.PagingToolbar({
+			store			: this.store
+		,	pageSize		: this.pageSize
+		,	firstText		: 'Halaman Awal'
+		,	prevText		: 'Halaman Sebelumnya'
+		,	beforePageText	: 'Halaman '
+		,	afterPageText	: ' dari {0}'
+		,	nextText		: 'Halaman Selanjutnya'
+		,	lastText		: 'Halaman Terakhir'
+		,	displayInfo		: true
+		,	displayMsg		: 'Menampilkan data ke {0} - {1} dari {2} data'
+		,	emptyMsg		: 'Tidak ada data'
+		,	plugins			: [ this.filters ]
+	});
+	
+	this.panel = new Ext.grid.GridPanel({
+			region				: 'center'
 		,	store				: this.store
 		,	sm					: this.sm
 		,	cm					: this.cm
+		,	autoScroll			: true
 		,	stripeRows			: true
 		,	columnLines			: true
 		,	plugins				: [ this.filters ]
+		,	autoExpandColumn	: 'alamat'
 		,	tbar				: this.tbar
 		,	bbar				: this.bbar
 	});
+
+	this.do_validate = function()
+	{
+		var browser = navigator.appName;
+		
+		if (browser != 'Microsoft Internet Explorer') {
+			Ext.MessageBox.alert('Perhatian', 'Silahkan gunakan Browser IE untuk mencetak KTA.');
+			return false;
+		}
+
+		return true;
+	}
+	
+	this.do_print = function()
+	{
+		var data = this.sm.getSelected();
+
+		if (data == undefined) {
+			return;
+		}
+
+		if (!this.do_validate()) {
+			return;
+		}
+
+		this.mac_address	= get_mac_address();
+		
+		Ext.Ajax.request({
+				url		: m_print_kta_d + 'data_mac_address.php'
+			,	waitMsg	: 'Pemuatan ...'
+			,	failure	: function(response) {
+					Ext.MessageBox.alert('Gagal', response.responseText);
+					return false;
+				}
+			,	success : function (response) {
+					var msg = Ext.util.JSON.decode(response.responseText);
+
+					if (msg.data[0].ada < 1) {
+						Ext.MessageBox.alert('Perhatian', 'Silahkan daftarkan komputer anda pada menu Pendaftaran Komputer Pengguna.');
+						return;
+					}
+					
+					if (msg.data[0].status == '0') {
+						Ext.MessageBox.alert('Perhatian', 'Silahkan hubungi admin pusat untuk mengaktifkan status pendaftaran komputer anda.');
+						return;
+					}
+					
+					if (msg.data[0].mac_address != this.mac_address) {
+						Ext.MessageBox.alert('Perhatian', 'Komputer yang anda gunakan tidak terdaftar, silahkan daftarkan pada menu Pendaftaran Komputer Pengguna.');
+						return;
+					}
+					
+					m_print_kta_detail.do_refresh(data.get('nama'));
+					m_print_kta.panel.layout.setActiveItem(1);
+				}
+			,	scope	: this		
+		});		
+	}
+	
+	this.do_load = function()
+	{
+		var load_type = 'user';
+
+		if (m_print_kta_ha_level == 4) {
+			load_type = 'all';
+		}
+
+		this.store_jenis_usaha.load({
+				scope		: this
+			,	callback	: function() {
+					this.store_bentuk_badan_usaha.load({
+							scope		: this
+						,	callback	: function() {
+								this.store_propinsi.load({
+										scope		: this
+									,	callback	: function() {
+											delete this.store.lastParams;
+											
+											this.store.load({
+													scope	: this
+												,	params	: {
+														start		: 0
+													,	limit		: this.pageSize
+													,	load_type	: load_type
+													}
+											});						
+										}
+								});
+							}
+					});
+				}
+		});
+	}
+
+	this.do_refresh = function()
+	{
+		if (m_print_kta_ha_level < 1) {
+			Ext.MessageBox.alert('Hak Akses', 'Maaf, Anda tidak memiliki hak akses untuk melihat menu ini!');
+			this.panel.setDisabled(true);
+			return;
+		} else {
+			this.panel.setDisabled(false);
+		}
+
+		this.do_load();
+	}
+}
+
+function M_PrintKTA(title)
+{
+	m_print_kta_list	= new M_PrintKTAList();
+	m_print_kta_detail	= new M_PrintKTADetail();
 	
 	this.panel = new Ext.Panel({
-			id					: 'print_kta'
-		,	title				: 'Daftar KTA'
+			id				: 'print_kta_panel'
+		,	title			: title
 		,	layout			: 'card'
 		,	activeItem		: 0
 		,	autoWidth		: true
 		,	autoScroll		: true
 		,	items			: [
-					this.list_panel
-				,	m_entry_form_print.panel
+					m_print_kta_list.panel
+				,	m_print_kta_detail.panel
 			]
 	});
-
-	this.do_load = function()
-	{
-		delete this.store.lastParams;
-
-		this.store.load({
-			params	: {
-				start	: 0
-			,	limit	: 50
-			}
-		});
-		this.prov_store.load();
-	}
-
+	
 	this.do_refresh = function(ha_level)
 	{
-		this.ha_level = ha_level;
-
-		if (this.ha_level < 1) {
-			Ext.MessageBox.alert('Hak Akses', 'Maaf, Anda tidak memiliki hak akses untuk melihat menu ini!');
-			this.list_panel.setDisabled(true);
-			return;
-		} else {
-			this.list_panel.setDisabled(false);
-		}
-		this.do_load();
+		m_print_kta_ha_level = ha_level;
+		
+		m_print_kta_list.do_refresh();
 	}
 }
 
-m_print_kta = new M_PrintKTA();
+m_print_kta = new M_PrintKTA('Cetak KTA');
 
 //@ sourceURL=print_kta.layout.js

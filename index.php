@@ -52,7 +52,7 @@
 			<div class="login-section">
 				<h3>User Login</h3>
 				<form name="login_form">
-					<label>Nama User:</label>
+					<label>ID User:</label>
 					<input type="text" name="user" id="user_login" value="" size="23" />
 					<label>Kata Kunci:</label>
 					<input type="password" name="password" id="user_pass" size="23" onKeyDown="form_pass_on_keydown(event)" />

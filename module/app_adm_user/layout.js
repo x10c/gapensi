@@ -11,7 +11,7 @@ var m_app_adm_user_d = _g_root + 'module/app_adm_user/';
 
 function M_AppAdmUser()
 {
-	this.ha_level	= 0;
+	this.ha_level = 0;
 
 	this.record = new Ext.data.Record.create([
 			{name: 'username'}

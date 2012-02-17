@@ -7,7 +7,7 @@
 
 		$rows	= $dbh->query("
 			select	id_propinsi		as id_propinsi
-				,	nama	as nama
+				,	nama			as nama
 			from	kta_mstr_propinsi
 		");
 		
@@ -19,7 +19,7 @@
 			}
 
 			$data.= "[";
-			$data.= "".$row['id_propinsi'].",";
+			$data.= "'".$row['id_propinsi']."',";
 			$data.=	"'".$row['nama']."',";
 			$data.=	"]";			
 		}

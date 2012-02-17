@@ -8,10 +8,10 @@
 		$data	= "[";
 
 		$rows	= $dbh->query("
-			SELECT	B.menu_id				AS menu_id
-				,	B.menu_name				AS menu_name
-				,	C.menu_name				AS menu_parent
-				,	IFNULL(A.ha_level, 0) 	AS ha_level
+			SELECT	B.menu_id								AS menu_id
+				,	B.menu_name								AS menu_name
+				,	CONCAT(C.menu_id, ' - ', C.menu_name)	AS menu_parent
+				,	IFNULL(A.ha_level, 0) 					AS ha_level
 			FROM		__hak_akses	AS A
 			RIGHT JOIN	__menu		AS B ON	A.menu_id = B.menu_id AND A.id_grup	= $id_grup
 				,		__menu		AS C

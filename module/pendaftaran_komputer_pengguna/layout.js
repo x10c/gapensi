@@ -15,8 +15,6 @@ function M_PendaftaranKomputerPengguna()
 	this.ha_level	= 0;
 	this.status		= '0';
 	
-	this.computer_name	= '';
-	this.ip_address		= '';
 	this.mac_address	= '';
 	
 	this.form_user = new Ext.form.TextField({

@@ -1,0 +1,71 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>InputTextMask Demo</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="../resources/cherryonext.css" />
+  <script type="text/javascript" src="../../adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../../ext-all.js"></script>
+  <script type="text/javascript" src="../cherryonext.js"></script>
+    <script>
+Ext.BLANK_IMAGE_URL="../ext/resources/images/default/s.gif";
+Ext.onReady(function(){
+    var field1 = new Ext.FormPanel({
+        labelWidth : 110,
+        url        : 'save-form.php',
+        frame      : true,
+        title      : 'InputTextMask Time (hh:mm am/pm)',
+        style      : 'padding:5px',
+        bodyStyle  : 'padding:5px',
+        width      : 350,
+        defaults   : {width: 200},
+        items      : [{
+                      fieldLabel: 'Time',
+                      xtype:'textfield',
+                      plugins: [new Ext.ux.InputTextMask('X[0|1]X9:99 X[a|p]Xm', false)]
+                     }]
+    });
+
+    field1.render(document.body);
+
+    var field2 = new Ext.FormPanel({
+        labelWidth : 110,
+        url        :'save-form.php',
+        frame      : true,
+        title      : 'InputTextMask Date',
+        style      : 'padding:5px',
+        bodyStyle  : 'padding:5px',
+        width      : 350,
+        defaults   : {width: 200},
+        items      : [{
+                      fieldLabel: 'Date dd/mm/yyyy',
+                      xtype:'textfield',
+                      plugins: [new Ext.ux.InputTextMask('X[0|1|2|3]X9/X[0|1]X9/9999', false)]
+                     }]
+    });
+
+    field2.render(document.body);
+
+    var field3 = new Ext.FormPanel({
+        labelWidth : 110,
+        url        : 'save-form.php',
+        frame      : true,
+        title      : 'InputTextMask Phone Number',
+        style      : 'padding:5px',
+        bodyStyle  : 'padding:5px',
+        width      : 350,
+        defaults   : {width: 200},
+        items      : [{
+                      fieldLabel: 'Phone Number',
+                      xtype:'textfield',
+                      plugins: [new Ext.ux.InputTextMask('(999)999-9999', false)]
+                     }]
+    });
+ 
+    field3.render(document.body);
+});
+</script>
+</head>
+<body>
+</body>
+</html>

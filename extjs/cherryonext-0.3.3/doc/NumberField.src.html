@@ -1,0 +1,63 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: NumberField.js 183 2008-09-12 14:08:41Z bobbicat71 $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox.number'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** It instantiates a new NumberField
+<span class='linenumber'>  6</span>   * @class This is the class that implements the field to use if the data to filter is a number.
+<span class='linenumber'>  7</span>   * It contains as default the following operation:
+<span class='linenumber'>  8</span>   * &lt;ul>
+<span class='linenumber'>  9</span>   *   &lt;li> NUMBER_EQUAL &lt;/li>
+<span class='linenumber'> 10</span>   *   &lt;li> NUMBER_NOT_EQUAL &lt;/li>
+<span class='linenumber'> 11</span>   *   &lt;li> NUMBER_GREATER &lt;/li>
+<span class='linenumber'> 12</span>   *   &lt;li> NUMBER_GREATER_OR_EQUAL &lt;/li>
+<span class='linenumber'> 13</span>   *   &lt;li> NUMBER_LESS &lt;/li>
+<span class='linenumber'> 14</span>   *   &lt;li> NUMBER_LESS_OR_EQUAL &lt;/li>
+<span class='linenumber'> 15</span>   *   &lt;li> NUMBER_RANGE &lt;/li>
+<span class='linenumber'> 16</span>   * &lt;/ul>
+<span class='linenumber'> 17</span>   * The default operation is NUMBER_EQUAL
+<span class='linenumber'> 18</span>   * @param {String} id The Field id.
+<span class='linenumber'> 19</span>   * @param {String} label Optional. The label of the filter. If not supplied the id is used.
+<span class='linenumber'> 20</span>   * @constructor
+<span class='linenumber'> 21</span>   * @extends Ext.ux.netbox.core.Field
+<span class='linenumber'> 22</span>   */</span><span class="WHIT">
+<span class='linenumber'> 23</span> </span><span class="NAME">Ext.ux.netbox.number.NumberField</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">id</span><span class="PUNC">,</span><span class="NAME">label</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 24</span> </span><span class="WHIT">  </span><span class="NAME">Ext.ux.netbox.number.NumberField.superclass.constructor.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">id</span><span class="PUNC">,</span><span class="NAME">label</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 25</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">equalOperator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"NUMBER_EQUAL"</span><span class="PUNC">,</span><span class="STRN">"="</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 26</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">equalOperator</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 27</span> </span><span class="WHIT">  </span><span class="NAME">this.setDefaultOperator</span><span class="PUNC">(</span><span class="NAME">equalOperator</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 28</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"NUMBER_NOT_EQUAL"</span><span class="PUNC">,</span><span class="STRN">"!="</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 29</span> </span><span class="WHIT">  </span><span class="NAME">noEmptyAllowed</span><span class="PUNC">=</span><span class="NAME">this.emptyNotAllowedFn.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 30</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"NUMBER_GREATER"</span><span class="PUNC">,</span><span class="STRN">">"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 31</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 32</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 33</span> </span><span class="WHIT">  </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"NUMBER_GREATER_OR_EQUAL"</span><span class="PUNC">,</span><span class="STRN">">="</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 34</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 35</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 36</span> </span><span class="WHIT">  </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"NUMBER_LESS"</span><span class="PUNC">,</span><span class="STRN">"&lt;"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 37</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 38</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 39</span> </span><span class="WHIT">  </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"NUMBER_LESS_OR_EQUAL"</span><span class="PUNC">,</span><span class="STRN">"&lt;="</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 40</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 41</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 42</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.number.NumberRangeOperator</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 43</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 44</span> 
+<span class='linenumber'> 45</span> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.netbox.number.NumberField</span><span class="PUNC">,</span><span class="NAME">Ext.ux.netbox.core.Field</span><span class="PUNC">,</span><span class="COMM">/** @scope Ext.ux.netbox.number.NumberField.prototype */</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 46</span> 
+<span class='linenumber'> 47</span> </span><span class="WHIT">  </span><span class="COMM">/** This method creates an Ext.ux.netbox.core.TextValuesEditor with a Ext.form.NumberField as field.
+<span class='linenumber'> 48</span>     * @param {String} operatorId The operatorId actually used in the filter
+<span class='linenumber'> 49</span>     * @return {Ext.Editor} The field used to edit the values of this filter
+<span class='linenumber'> 50</span>     */</span><span class="WHIT">
+<span class='linenumber'> 51</span> </span><span class="WHIT">  </span><span class="NAME">createEditor</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">operatorId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 52</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.TextValuesEditor</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.form.NumberField</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">decimalPrecision</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 53</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 54</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 55</span> 
+<span class='linenumber'> 56</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

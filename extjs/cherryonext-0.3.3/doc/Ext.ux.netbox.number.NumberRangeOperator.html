@@ -1,0 +1,407 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.number.NumberRangeOperator</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.number.NumberRangeOperator</h2>
+
+
+	Extends <a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a>.<br/>
+
+<i>Defined in <a href="NumberOperators.src.html">NumberOperators.js</a></i>
+
+<p>
+This is the class that implements the range operator between 2 numbers. The id of the operator is NUMBER_RANGE</p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.number.NumberRangeOperator">Ext.ux.netbox.number.NumberRangeOperator</a></b>()
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  It instantiates a new NumberRangeOperator
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.Editor
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#createEditor">createEditor</a></b>(operatorId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method creates an aditor used to edit the range of numbers
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#isNumeric">isNumeric</a></b>(value) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; undocumented
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#render">render</a></b>(The) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This function returns a string rendering the values.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+	<table border="1" cellpadding="3" cellspacing="0" width="100%">
+		
+		<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+			<td>
+				<b>Methods inherited from class <a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></b>
+			</td>
+		</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#isAvailableValuesAvailable">isAvailableValuesAvailable</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#getAvailableValues">getAvailableValues</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#getId">getId</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#getLabel">getLabel</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#setField">setField</a>(field)
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#getField">getField</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#getEditor">getEditor</a>(cache)
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#convertValue">convertValue</a>(values)
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#isStoreRemote">isStoreRemote</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#isForceReload">isForceReload</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#isCaseSensitive">isCaseSensitive</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#getDefaultValues">getDefaultValues</a>()
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#validate">validate</a>(values)
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#addValidateFn">addValidateFn</a>(additionalValidationFn)
+				</td>
+			</tr>
+		
+			<tr bgcolor="#EEEEFF" class="TableSubHeadingColor">
+				<td>
+				<a href="Ext.ux.netbox.core.Operator.html#setValidateFn">setValidateFn</a>(validateFn)
+				</td>
+			</tr>
+		
+		
+	</table>
+	<br/>
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.number.NumberRangeOperator"> </a>
+<h3>Ext.ux.netbox.number.NumberRangeOperator</h3>
+
+	<pre><b>Ext.ux.netbox.number.NumberRangeOperator</b>()</pre>
+	<ul>
+		
+		It instantiates a new NumberRangeOperator
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="createEditor"> </a> <h3>createEditor</h3>
+		<pre>Ext.Editor&nbsp;<b>createEditor</b>(operatorId)</pre> 
+	<ul>
+		
+		This method creates an aditor used to edit the range of numbers
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;operatorId</code> - The operatorId actually used in the filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Ext.Editor</i>&nbsp;</code>The field used to edit the values of this filter 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="isNumeric"> </a> <h3>isNumeric</h3>
+		<pre><b>isNumeric</b>(value)</pre> 
+	<ul>
+		
+		undocumented
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>value</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="render"> </a> <h3>render</h3>
+		<pre>&lt;private&gt;&nbsp;String&nbsp;<b>render</b>(The)</pre> 
+	<ul>
+		
+		This function returns a string rendering the values. The format is da: (value[0].label), a: (value[1].label).If the value doesn't have any of the elements, "" is used.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;The</code> - value to render 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>The rendered value 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:17 GMT+0100 (CET)</div>
+</body>
+</html>

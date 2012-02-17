@@ -1,0 +1,390 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: PreferenceManager.js 172 2008-08-26 10:22:45Z bobbicat71 $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** Creates a new PreferenceManager.
+<span class='linenumber'>  6</span>   * @constructor
+<span class='linenumber'>  7</span>   * @extends Ext.util.Observable
+<span class='linenumber'>  8</span>   * @param {Object} config An object which may contain the following properties:&lt;ul>
+<span class='linenumber'>  9</span>   * &lt;li>&lt;b>id&lt;/b> : String&lt;p style="margin-left:1em">The id of preference manager. A preference is unambiguously identified by id, userName and the name of the preference&lt;/p>&lt;/li>
+<span class='linenumber'> 10</span>   * &lt;li>&lt;b>userName&lt;/b> : String&lt;p style="margin-left:1em">The userName that owns the preferences. A preference is unambiguously identified by id, userName and the name of the preference&lt;/p>&lt;/li>
+<span class='linenumber'> 11</span>   * &lt;li>&lt;b>getFn&lt;/b> : Function&lt;p style="margin-left:1em">The function used to extract from the application the preferences to save&lt;/p>&lt;/li>
+<span class='linenumber'> 12</span>   * &lt;li>&lt;b>setFn&lt;/b> : Function&lt;p style="margin-left:1em">The function used to apply to the application the preferences as returned by getFn&lt;/p>&lt;/li>
+<span class='linenumber'> 13</span>   * &lt;li>&lt;b>fnScope&lt;/b> : Object&lt;p style="margin-left:1em">The scope of the getFn and setFn functions. Optional. If not present window is used&lt;/p>&lt;/li>
+<span class='linenumber'> 14</span>   * &lt;li>&lt;b>getAllPrefURL&lt;/b> : String&lt;p style="margin-left:1em">The URL used to get all the preferences by user. It loads a Store, using a JsonReader as reader.
+<span class='linenumber'> 15</span>   * This URL corresponds to a web page that loads a range of preferences for the given user and id. It must be called with the following parameters:
+<span class='linenumber'> 16</span>   * &lt;ul>
+<span class='linenumber'> 17</span>   *   &lt;li>&lt;b>id&lt;/b> : String&lt;p style="margin-left:1em">The id of the preference manager&lt;/p>&lt;/li>
+<span class='linenumber'> 18</span>   *   &lt;li>&lt;b>userName&lt;/b> : String&lt;p style="margin-left:1em">The name of the user using the application&lt;/p>&lt;/li>
+<span class='linenumber'> 19</span>   *   &lt;li>&lt;b>start&lt;/b> : Number&lt;p style="margin-left:1em">The first preference in the range of preferences to return&lt;/p>&lt;/li>
+<span class='linenumber'> 20</span>   *   &lt;li>&lt;b>limit&lt;/b> : Number&lt;p style="margin-left:1em">The The number of preferences to return&lt;/p>&lt;/li>
+<span class='linenumber'> 21</span>   * &lt;/ul>
+<span class='linenumber'> 22</span>   * The page must return a json encoded object in the following format:
+<span class='linenumber'> 23</span>   * &lt;PRE>
+<span class='linenumber'> 24</span>   * {totalCount: &lt;total number of the preferences&gt;, 
+<span class='linenumber'> 25</span>   *   preferences:[
+<span class='linenumber'> 26</span>   *     {prefId   : &lt;id of the preference&gt;,
+<span class='linenumber'> 27</span>   *      prefName : &lt;name of the preference&gt;,
+<span class='linenumber'> 28</span>   *      prefDesc : &lt;the description of the preference&gt;,
+<span class='linenumber'> 29</span>   *      isDefault: &lt;true if default, false otherwise&gt;},
+<span class='linenumber'> 30</span>   *     {.....}
+<span class='linenumber'> 31</span>   *    ]
+<span class='linenumber'> 32</span>   *  }
+<span class='linenumber'> 33</span>   * &lt;/PRE>
+<span class='linenumber'> 34</span>   * &lt;/p>&lt;/li>
+<span class='linenumber'> 35</span>   * &lt;li>&lt;b>applyDefaultPrefURL&lt;/b> : String&lt;p style="margin-left:1em">The URL used to apply the default preference.
+<span class='linenumber'> 36</span>   * This URL corresponds to a web page that returns the default preference for the given user and id. It must be called with the following parameters:
+<span class='linenumber'> 37</span>   * &lt;ul>
+<span class='linenumber'> 38</span>   *   &lt;li>&lt;b>id&lt;/b> : String&lt;p style="margin-left:1em">The id of the preference manager&lt;/p>&lt;/li>
+<span class='linenumber'> 39</span>   *   &lt;li>&lt;b>userName&lt;/b> : String&lt;p style="margin-left:1em">The name of the user using the application&lt;/p>&lt;/li>
+<span class='linenumber'> 40</span>   * &lt;/ul>
+<span class='linenumber'> 41</span>   * The page returns the preference in the same format saved by method savePreference and then it's applied. If there is no default preference the response text must be empty.
+<span class='linenumber'> 42</span>   * &lt;/p>&lt;/li>
+<span class='linenumber'> 43</span>   * &lt;li>&lt;b>loadPrefURL&lt;/b> : String&lt;p style="margin-left:1em">The URL used to load a specified preference.
+<span class='linenumber'> 44</span>   * This URL corresponds to a web page that returns the selected preference for the given user and id. It must be called with the following parameters:
+<span class='linenumber'> 45</span>   * &lt;ul>
+<span class='linenumber'> 46</span>   *   &lt;li>&lt;b>id&lt;/b> : String&lt;p style="margin-left:1em">The id of the preference manager&lt;/p>&lt;/li>
+<span class='linenumber'> 47</span>   *   &lt;li>&lt;b>userName&lt;/b> : String&lt;p style="margin-left:1em">The name of the user using the application&lt;/p>&lt;/li>
+<span class='linenumber'> 48</span>   *   &lt;li>&lt;b>prefId&lt;/b> : String&lt;p style="margin-left:1em">The id of the selected preference&lt;/p>&lt;/li>
+<span class='linenumber'> 49</span>   * &lt;/ul>
+<span class='linenumber'> 50</span>   * The page returns the preference in the same format saved by method savePreference and then it's applied.
+<span class='linenumber'> 51</span>   * &lt;/p>&lt;/li>
+<span class='linenumber'> 52</span>   * &lt;li>&lt;b>savePrefURL&lt;/b> : String&lt;p style="margin-left:1em">The URL used to save a preference with a given name.
+<span class='linenumber'> 53</span>   * This URL must be called with the following parameters:
+<span class='linenumber'> 54</span>   * &lt;ul>
+<span class='linenumber'> 55</span>   *   &lt;li>&lt;b>id&lt;/b> : String&lt;p style="margin-left:1em">The id of the preference manager&lt;/p>&lt;/li>
+<span class='linenumber'> 56</span>   *   &lt;li>&lt;b>userName&lt;/b> : String&lt;p style="margin-left:1em">The name of the user using the application&lt;/p>&lt;/li>
+<span class='linenumber'> 57</span>   *   &lt;li>&lt;b>prefId&lt;/b> : String&lt;p style="margin-left:1em">The id of the selected preference.
+<span class='linenumber'> 58</span>   *   If the value exist means that there is an update, otherwise is an insertion &lt;/p>&lt;/li>
+<span class='linenumber'> 59</span>   *   &lt;li>&lt;b>prefName&lt;/b> : String&lt;p style="margin-left:1em">Name of the preference to save&lt;/p>&lt;/li>
+<span class='linenumber'> 60</span>   *   &lt;li>&lt;b>prefDesc&lt;/b> : String&lt;p style="margin-left:1em">Description of the preference to save&lt;/p>&lt;/li>
+<span class='linenumber'> 61</span>   *   &lt;li>&lt;b>prefValue&lt;/b> : String&lt;p style="margin-left:1em">Value of the preference to save, encoded Json&lt;/p>&lt;/li>
+<span class='linenumber'> 62</span>   *   &lt;li>&lt;b>isDefault&lt;/b> : boolean&lt;p style="margin-left:1em">True if it's default preference, false otherwise&lt;/p>&lt;/li>
+<span class='linenumber'> 63</span>   * &lt;/ul>
+<span class='linenumber'> 64</span>   * &lt;/p>&lt;/li>
+<span class='linenumber'> 65</span>   * &lt;li>&lt;b>deletePrefURL&lt;/b> : String&lt;p style="margin-left:1em">The URL used to delete one or more selected preferences.
+<span class='linenumber'> 66</span>   * This URL must be called with the following parameters:
+<span class='linenumber'> 67</span>   * &lt;ul>
+<span class='linenumber'> 68</span>   *   &lt;li>&lt;b>id&lt;/b> : String&lt;p style="margin-left:1em">The id of the preference manager&lt;/p>&lt;/li>
+<span class='linenumber'> 69</span>   *   &lt;li>&lt;b>userName&lt;/b> : String&lt;p style="margin-left:1em">The name of the user using the application&lt;/p>&lt;/li>
+<span class='linenumber'> 70</span>   *   &lt;li>&lt;b>prefIdArray&lt;/b> : [String]&lt;p style="margin-left:1em">Array of preference's Id to delete&lt;/p>&lt;/li>
+<span class='linenumber'> 71</span>   * &lt;/ul>
+<span class='linenumber'> 72</span>   * &lt;/p>&lt;/li>
+<span class='linenumber'> 73</span>   * @class This class manages user preferences. A user preference is a "state" of some objects that the user wants to save with a name. For example, he has a grid,
+<span class='linenumber'> 74</span>   *  with the column in a predefined order, with some filters applied, sorted for a certain column. He can bookmark the given situation, and associate a name 
+<span class='linenumber'> 75</span>   *  to it. The he can easilly select from that prefeences, and the grid is back to the state he saved. Since only the developer knows what is usefull to bookmark,
+<span class='linenumber'> 76</span>   *  the preferenceManager has 2 functions, a getter and a setter. The getter acquires the state to save from the application, the setter reapplies the settings returned by the getter
+<span class='linenumber'> 77</span>   *  to come back to the saved state. The only restriction on the returned value of the getter is that it must be json encodable/decodable. 
+<span class='linenumber'> 78</span>   *  To load and manage the preferences this class defines 4 ajax interfaces that the application backend must implement (See the constructor for more details)
+<span class='linenumber'> 79</span>   *  To signal an error in the backend simply returns an error http status code (for example 500)
+<span class='linenumber'> 80</span>   * &lt;h4>Example&lt;/h4>
+<span class='linenumber'> 81</span>   * This example suppoose that you have a grid with a filter. It saves and restores the filters and the status of the grid (size of the columns, position of the columns, sort state, hidden/visible columns)
+<span class='linenumber'> 82</span>   * &lt;pre>
+<span class='linenumber'> 83</span>   * var getterFn=function(){
+<span class='linenumber'> 84</span>   *   return({grid: grid.getState(),filter: filterModel.getFilterObj()});
+<span class='linenumber'> 85</span>   * }
+<span class='linenumber'> 86</span>   * var setterFn=function(pref){
+<span class='linenumber'> 87</span>   *   //filter
+<span class='linenumber'> 88</span>   *   if(pref.filter){
+<span class='linenumber'> 89</span>   *     filterModel.setFilterObj(pref.filter);
+<span class='linenumber'> 90</span>   *   }
+<span class='linenumber'> 91</span>   *   //grid
+<span class='linenumber'> 92</span>   *   if(pref.grid){
+<span class='linenumber'> 93</span>   *     grid.getView().userResized=true;
+<span class='linenumber'> 94</span>   *     grid.applyState(pref.grid);
+<span class='linenumber'> 95</span>   *     grid.getColumnModel().setConfig(grid.getColumnModel().config);
+<span class='linenumber'> 96</span>   *   }
+<span class='linenumber'> 97</span>   * }
+<span class='linenumber'> 98</span>   * prefManager=new Ext.ux.netbox.PreferenceManager({
+<span class='linenumber'> 99</span>   *   id: 'prefManagerId',
+<span class='linenumber'>100</span>   *   userName: 'user',
+<span class='linenumber'>101</span>   *   getFn: getterFn,
+<span class='linenumber'>102</span>   *   setFn: setterFn,
+<span class='linenumber'>103</span>   *   getAllPrefURL:'http://getAllPrefURL',
+<span class='linenumber'>104</span>   *   applyDefaultPrefURL:'http://applyDefaultPrefURL',
+<span class='linenumber'>105</span>   *   loadPrefURL:'http://loadPrefURL',
+<span class='linenumber'>106</span>   *   savePrefURL:'http://savePrefURL',
+<span class='linenumber'>107</span>   *   deletePrefURL:'http://deletePrefURL'
+<span class='linenumber'>108</span>   * });
+<span class='linenumber'>109</span>   * &lt;/pre>
+<span class='linenumber'>110</span>   */</span><span class="WHIT">
+<span class='linenumber'>111</span> </span><span class="NAME">Ext.ux.netbox.PreferenceManager</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">config</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>112</span> 
+<span class='linenumber'>113</span>   </span><span class="NAME">Ext.ux.netbox.PreferenceManager.superclass.constructor.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">config</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>114</span> 
+<span class='linenumber'>115</span>   </span><span class="NAME">this.addEvents</span><span class="PUNC">(</span><span class="COMM">/** @scope Ext.ux.netbox.PreferenceManager.prototype */</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>116</span>     </span><span class="COMM">/** Fires when a preference is saved
+<span class='linenumber'>117</span>       * @event preferenceSaved
+<span class='linenumber'>118</span>       * @param {String} prefId The id of the preference that was saved
+<span class='linenumber'>119</span>       * @param {String} prefName The name of the saved preference
+<span class='linenumber'>120</span>       */</span><span class="WHIT">
+<span class='linenumber'>121</span>     </span><span class="NAME">preferenceSaved</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>122</span>     </span><span class="COMM">/** Fires when a preference delete failed, that is when the deletePrefURL returned an error HTTP status code (for example 500)
+<span class='linenumber'>123</span>       * @event preferenceDeleteFailed
+<span class='linenumber'>124</span>       * @param {Array} prefIdArray An array with the ids of all the preferences to delete.
+<span class='linenumber'>125</span>       * @param {XMLHttpRequest} response The response of the ajax method. See &lt;a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference &lt;/a> for more details
+<span class='linenumber'>126</span>       */</span><span class="WHIT">
+<span class='linenumber'>127</span>     </span><span class="NAME">preferenceDeleteFailed</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>128</span>     </span><span class="COMM">/** Fires when applying the default preference failed, that is when the applyDefaultPrefURL returned an error HTTP status code (for example 500)
+<span class='linenumber'>129</span>       * @event applyDefaultPreferenceFailed
+<span class='linenumber'>130</span>       * @param {Array} prefIdArray An array with all the preferences to delete.
+<span class='linenumber'>131</span>       * @param {XMLHttpRequest} response The response of the ajax method. See &lt;a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference &lt;/a> for more details
+<span class='linenumber'>132</span>       */</span><span class="WHIT">
+<span class='linenumber'>133</span>     </span><span class="NAME">applyDefaultPreferenceFailed</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>134</span>     </span><span class="COMM">/** Fires when applying a preference failed, that is when the loadPrefURL returned an error HTTP status code (for example 500)
+<span class='linenumber'>135</span>       * &lt;b> NB: &lt;/b> This event is not fired when the loading of the default preference fails. Look at applyDefaultPreferenceFailed instead
+<span class='linenumber'>136</span>       * @event applyPreferenceFailed
+<span class='linenumber'>137</span>       * @param {String} prefId The id of the preference that was not applied
+<span class='linenumber'>138</span>       * @param {XMLHttpRequest} response The response of the ajax method. See &lt;a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference &lt;/a> for more details
+<span class='linenumber'>139</span>       */</span><span class="WHIT">
+<span class='linenumber'>140</span>     </span><span class="NAME">applyPreferenceFailed</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>141</span>     
+<span class='linenumber'>142</span>     </span><span class="COMM">/** Fires when saving a preference failed, that is when the savePrefURL returned an error HTTP status code (for example 500)
+<span class='linenumber'>143</span>       * @event preferenceSaveFailed
+<span class='linenumber'>144</span>       * @param {String} prefId The id of the preference that was not saved
+<span class='linenumber'>145</span>       * @param {String} prefName The name of the preference that was not saved
+<span class='linenumber'>146</span>       * @param {XMLHttpRequest} response The response of the ajax method. See &lt;a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference &lt;/a> for more details
+<span class='linenumber'>147</span>       */</span><span class="WHIT">
+<span class='linenumber'>148</span>     </span><span class="NAME">preferenceSaveFailed</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>149</span>     
+<span class='linenumber'>150</span>     </span><span class="COMM">/** Fires when a preference is deleted
+<span class='linenumber'>151</span>       * @event preferenceDeleted
+<span class='linenumber'>152</span>       * @param {Array} prefIdArray An array with the ids of all the deleted preferences.
+<span class='linenumber'>153</span>       */</span><span class="WHIT">
+<span class='linenumber'>154</span>     </span><span class="NAME">preferenceDeleted</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>155</span>     </span><span class="COMM">/** Fires when a load on the store that lists the preferences fails, that is when the getAllPrefURL returned an error HTTP status code (for example 500)
+<span class='linenumber'>156</span>       * @event loadPreferencesFailed
+<span class='linenumber'>157</span>       * @param {XMLHttpRequest} response The response of the ajax method. See &lt;a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference &lt;/a> for more details
+<span class='linenumber'>158</span>       */</span><span class="WHIT">
+<span class='linenumber'>159</span>     </span><span class="NAME">loadPreferencesFailed</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT">
+<span class='linenumber'>160</span>   </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>161</span>   </span><span class="COMM">/** The id of the preference manager. It's used by the backend to select only the preferences of this preferencesManager, if there are more than one.
+<span class='linenumber'>162</span>     * The tern (id, userName, preferenceId) should be unique.
+<span class='linenumber'>163</span>     * @type String
+<span class='linenumber'>164</span>     */</span><span class="WHIT">
+<span class='linenumber'>165</span>   </span><span class="NAME">this.id</span><span class="PUNC">=</span><span class="NAME">config.id</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>166</span>   </span><span class="COMM">/** The name of the user that owns the prefereces
+<span class='linenumber'>167</span>     * @type String
+<span class='linenumber'>168</span>     */</span><span class="WHIT">
+<span class='linenumber'>169</span>   </span><span class="NAME">this.userName</span><span class="PUNC">=</span><span class="NAME">config.userName</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>170</span>   </span><span class="COMM">/** The setter function that applies the preference restoring the state of the object
+<span class='linenumber'>171</span>     * @type Function
+<span class='linenumber'>172</span>     */</span><span class="WHIT">
+<span class='linenumber'>173</span>   </span><span class="NAME">this.setFn</span><span class="PUNC">=</span><span class="NAME">config.setFn</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>174</span>   </span><span class="COMM">/** The getter function that returns the state of the object
+<span class='linenumber'>175</span>     * @type Function
+<span class='linenumber'>176</span>     */</span><span class="WHIT">
+<span class='linenumber'>177</span>   </span><span class="NAME">this.getFn</span><span class="PUNC">=</span><span class="NAME">config.getFn</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>178</span>   </span><span class="COMM">/** The scope of the getter and setter function
+<span class='linenumber'>179</span>     * @type Object
+<span class='linenumber'>180</span>     */</span><span class="WHIT">
+<span class='linenumber'>181</span>   </span><span class="NAME">this.fnScope</span><span class="PUNC">=</span><span class="NAME">config.fnScope</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>182</span>   </span><span class="COMM">/** The URL used to get all the preferences by user
+<span class='linenumber'>183</span>     * @type String
+<span class='linenumber'>184</span>     */</span><span class="WHIT">
+<span class='linenumber'>185</span>   </span><span class="NAME">this.getAllPrefURL</span><span class="PUNC">=</span><span class="NAME">config.getAllPrefURL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>186</span>   </span><span class="COMM">/** The URL used to apply the default preference
+<span class='linenumber'>187</span>     * @type String
+<span class='linenumber'>188</span>     */</span><span class="WHIT">
+<span class='linenumber'>189</span>   </span><span class="NAME">this.applyDefaultPrefURL</span><span class="PUNC">=</span><span class="NAME">config.applyDefaultPrefURL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>190</span>   </span><span class="COMM">/** The URL used to load a specified preference
+<span class='linenumber'>191</span>     * @type String
+<span class='linenumber'>192</span>     */</span><span class="WHIT">
+<span class='linenumber'>193</span>   </span><span class="NAME">this.loadPrefURL</span><span class="PUNC">=</span><span class="NAME">config.loadPrefURL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>194</span>   </span><span class="COMM">/** The URL used to save a specified preference
+<span class='linenumber'>195</span>     * @type String
+<span class='linenumber'>196</span>     */</span><span class="WHIT">
+<span class='linenumber'>197</span>   </span><span class="NAME">this.savePrefURL</span><span class="PUNC">=</span><span class="NAME">config.savePrefURL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>198</span>   </span><span class="COMM">/** The URL used to delete a specified preference
+<span class='linenumber'>199</span>     * @type String
+<span class='linenumber'>200</span>     */</span><span class="WHIT">
+<span class='linenumber'>201</span>   </span><span class="NAME">this.deletePrefURL</span><span class="PUNC">=</span><span class="NAME">config.deletePrefURL</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>202</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>203</span> 
+<span class='linenumber'>204</span> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.netbox.PreferenceManager</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Ext.util.Observable</span><span class="PUNC">,</span><span class="COMM">/** @scope Ext.ux.netbox.PreferenceManager.prototype */</span><span class="WHIT">
+<span class='linenumber'>205</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>206</span>   </span><span class="COMM">/** This method returns a store that loads the preferences by userName.
+<span class='linenumber'>207</span>     * The store returned has these columns: prefName, prefDesc, isDefault
+<span class='linenumber'>208</span>     * @return {Ext.data.Store} store The store contains all of a user's preferences
+<span class='linenumber'>209</span>     */</span><span class="WHIT">
+<span class='linenumber'>210</span>   </span><span class="NAME">getAllPreferences</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>211</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.store</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>212</span>       </span><span class="NAME">this.store</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.data.Store</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>213</span>         </span><span class="NAME">proxy</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.data.HttpProxy</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>214</span>           </span><span class="NAME">url</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.getAllPrefURL</span><span class="WHIT">
+<span class='linenumber'>215</span>         </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>216</span>         </span><span class="NAME">baseParams</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">id</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.id</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">userName</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.userName</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>217</span>         </span><span class="NAME">reader</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.data.JsonReader</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>218</span>           </span><span class="NAME">root</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'preferences'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>219</span>           </span><span class="NAME">totalProperty</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'totalCount'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>220</span>           </span><span class="NAME">fields</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT">
+<span class='linenumber'>221</span>             </span><span class="STRN">'prefId'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>222</span>             </span><span class="STRN">'prefName'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>223</span>             </span><span class="STRN">'prefDesc'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>224</span>             </span><span class="PUNC">{</span><span class="NAME">name</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'isDefault'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">type</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'boolean'</span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>225</span>           </span><span class="PUNC">]</span><span class="WHIT">
+<span class='linenumber'>226</span>         </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>227</span>       </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>228</span>       </span><span class="NAME">this.store.on</span><span class="PUNC">(</span><span class="STRN">"loadexception"</span><span class="PUNC">,</span><span class="NAME">this._loadExceptionCbk</span><span class="PUNC">,</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>229</span>       </span><span class="NAME">this.store.setDefaultSort</span><span class="PUNC">(</span><span class="STRN">'prefName'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>230</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>231</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.store</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>232</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>233</span>   
+<span class='linenumber'>234</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>235</span>     * @ignore
+<span class='linenumber'>236</span>     */</span><span class="WHIT">
+<span class='linenumber'>237</span>   </span><span class="NAME">_loadExceptionCbk</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">proxy</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">request</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">response</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>238</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">"loadPreferencesFailed"</span><span class="PUNC">,</span><span class="NAME">response</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>239</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>240</span> 
+<span class='linenumber'>241</span>   </span><span class="COMM">/** This method returns the default preference by userName.
+<span class='linenumber'>242</span>     * @return {void}
+<span class='linenumber'>243</span>     */</span><span class="WHIT">
+<span class='linenumber'>244</span>   </span><span class="NAME">applyDefaultPreference</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>245</span>     </span><span class="NAME">Ext.Ajax.request</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>246</span>        </span><span class="NAME">url</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.applyDefaultPrefURL</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>247</span>        </span><span class="NAME">success</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.applyDefaultPreferenceCbk.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>248</span>        </span><span class="NAME">failure</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.errorFunction.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>249</span>        </span><span class="NAME">params</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>250</span>          </span><span class="NAME">id</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.id</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>251</span>          </span><span class="NAME">userName</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.userName</span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>252</span>     </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>253</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>254</span> 
+<span class='linenumber'>255</span>   </span><span class="COMM">/** This method loads the preference selected.
+<span class='linenumber'>256</span>     * @param {String} prefName The name of the preference
+<span class='linenumber'>257</span>     * @param {Object} prefValue The value of preferences in JSON format
+<span class='linenumber'>258</span>     * @return {void}
+<span class='linenumber'>259</span>     */</span><span class="WHIT">
+<span class='linenumber'>260</span>   </span><span class="NAME">applyPreference</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">prefId</span><span class="PUNC">,</span><span class="NAME">prefValue</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>261</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">prefValue</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>262</span>       </span><span class="NAME">Ext.Ajax.request</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>263</span>          </span><span class="NAME">url</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.loadPrefURL</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>264</span>          </span><span class="NAME">success</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.applyPreferenceCbk.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>265</span>          </span><span class="NAME">failure</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.errorFunction.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>266</span>          </span><span class="NAME">params</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>267</span>            </span><span class="NAME">id</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.id</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>268</span>            </span><span class="NAME">userName</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.userName</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>269</span>            </span><span class="NAME">prefId</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">prefId</span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>270</span>       </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>271</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>272</span>       </span><span class="NAME">this.setFn.call</span><span class="PUNC">(</span><span class="NAME">this.fnScope</span><span class="PUNC">,</span><span class="NAME">prefValue</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>273</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>274</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>275</span>   
+<span class='linenumber'>276</span>   </span><span class="COMM">/** This method applies the default preference, it it exist
+<span class='linenumber'>277</span>     * @param {Object} response The XMLHttpRequest object containing the preference.
+<span class='linenumber'>278</span>     * @param {Object} options The parameter to the request call.
+<span class='linenumber'>279</span>     * @return {void}
+<span class='linenumber'>280</span>     * @private
+<span class='linenumber'>281</span>     */</span><span class="WHIT">
+<span class='linenumber'>282</span>   </span><span class="NAME">applyDefaultPreferenceCbk</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>283</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">response.responseText</span><span class="PUNC">!=</span><span class="STRN">""</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>284</span>       </span><span class="NAME">this.applyPreferenceCbk</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>285</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>286</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>287</span> 
+<span class='linenumber'>288</span>   </span><span class="COMM">/** This method converts decodes the responseText using JSON and then it calls the setter function.
+<span class='linenumber'>289</span>     * @param {Object} response The XMLHttpRequest object containing the preference.
+<span class='linenumber'>290</span>     * @param {Object} options The parameter to the request call.
+<span class='linenumber'>291</span>     * @return {void}
+<span class='linenumber'>292</span>     * @private
+<span class='linenumber'>293</span>     */</span><span class="WHIT">
+<span class='linenumber'>294</span>   </span><span class="NAME">applyPreferenceCbk</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>295</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pref</span><span class="PUNC">=</span><span class="NAME">Ext.util.JSON.decode</span><span class="PUNC">(</span><span class="NAME">response.responseText</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>296</span>     </span><span class="NAME">this.setFn.call</span><span class="PUNC">(</span><span class="NAME">this.fnScope</span><span class="PUNC">,</span><span class="NAME">pref</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>297</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>298</span> 
+<span class='linenumber'>299</span>   </span><span class="COMM">/** The method that saves the preference.
+<span class='linenumber'>300</span>     * @param {String} prefId The id of the preference to save
+<span class='linenumber'>301</span>     * @param {String} prefName The name of the preference to save
+<span class='linenumber'>302</span>     * @param {String} prefDesc The description of the preference
+<span class='linenumber'>303</span>     * @param {boolean} isDefault True if it's default preference
+<span class='linenumber'>304</span>     * @return {String} output decoded with JSON. If it's true (===) it means success, otherwise it's an error message
+<span class='linenumber'>305</span>     */</span><span class="WHIT">
+<span class='linenumber'>306</span>   </span><span class="NAME">savePreference</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">prefId</span><span class="PUNC">,</span><span class="NAME">prefName</span><span class="PUNC">,</span><span class="NAME">prefDesc</span><span class="PUNC">,</span><span class="NAME">isDefault</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>307</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">values</span><span class="PUNC">=</span><span class="NAME">this.getFn.call</span><span class="PUNC">(</span><span class="NAME">this.fnScope</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>308</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">valueEnc</span><span class="PUNC">=</span><span class="NAME">Ext.util.JSON.encode</span><span class="PUNC">(</span><span class="NAME">values</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>309</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">cfg</span><span class="PUNC">=</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>310</span>        </span><span class="NAME">url</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.savePrefURL</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>311</span>        </span><span class="NAME">params</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>312</span>          </span><span class="NAME">id</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.id</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>313</span>          </span><span class="NAME">userName</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.userName</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>314</span>          </span><span class="NAME">prefId</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">prefId</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>315</span>          </span><span class="NAME">prefName</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">prefName</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>316</span>          </span><span class="NAME">prefDesc</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">prefDesc</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>317</span>          </span><span class="NAME">prefValue</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">valueEnc</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>318</span>          </span><span class="NAME">isDefault</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">isDefault</span><span class="WHIT">
+<span class='linenumber'>319</span>        </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>320</span>        </span><span class="NAME">success</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this._onSaveSuccessCbk.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>321</span>        </span><span class="NAME">failure</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this._onSaveFailureCbk.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>322</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>323</span>     </span><span class="NAME">Ext.Ajax.request</span><span class="PUNC">(</span><span class="NAME">cfg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>324</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>325</span> 
+<span class='linenumber'>326</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>327</span>     * @ignore
+<span class='linenumber'>328</span>     */</span><span class="WHIT">
+<span class='linenumber'>329</span>   </span><span class="NAME">_onSaveSuccessCbk</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>330</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">'preferenceSaved'</span><span class="PUNC">,</span><span class="NAME">options.params.prefId</span><span class="PUNC">,</span><span class="NAME">options.params.prefName</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>331</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>332</span> 
+<span class='linenumber'>333</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>334</span>     * @ignore
+<span class='linenumber'>335</span>     */</span><span class="WHIT">
+<span class='linenumber'>336</span>   </span><span class="NAME">_onSaveFailureCbk</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>337</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">'preferenceSaveFailed'</span><span class="PUNC">,</span><span class="NAME">options.params.prefId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">options.params.prefName</span><span class="PUNC">,</span><span class="NAME">response</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>338</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>339</span> 
+<span class='linenumber'>340</span>   </span><span class="COMM">/** This method deletes the preference selected.
+<span class='linenumber'>341</span>     * @param {Array} prefIdArray Array of preference's Id to delete
+<span class='linenumber'>342</span>     * @return {String} output decoded with JSON. If it's true (===) it means success, otherwise it's an error message
+<span class='linenumber'>343</span>     */</span><span class="WHIT">
+<span class='linenumber'>344</span>   </span><span class="NAME">deletePreferences</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">prefIdArray</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>345</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">cfg</span><span class="PUNC">=</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>346</span>        </span><span class="NAME">url</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.deletePrefURL</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>347</span>        </span><span class="NAME">params</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>348</span>          </span><span class="NAME">id</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.id</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>349</span>          </span><span class="NAME">userName</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this.userName</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>350</span>          </span><span class="NAME">prefIdArray</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">prefIdArray</span><span class="WHIT">
+<span class='linenumber'>351</span>        </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>352</span>        </span><span class="NAME">success</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this._onDeleteSuccessCbk.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>353</span>        </span><span class="NAME">failure</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">this._onDeleteFailureCbk.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>354</span>     </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>355</span>     </span><span class="NAME">Ext.Ajax.request</span><span class="PUNC">(</span><span class="NAME">cfg</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>356</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>357</span> 
+<span class='linenumber'>358</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>359</span>     * @ignore
+<span class='linenumber'>360</span>     */</span><span class="WHIT">
+<span class='linenumber'>361</span>   </span><span class="NAME">_onDeleteSuccessCbk</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>362</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">'preferenceDeleted'</span><span class="PUNC">,</span><span class="NAME">options.params.prefIdArray</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>363</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>364</span> 
+<span class='linenumber'>365</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>366</span>     * @ignore
+<span class='linenumber'>367</span>     */</span><span class="WHIT">
+<span class='linenumber'>368</span>   </span><span class="NAME">_onDeleteFailureCbk</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>369</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">'preferenceDeleteFailed'</span><span class="PUNC">,</span><span class="NAME">options.params.prefIdArray</span><span class="PUNC">,</span><span class="NAME">response</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>370</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>371</span>   
+<span class='linenumber'>372</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>373</span>     * @ignore
+<span class='linenumber'>374</span>     */</span><span class="WHIT">
+<span class='linenumber'>375</span>   </span><span class="NAME">errorFunction</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">response</span><span class="PUNC">,</span><span class="NAME">options</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>376</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">options.params.prefId</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>377</span>       </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">'applyDefaultPreferenceFailed'</span><span class="PUNC">,</span><span class="NAME">response</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>378</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>379</span>       </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">'applyPreferenceFailed'</span><span class="PUNC">,</span><span class="NAME">options.params.prefId</span><span class="PUNC">,</span><span class="NAME">response</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>380</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>381</span>   </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>382</span> 
+<span class='linenumber'>383</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

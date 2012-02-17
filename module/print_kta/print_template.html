@@ -1,0 +1,84 @@
+
+<style>
+<!-- 
+select {font-size:12px;}
+A:link {text-decoration: none; color: blue}
+A:visited {text-decoration: none; color: purple}
+A:active {text-decoration: red}
+A:hover {text-decoration: underline; color:red}
+-->
+</style>
+<style type="text/css">
+<!--
+.ft0{font-style:normal;font-weight:normal;font-size:22px;font-family:Tahoma;color:#000000;}
+.ft1{font-style:normal;font-weight:normal;font-size:12px;font-family:Tahoma;color:#000000;}
+.ft2{font-style:normal;font-weight:bold;font-size:12px;font-family:Tahoma;color:#000000;}
+.ft3{font-style:normal;font-weight:normal;font-size:13px;font-family:Tahoma;color:#000000;}
+.ft4{font-style:italic;font-weight:bold;font-size:11px;font-family:Tahoma;color:#000000;}
+.ft5{font-style:normal;font-weight:normal;font-size:16px;font-family:Tahoma;color:#000000;}
+.ft6{font-style:normal;font-weight:bold;font-size:16px;font-family:Tahoma;color:#000000;}
+.ft7{font-style:normal;font-weight:bold;font-size:15px;font-family:Tahoma;color:#000000;}
+.ft8{font-style:normal;font-weight:normal;font-size:30px;font-family:Times New Roman;color:#000000;}
+.ft9{font-style:normal;font-weight:bold;font-size:19px;font-family:Tahoma;color:#000000;}
+-->
+</style>
+
+<?php
+	include('data.php');
+	include('util.php');
+	require("barcode.inc.php");
+	$id_badan_usaha = -1;
+	$id_pro = '';
+	$id_sert = '';
+	$no_kta = '';
+	$id_badan_usaha = $_REQUEST['id_bu'];
+	$id_pro = $_REQUEST['id_pro'];
+	$no_sert = $_REQUEST['no_sert'];
+	$no_kta = retrieve_kta_bu($id_badan_usaha,$id_pro); 
+	$no_kta = sprintf("%06d",$no_kta);
+	$row = retrieve_data_badan_usaha($id_badan_usaha);
+	$no_registrasi = date("d").".".date("Y").".".$row['ID_Propinsi'].".".$row['ID_Kabupaten'].".".$no_kta;
+
+?>
+<!--<div style="position:absolute;top:0;left:0"><img width="1169" height="827" src="pg_0001.jpg" ALT=""></div>
+-->
+
+<div style="position:absolute;top:717;left:516"><span class="ft0">Berlaku dari 1 Januari 2012 sampai dengan 31 Desember 2012</span></div>
+<div style="position:absolute;top:573;left:828"><span class="ft1">Badan Pimpinan Cabang GAPENSI</span></div>
+<div style="position:absolute;top:672;left:468"><span class="ft2"> </span></div>
+<div style="position:absolute;top:672;left:460;width:190;text-align:center"><span class="ft2"><?php echo $row['ketum_propinsi']; ?></span></div>
+<div style="position:absolute;top:671;left:889"><span class="ft2">  </span></div>
+<div style="position:absolute;top:671;left:825;width:190;text-align:center"><span class="ft2"><?php echo $row['ketum_kabupaten'];?></span></div>
+<div style="position:absolute;top:689;left:523"><span class="ft1">Ketua Umum</span></div>
+<div style="position:absolute;top:687;left:905"><span class="ft1"> Ketua</span></div>
+<div style="position:absolute;top:595;left:485"><span class="ft3">Provinsi  <?php echo $row['nama_propinsi']; ?></span></div>
+<div style="position:absolute;top:595;left:863"><span class="ft3"> <?php echo $row['nama_kabupaten']; ?></span></div>
+<div style="position:absolute;top:573;left:466"><span class="ft1">Badan Pimpinan Daerah GAPENSI</span></div>
+<div style="position:absolute;top:794;left:30"><span class="ft4">Keabsahan KTA ini dapat dicek pada situs GAPENSI www.gapensi.org</span></div>
+<div style="position:absolute;top:351;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:319;left:445"><span class="ft6"><?php echo $row['Pimpinan_BU'];?></span></div>
+<div style="position:absolute;top:317;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:278;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:670;left:135"><span class="ft2"> </span></div>
+<div style="position:absolute;top:670;left:135"><span class="ft2">Ir. H. SOEHARSOJO</span></div>
+<div style="position:absolute;top:689;left:160"><span class="ft1">Ketua Umum</span></div>
+<div style="position:absolute;top:594;left:109"><span class="ft1">Badan Pimpinan Pusat GAPENSI</span></div>
+<div style="position:absolute;top:353;left:188"><span class="ft5">ALAMAT PERUSAHAAN</span></div>
+<div style="position:absolute;top:317;left:188"><span class="ft5">NAMA PIMPINAN</span></div>
+<div style="position:absolute;top:276;left:188"><span class="ft5">NAMA PERUSAHAAN</span></div>
+<div style="position:absolute;top:229;left:494"><span class="ft3"> Nomor :</span></div>
+<div style="position:absolute;top:229;left:549"><span class="ft3"> <?php echo $no_sert; ?></span></div>
+<div style="position:absolute;top:512;left:412"><span class="ft7">Nomor Registrasi</span></div>
+<div style="position:absolute;top:512;left:568"><span class="ft7"> <?php echo $no_registrasi; ?></span></div>
+<div style="position:absolute;top:422;left:445"><span class="ft5">Gred</span></div>
+<div style="position:absolute;top:420;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:422;left:493"><span class="ft5"> <?php echo $row['Gred'];?></span></div>
+<div style="position:absolute;top:422;left:515"><span class="ft5">( Gred <?php echo ctword($row['Gred']);?>)</span></div>
+<div style="position:absolute;top:421;left:188"><span class="ft5">KUALIFIKASI</span></div>
+<div style="position:absolute;top:353;left:445"><span class="ft1"> <?php echo $row['Alamat']; ?></span></div>
+<div style="position:absolute;top:384;left:445"><span class="ft1"><?php echo $row['Kodepos']." Telp. ".$row['Telepon'].", Fax ".$row['Fax']; ?> </span></div>
+<div style="position:absolute;top:573;left:126"><span class="ft1">Jakarta, <?php echo tanggal("j M Y")?></span></div>
+<div style="position:absolute;top:732;left:69"><span class="ft8"><?php $qtstr ='encode=CODE39&bdata='.$no_registrasi.'&height=30&scale=1&bgcolor=%23FFFFFF&color=%23000000&file=&type=png&Genrate=Submit&';echo "<img src='../print_kta/barcode.php?$qtstr'>";?></span></div>
+<div style="position:absolute;top:465;left:188"><span class="ft5">Adalah Anggota Biasa GAPENSI Provinsi</span></div>
+<div style="position:absolute;top:466;left:545"><span class="ft5"> : <?php echo $row['nama_propinsi'];?></span></div>
+<div style="position:absolute;top:276;left:445"><span class="ft9"><?php echo $row['Nama'];?></span></div>

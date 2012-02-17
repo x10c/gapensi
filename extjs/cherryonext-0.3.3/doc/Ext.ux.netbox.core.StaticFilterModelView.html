@@ -1,0 +1,822 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.core.StaticFilterModelView</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.core.StaticFilterModelView</h2>
+
+
+	Extends <a href="Ext.form.FormPanel.html">Ext.form.FormPanel</a>.<br/>
+
+<i>Defined in <a href="StaticFilterModelView.src.html">StaticFilterModelView.js</a></i>
+
+<p>
+In this view for each available field there is a label, and an operator combo and space where the widget to edits the values will appear. Something like this:
+<pre>
+       +----------------+--+ +----------------+
+field: |contains        |\/| | ciccio         |
+       +----------------+--+ +----------------+
+</pre>
+There are some config options to manage the way the fields are put together. For example you can divide the fields in column, you can decide where to put the label and so on.
+This view supports lazy initialization using staticFilter as xtype.
+<h4> Example </h4>
+We are creating a static filter panel where the fields are arranged in 3 columns, the label are on the top of the operation field,
+the operation field will use 33% of the space in te column, and each filter 46 pixels as height
+<PRE>
+var viewport = new Ext.Viewport({
+  layout: "border",
+  items: [{
+    filterModel: filterModel,
+    colsNumber:3,
+    labelWidth: 55,
+    labelAlign: 'top',
+    rowSize: 46,
+    ratio: 33,
+    labelPad: 1,
+    region: "north",
+    height:150,
+    xtype: 'staticFilter',
+    itemCls: 'filter'
+  },
+  grid
+]});
+</pre>
+<B>NB1:</B> This view only supports an elementary filter  for a field. If you use this view you must be sure that this basic assumption is verified<BR>
+<B>NB2:</B> The items config options will be overwritten<br></p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#panelColumns">panelColumns</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It contains the panels where the filters must be inserted
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.core.StaticFilterModelView">Ext.ux.netbox.core.StaticFilterModelView</a></b>(config)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  It creates a new StaticFilterModelView.
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#addField">addField</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method add a given field to the view
+This means that it add the operator combo and the component that will contain the editor for the values of the filter<BR>
+This component are added at the first available place.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#addFormField">addFormField</a></b>(formField, editorComponent) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It adds the field used to manage the values  of an elementary filter
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#changeEditor">changeEditor</a></b>(The, elementaryFilterCfg) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method changes the editor used to edit the values of a filter (for example if the operator is changed, the editor can be changed as well).
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Object
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#createConfig">createConfig</a></b>(config) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method manipulate the given config option, to create the one that will be sent as parameter to the superclass constructor
+It sets the layout of this panel as a form, containing config.colsNumber * 2 panels.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#editingCompleted">editingCompleted</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Callback of the complete event of the editor, or callback of the change event on the form field, both editing the value of the filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#elementaryFilterAdded">elementaryFilterAdded</a></b>(filterModel, filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Callback for the elementaryFilterAdded event of the filter manager.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#elementaryFilterRemoved">elementaryFilterRemoved</a></b>(filterModel, filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Callback for the elementaryFilterRemoved event of the filter manager.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;int
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getEditorPanelNumber">getEditorPanelNumber</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method, given the Field, returns the index of the panel containing the editor component for the field in this.panelColumns array.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#operatorChanged">operatorChanged</a></b>(filter, operator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Callback for the operatorChanged event of the filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#operatorSelected">operatorSelected</a></b>(combo, record, index) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Callback of the selected event of a operator combo.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#populateFields">populateFields</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method add all the field contained in the fieldManager associated to the filterModel.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#populateFilters">populateFilters</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method clean the view and then populate all the filters with the actual values from the filterModel.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#removeField">removeField</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method remove a given field from the view
+This means that it removes the operator combo and the component that will contain the editor for the values of the filter<BR>
+<B> NB</B>: At this moment the widget are not rearranged, it will be implemented in a later moment
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#valueChanged">valueChanged</a></b>(filter, value) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Callback for the valueChanged event of the filter.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="panelColumns">
+	<!-- -->
+	</a> <h3>panelColumns</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>panelColumns</b></pre> 
+	<ul>
+		
+		It contains the panels where the filters must be inserted
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.core.StaticFilterModelView"> </a>
+<h3>Ext.ux.netbox.core.StaticFilterModelView</h3>
+
+	<pre><b>Ext.ux.netbox.core.StaticFilterModelView</b>(config)</pre>
+	<ul>
+		
+		It creates a new StaticFilterModelView.
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i>Object</i>&nbsp;config</code> - Configuration options 
+		</ul>
+		
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.FilterModel.html">Ext.ux.netbox.core.FilterModel</a></i>&nbsp;config.filterModel</code> - the filterModel whose filters must be showed 
+		</ul>
+		
+		<ul>
+			<code><i>int</i>&nbsp;config.colNumbers</code> - the number of columns in which the filters must be disposed. The default is 1 
+		</ul>
+		
+		<ul>
+			<code><i>int</i>&nbsp;config.labelWidth</code> - The width of the label containing the name of the column. See Ext.layout.FormLayout.labelWidth config option for more details (including the default value) 
+		</ul>
+		
+		<ul>
+			<code><i>boolean</i>&nbsp;config.hideLabels</code> - true to hide the label containing the name of the column. See Ext.layout.FormLayout.hideLabels config option for more details (including the default value) 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;config.itemCls</code> - class to apply to the label containing the name of the column. See Ext.layout.FormLayout.itemCls config option for more details 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;config.labelAlign</code> - allignment of the label containing the name of the column. See Ext.layout.FormLayout.itemCls config option for more details 
+		</ul>
+		
+		<ul>
+			<code><i>int</i>&nbsp;config.labelPad</code> - padding of the label containing the name of the column. See Ext.layout.FormLayout.itemCls config option for more details 
+		</ul>
+		
+		<ul>
+			<code><i>int</i>&nbsp;config.rowSize</code> - the height of the "row" consisting of operator combo + editor value. The default is 27 pixel 
+		</ul>
+		
+		<ul>
+			<code><i>int</i>&nbsp;config.ratio</code> - a number between 1 and 99, the percentage of the space to give to label + combo with the operators. The default is 60 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="addField"> </a> <h3>addField</h3>
+		<pre><b>addField</b>(field)</pre> 
+	<ul>
+		
+		This method add a given field to the view
+This means that it add the operator combo and the component that will contain the editor for the values of the filter<BR>
+This component are added at the first available place.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The field to add 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="addFormField"> </a> <h3>addFormField</h3>
+		<pre><b>addFormField</b>(formField, editorComponent)</pre> 
+	<ul>
+		
+		It adds the field used to manage the values  of an elementary filter
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.form.Field</i>&nbsp;formField</code> - The field that edits the values 
+		</ul>
+		<ul>
+			<code><i>Ext.Container</i>&nbsp;editorComponent</code> - The field will be added to editorComponent 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="changeEditor"> </a> <h3>changeEditor</h3>
+		<pre><b>changeEditor</b>(The, elementaryFilterCfg)</pre> 
+	<ul>
+		
+		This method changes the editor used to edit the values of a filter (for example if the operator is changed, the editor can be changed as well).
+The listeners on the old editor are removed and added to the new one,
+and then the old editor is replaced with the new one in the GUI
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.Editor</i>&nbsp;The</code> - new editor to use to edit the value 
+		</ul>
+		<ul>
+			<code><i>Ext.ux.netbox.core.ElementaryFilterCfg</i>&nbsp;elementaryFilterCfg</code> - The object that manages the editor actually associated with a field 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="createConfig"> </a> <h3>createConfig</h3>
+		<pre>Object&nbsp;<b>createConfig</b>(config)</pre> 
+	<ul>
+		
+		This method manipulate the given config option, to create the one that will be sent as parameter to the superclass constructor
+It sets the layout of this panel as a form, containing config.colsNumber * 2 panels. In the even panels there are the label and the operator combo,
+in the odd panels there is the field used to edit the value
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;config</code> - The config object that is passed to the constructor of the class as parameter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;</code>The config object to use as parameter of the superclass constructor 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="editingCompleted"> </a> <h3>editingCompleted</h3>
+		<pre><b>editingCompleted</b>()</pre> 
+	<ul>
+		
+		Callback of the complete event of the editor, or callback of the change event on the form field, both editing the value of the filter.
+It get the value from the editor, and set the value to the filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Mixed</i>&nbsp;editorOrFormField.</code> - It can be the editor used to edit the value of a filter, or the form field contained in the editor 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="elementaryFilterAdded"> </a> <h3>elementaryFilterAdded</h3>
+		<pre><b>elementaryFilterAdded</b>(filterModel, filter)</pre> 
+	<ul>
+		
+		Callback for the elementaryFilterAdded event of the filter manager. It sets the operator on the operatorCombo, and the value in the value field.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.ux.core.netbox.FilterModel</i>&nbsp;filterModel</code> - The filterModel that fired the event 
+		</ul>
+		<ul>
+			<code><i>Ext.ux.core.netbox.Filter</i>&nbsp;filter</code> - The just added filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="elementaryFilterRemoved"> </a> <h3>elementaryFilterRemoved</h3>
+		<pre><b>elementaryFilterRemoved</b>(filterModel, filter)</pre> 
+	<ul>
+		
+		Callback for the elementaryFilterRemoved event of the filter manager. It clean the value and the operator of the just removed filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.ux.core.netbox.FilterModel</i>&nbsp;filterModel</code> - The filterModel that fired the event 
+		</ul>
+		<ul>
+			<code><i>Ext.ux.core.netbox.Filter</i>&nbsp;filter</code> - The just removed filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getEditorPanelNumber"> </a> <h3>getEditorPanelNumber</h3>
+		<pre>int&nbsp;<b>getEditorPanelNumber</b>(field)</pre> 
+	<ul>
+		
+		This method, given the Field, returns the index of the panel containing the editor component for the field in this.panelColumns array.
+<B> NB</B>: The panel containing the operator combo box is the value returned by this function -1
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The field whose index must be calculated 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>int</i>&nbsp;</code>The index of the panel in the this.panelColumns or -1 if for the field there is no panel 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="operatorChanged"> </a> <h3>operatorChanged</h3>
+		<pre><b>operatorChanged</b>(filter, operator)</pre> 
+	<ul>
+		
+		Callback for the operatorChanged event of the filter. It sets the operator on the operatorCombo, and change the editor accordingly
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.ux.core.netbox.Filter</i>&nbsp;filter</code> - The filter that fired the event 
+		</ul>
+		<ul>
+			<code><i>Ext.ux.core.netbox.Filter</i>&nbsp;operator</code> - The new operator 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="operatorSelected"> </a> <h3>operatorSelected</h3>
+		<pre><b>operatorSelected</b>(combo, record, index)</pre> 
+	<ul>
+		
+		Callback of the selected event of a operator combo.
+This method, if the selected operator is the empty one, remove the filter, sets the selected operator to the filter otherwise
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.form.ComboBox</i>&nbsp;combo</code> - The combo that fired the event 
+		</ul>
+		<ul>
+			<code><i>Ext.data.Record</i>&nbsp;record</code> - The selected record 
+		</ul>
+		<ul>
+			<code><i>int</i>&nbsp;index</code> - The index of the selected item 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="populateFields"> </a> <h3>populateFields</h3>
+		<pre><b>populateFields</b>()</pre> 
+	<ul>
+		
+		This method add all the field contained in the fieldManager associated to the filterModel.
+This means that it adds the operator combo and the component that will contain the editor for the values of the filter
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="populateFilters"> </a> <h3>populateFilters</h3>
+		<pre><b>populateFilters</b>()</pre> 
+	<ul>
+		
+		This method clean the view and then populate all the filters with the actual values from the filterModel.
+This means that it set the operator in the operator combos  and the values in the editor from the filters in the FilterModel.
+This method is called for example when the view is built or when the setExpression method is called on the FilteRManager
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="removeField"> </a> <h3>removeField</h3>
+		<pre><b>removeField</b>(field)</pre> 
+	<ul>
+		
+		This method remove a given field from the view
+This means that it removes the operator combo and the component that will contain the editor for the values of the filter<BR>
+<B> NB</B>: At this moment the widget are not rearranged, it will be implemented in a later moment
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The field to remove 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="valueChanged"> </a> <h3>valueChanged</h3>
+		<pre><b>valueChanged</b>(filter, value)</pre> 
+	<ul>
+		
+		Callback for the valueChanged event of the filter. It sets the value on the editor component
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.ux.core.netbox.Filter</i>&nbsp;filter</code> - The filter that fired the event 
+		</ul>
+		<ul>
+			<code><i>Mixed</i>&nbsp;value</code> - The new value 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:20 GMT+0100 (CET)</div>
+</body>
+</html>

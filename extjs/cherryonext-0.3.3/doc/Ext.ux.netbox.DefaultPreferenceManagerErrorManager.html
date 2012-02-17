@@ -1,0 +1,376 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.DefaultPreferenceManagerErrorManager</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.DefaultPreferenceManagerErrorManager</h2>
+
+
+<i>Defined in <a href="PreferenceManagerView.src.html">PreferenceManagerView.js</a></i>
+
+<p>
+This class manages the errors of a preferencesManager by listening to the error events (see the documentation of PreferenceManager, and look at the evants that ends by failed)
+It shows an error dialog containing the content of the response sent by the server</p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#failedToApplyDefaultPreferenceTitle">failedToApplyDefaultPreferenceTitle</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title of the error dialog when an error occurs while applying the default preference
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#failedToApplyPreferenceTitle">failedToApplyPreferenceTitle</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title of the error dialog when an error occurs while applying a preference
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#failedToDeletePreferenceTitle">failedToDeletePreferenceTitle</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title of the error dialog when an error occurs while deleting some preferences
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#failedToLoadPreferenceTitle">failedToLoadPreferenceTitle</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title of the error dialog when an error occurs while loading the preferences
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#failedToSavePreferenceTitle">failedToSavePreferenceTitle</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title of the error dialog when an error occurs while saving a preference
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.DefaultPreferenceManagerErrorManager">Ext.ux.netbox.DefaultPreferenceManagerErrorManager</a></b>(preferenceManager)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  Build a new DefaultPreferenceManagerErrorManager
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#manageError">manageError</a></b>(title, message) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method has as input the title of the dialog and the content of the response
+It shows a dialog with title as title and message as content.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="failedToApplyDefaultPreferenceTitle">
+	<!-- -->
+	</a> <h3>failedToApplyDefaultPreferenceTitle</h3>
+		<pre>String <b>failedToApplyDefaultPreferenceTitle</b></pre> 
+	<ul>
+		
+		Title of the error dialog when an error occurs while applying the default preference
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="failedToApplyPreferenceTitle">
+	<!-- -->
+	</a> <h3>failedToApplyPreferenceTitle</h3>
+		<pre>String <b>failedToApplyPreferenceTitle</b></pre> 
+	<ul>
+		
+		Title of the error dialog when an error occurs while applying a preference
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="failedToDeletePreferenceTitle">
+	<!-- -->
+	</a> <h3>failedToDeletePreferenceTitle</h3>
+		<pre>String <b>failedToDeletePreferenceTitle</b></pre> 
+	<ul>
+		
+		Title of the error dialog when an error occurs while deleting some preferences
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="failedToLoadPreferenceTitle">
+	<!-- -->
+	</a> <h3>failedToLoadPreferenceTitle</h3>
+		<pre>String <b>failedToLoadPreferenceTitle</b></pre> 
+	<ul>
+		
+		Title of the error dialog when an error occurs while loading the preferences
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="failedToSavePreferenceTitle">
+	<!-- -->
+	</a> <h3>failedToSavePreferenceTitle</h3>
+		<pre>String <b>failedToSavePreferenceTitle</b></pre> 
+	<ul>
+		
+		Title of the error dialog when an error occurs while saving a preference
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.DefaultPreferenceManagerErrorManager"> </a>
+<h3>Ext.ux.netbox.DefaultPreferenceManagerErrorManager</h3>
+
+	<pre><b>Ext.ux.netbox.DefaultPreferenceManagerErrorManager</b>(preferenceManager)</pre>
+	<ul>
+		
+		Build a new DefaultPreferenceManagerErrorManager
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i><a href="Ext.ux.netbox.PreferenceManager.html">Ext.ux.netbox.PreferenceManager</a></i>&nbsp;preferenceManager</code> - The preferenceManager whose errors this class manage 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="manageError"> </a> <h3>manageError</h3>
+		<pre><b>manageError</b>(title, message)</pre> 
+	<ul>
+		
+		This method has as input the title of the dialog and the content of the response
+It shows a dialog with title as title and message as content.
+If you want to personalize the dialog or the behaviour just overwrite this method
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;title</code> - The title of the dialog 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;message</code> - The content of the dialog 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:21 GMT+0100 (CET)</div>
+</body>
+</html>

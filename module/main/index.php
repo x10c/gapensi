@@ -19,6 +19,9 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $base_url; ?>css/all.css"/>
 
 <script type="text/javascript" src="<?php echo $base_url; ?>extjs/extjs-ux-all.js"></script>
+<script type="text/javascript" src="<?php echo $base_url; ?>extjs/cherryonext.js"></script>
+<script type="text/javascript" src="<?php echo $base_url; ?>extjs/cherryonext-0.3.3/src/netbox/InputTextMask.js"></script>
+<script type="text/javascript" src="<?php echo $base_url; ?>extjs/miframe/mif.js"></script>
 
 <script>
 	var _g_root = '<?php echo $base_url; ?>';
@@ -35,6 +38,8 @@
 <script type="text/javascript" src="<?php echo $base_url; ?>module/app_home/layout.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>module/main/layout.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>module/pendaftaran_komputer_pengguna/layout.js"></script>
+
+<script type="text/javascript" src="<?php echo $base_url; ?>/module/print_kta/layout.js"></script>
 
 </head>
 

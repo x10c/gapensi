@@ -1,0 +1,66 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: StringField.js 125 2008-03-12 10:19:23Z dandfra $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox.string'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** It creates a new string field
+<span class='linenumber'>  6</span>   * @param {String} id The id of the field
+<span class='linenumber'>  7</span>   * @param {String} label Optional. The label of the field. If not supplied the id is used.
+<span class='linenumber'>  8</span>   * @constructor
+<span class='linenumber'>  9</span>   * @extends Ext.ux.netbox.core.Field
+<span class='linenumber'> 10</span>   * @class This is the class that implements the field to use if the type is string.
+<span class='linenumber'> 11</span>   * It contains as default the following operators:
+<span class='linenumber'> 12</span>   * &lt;ul>
+<span class='linenumber'> 13</span>   *   &lt;li> STRING_EQUAL &lt;/li>
+<span class='linenumber'> 14</span>   *   &lt;li> STRING_DIFFERENT &lt;/li>
+<span class='linenumber'> 15</span>   *   &lt;li> STRING_CONTAINS &lt;/li>
+<span class='linenumber'> 16</span>   *   &lt;li> STRING_DOESNT_CONTAIN &lt;/li>
+<span class='linenumber'> 17</span>   *   &lt;li> STRING_STARTS_WITH &lt;/li>
+<span class='linenumber'> 18</span>   *   &lt;li> STRING_ENDS_WITH &lt;/li>
+<span class='linenumber'> 19</span>   * &lt;/ul>
+<span class='linenumber'> 20</span>   * The default operator is STRING_EQUAL.
+<span class='linenumber'> 21</span>   * The STRING_LIST and STRING_NOT_LIST operations should be manually added if needed.
+<span class='linenumber'> 22</span>   */</span><span class="WHIT">
+<span class='linenumber'> 23</span> </span><span class="NAME">Ext.ux.netbox.string.StringField</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">id</span><span class="PUNC">,</span><span class="NAME">label</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 24</span> </span><span class="WHIT">  </span><span class="NAME">Ext.ux.netbox.string.StringField.superclass.constructor.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">id</span><span class="PUNC">,</span><span class="NAME">label</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 25</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">equalOperator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"STRING_EQUAL"</span><span class="PUNC">,</span><span class="NAME">this.stringEqualsLabel</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 26</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">equalOperator</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 27</span> </span><span class="WHIT">  </span><span class="NAME">this.setDefaultOperator</span><span class="PUNC">(</span><span class="NAME">equalOperator</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 28</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">(</span><span class="STRN">"STRING_DIFFERENT"</span><span class="PUNC">,</span><span class="NAME">this.stringDifferentLabel</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 29</span> </span><span class="WHIT">  </span><span class="NAME">noEmptyAllowed</span><span class="PUNC">=</span><span class="NAME">this.emptyNotAllowedFn.createDelegate</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 30</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator</span><span class="PUNC">(</span><span class="STRN">"STRING_CONTAINS"</span><span class="PUNC">,</span><span class="NAME">this.containsText</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 31</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 32</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 33</span> </span><span class="WHIT">  </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator</span><span class="PUNC">(</span><span class="STRN">"STRING_DOESNT_CONTAIN"</span><span class="PUNC">,</span><span class="NAME">this.doesntContainsText</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 34</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 35</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 36</span> </span><span class="WHIT">  </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator</span><span class="PUNC">(</span><span class="STRN">"STRING_STARTS_WITH"</span><span class="PUNC">,</span><span class="NAME">this.startsWithText</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 37</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 38</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 39</span> </span><span class="WHIT">  </span><span class="NAME">op</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator</span><span class="PUNC">(</span><span class="STRN">"STRING_ENDS_WITH"</span><span class="PUNC">,</span><span class="NAME">this.endsWithText</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 40</span> </span><span class="WHIT">  </span><span class="NAME">op.addValidateFn</span><span class="PUNC">(</span><span class="NAME">noEmptyAllowed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 41</span> </span><span class="WHIT">  </span><span class="NAME">this.addOperator</span><span class="PUNC">(</span><span class="NAME">op</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 42</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 43</span> 
+<span class='linenumber'> 44</span> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.netbox.string.StringField</span><span class="PUNC">,</span><span class="NAME">Ext.ux.netbox.core.Field</span><span class="PUNC">,</span><span class="COMM">/** @scope Ext.ux.netbox.string.StringField.prototype */</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 45</span> </span><span class="WHIT">  </span><span class="NAME">stringEqualsLabel</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"="</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 46</span> </span><span class="WHIT">  </span><span class="NAME">stringDifferentLabel</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"!="</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 47</span> </span><span class="WHIT">  </span><span class="NAME">containsText</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"contains"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 48</span> </span><span class="WHIT">  </span><span class="NAME">doesntContainsText</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"doesn't contain"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 49</span> </span><span class="WHIT">  </span><span class="NAME">startsWithText</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"starts with"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 50</span> </span><span class="WHIT">  </span><span class="NAME">endsWithText</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"ends with"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 51</span> </span><span class="WHIT">    </span><span class="COMM">/** Label of the STRING_LIST operation
+<span class='linenumber'> 52</span>     * @property
+<span class='linenumber'> 53</span>     */</span><span class="WHIT">
+<span class='linenumber'> 54</span> </span><span class="WHIT">  </span><span class="NAME">stringListText</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"in"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 55</span> </span><span class="WHIT">  </span><span class="COMM">/** Label of the STRING_NOT_IN_LIST operation
+<span class='linenumber'> 56</span>     * @property
+<span class='linenumber'> 57</span>     */</span><span class="WHIT">
+<span class='linenumber'> 58</span> </span><span class="WHIT">  </span><span class="NAME">stringNotListText</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"not in"</span><span class="WHIT">
+<span class='linenumber'> 59</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

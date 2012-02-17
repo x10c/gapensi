@@ -1,0 +1,1151 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.PreferenceManager</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.PreferenceManager</h2>
+
+
+	Extends <a href="Ext.util.Observable.html">Ext.util.Observable</a>.<br/>
+
+<i>Defined in <a href="PreferenceManager.src.html">PreferenceManager.js</a></i>
+
+<p>
+This class manages user preferences. A user preference is a "state" of some objects that the user wants to save with a name. For example, he has a grid,
+ with the column in a predefined order, with some filters applied, sorted for a certain column. He can bookmark the given situation, and associate a name 
+ to it. The he can easilly select from that prefeences, and the grid is back to the state he saved. Since only the developer knows what is usefull to bookmark,
+ the preferenceManager has 2 functions, a getter and a setter. The getter acquires the state to save from the application, the setter reapplies the settings returned by the getter
+ to come back to the saved state. The only restriction on the returned value of the getter is that it must be json encodable/decodable. 
+ To load and manage the preferences this class defines 4 ajax interfaces that the application backend must implement (See the constructor for more details)
+ To signal an error in the backend simply returns an error http status code (for example 500)
+<h4>Example</h4>
+This example suppoose that you have a grid with a filter. It saves and restores the filters and the status of the grid (size of the columns, position of the columns, sort state, hidden/visible columns)
+<pre>
+var getterFn=function(){
+  return({grid: grid.getState(),filter: filterModel.getFilterObj()});
+}
+var setterFn=function(pref){
+  //filter
+  if(pref.filter){
+    filterModel.setFilterObj(pref.filter);
+  }
+  //grid
+  if(pref.grid){
+    grid.getView().userResized=true;
+    grid.applyState(pref.grid);
+    grid.getColumnModel().setConfig(grid.getColumnModel().config);
+  }
+}
+prefManager=new Ext.ux.netbox.PreferenceManager({
+  id: 'prefManagerId',
+  userName: 'user',
+  getFn: getterFn,
+  setFn: setterFn,
+  getAllPrefURL:'http://getAllPrefURL',
+  applyDefaultPrefURL:'http://applyDefaultPrefURL',
+  loadPrefURL:'http://loadPrefURL',
+  savePrefURL:'http://savePrefURL',
+  deletePrefURL:'http://deletePrefURL'
+});
+</pre></p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#applyDefaultPrefURL">applyDefaultPrefURL</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The URL used to apply the default preference
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#deletePrefURL">deletePrefURL</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The URL used to delete a specified preference
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>Object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#fnScope">fnScope</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The scope of the getter and setter function
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#getAllPrefURL">getAllPrefURL</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The URL used to get all the preferences by user
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>Function</code></font>
+			</td>
+			<td>
+				<code><b><a href="#getFn">getFn</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The getter function that returns the state of the object
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#id">id</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The id of the preference manager.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#loadPrefURL">loadPrefURL</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The URL used to load a specified preference
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#savePrefURL">savePrefURL</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The URL used to save a specified preference
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>Function</code></font>
+			</td>
+			<td>
+				<code><b><a href="#setFn">setFn</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The setter function that applies the preference restoring the state of the object
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#userName">userName</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the user that owns the prefereces
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.PreferenceManager">Ext.ux.netbox.PreferenceManager</a></b>(config)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  Creates a new PreferenceManager.
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#applyDefaultPreference">applyDefaultPreference</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the default preference by userName.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;
+				&nbsp;void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#applyDefaultPreferenceCbk">applyDefaultPreferenceCbk</a></b>(response, options) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method applies the default preference, it it exist
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#applyPreference">applyPreference</a></b>(prefName, prefValue) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method loads the preference selected.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;
+				&nbsp;void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#applyPreferenceCbk">applyPreferenceCbk</a></b>(response, options) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method converts decodes the responseText using JSON and then it calls the setter function.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#deletePreferences">deletePreferences</a></b>(prefIdArray) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method deletes the preference selected.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.data.Store
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getAllPreferences">getAllPreferences</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns a store that loads the preferences by userName.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#savePreference">savePreference</a></b>(prefId, prefName, prefDesc, isDefault) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The method that saves the preference.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+<a name="event_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Event Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#applyDefaultPreferenceFailed">applyDefaultPreferenceFailed</a></b>(prefIdArray, response) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when applying the default preference failed, that is when the applyDefaultPrefURL returned an error HTTP status code (for example 500)
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#applyPreferenceFailed">applyPreferenceFailed</a></b>(prefId, response) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when applying a preference failed, that is when the loadPrefURL returned an error HTTP status code (for example 500)
+<b> NB: </b> This event is not fired when the loading of the default preference fails.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#loadPreferencesFailed">loadPreferencesFailed</a></b>(response) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a load on the store that lists the preferences fails, that is when the getAllPrefURL returned an error HTTP status code (for example 500)
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#preferenceDeleted">preferenceDeleted</a></b>(prefIdArray) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a preference is deleted
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#preferenceDeleteFailed">preferenceDeleteFailed</a></b>(prefIdArray, response) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a preference delete failed, that is when the deletePrefURL returned an error HTTP status code (for example 500)
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#preferenceSaved">preferenceSaved</a></b>(prefId, prefName) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a preference is saved
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#preferenceSaveFailed">preferenceSaveFailed</a></b>(prefId, prefName, response) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when saving a preference failed, that is when the savePrefURL returned an error HTTP status code (for example 500)
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="applyDefaultPrefURL">
+	<!-- -->
+	</a> <h3>applyDefaultPrefURL</h3>
+		<pre>String <b>applyDefaultPrefURL</b></pre> 
+	<ul>
+		
+		The URL used to apply the default preference
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="deletePrefURL">
+	<!-- -->
+	</a> <h3>deletePrefURL</h3>
+		<pre>String <b>deletePrefURL</b></pre> 
+	<ul>
+		
+		The URL used to delete a specified preference
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="fnScope">
+	<!-- -->
+	</a> <h3>fnScope</h3>
+		<pre>Object <b>fnScope</b></pre> 
+	<ul>
+		
+		The scope of the getter and setter function
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="getAllPrefURL">
+	<!-- -->
+	</a> <h3>getAllPrefURL</h3>
+		<pre>String <b>getAllPrefURL</b></pre> 
+	<ul>
+		
+		The URL used to get all the preferences by user
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="getFn">
+	<!-- -->
+	</a> <h3>getFn</h3>
+		<pre>Function <b>getFn</b></pre> 
+	<ul>
+		
+		The getter function that returns the state of the object
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="id">
+	<!-- -->
+	</a> <h3>id</h3>
+		<pre>String <b>id</b></pre> 
+	<ul>
+		
+		The id of the preference manager. It's used by the backend to select only the preferences of this preferencesManager, if there are more than one.
+The tern (id, userName, preferenceId) should be unique.
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="loadPrefURL">
+	<!-- -->
+	</a> <h3>loadPrefURL</h3>
+		<pre>String <b>loadPrefURL</b></pre> 
+	<ul>
+		
+		The URL used to load a specified preference
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="savePrefURL">
+	<!-- -->
+	</a> <h3>savePrefURL</h3>
+		<pre>String <b>savePrefURL</b></pre> 
+	<ul>
+		
+		The URL used to save a specified preference
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="setFn">
+	<!-- -->
+	</a> <h3>setFn</h3>
+		<pre>Function <b>setFn</b></pre> 
+	<ul>
+		
+		The setter function that applies the preference restoring the state of the object
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="userName">
+	<!-- -->
+	</a> <h3>userName</h3>
+		<pre>String <b>userName</b></pre> 
+	<ul>
+		
+		The name of the user that owns the prefereces
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.PreferenceManager"> </a>
+<h3>Ext.ux.netbox.PreferenceManager</h3>
+
+	<pre><b>Ext.ux.netbox.PreferenceManager</b>(config)</pre>
+	<ul>
+		
+		Creates a new PreferenceManager.
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i>Object</i>&nbsp;config</code> - An object which may contain the following properties:<ul>
+<li><b>id</b> : String<p style="margin-left:1em">The id of preference manager. A preference is unambiguously identified by id, userName and the name of the preference</p></li>
+<li><b>userName</b> : String<p style="margin-left:1em">The userName that owns the preferences. A preference is unambiguously identified by id, userName and the name of the preference</p></li>
+<li><b>getFn</b> : Function<p style="margin-left:1em">The function used to extract from the application the preferences to save</p></li>
+<li><b>setFn</b> : Function<p style="margin-left:1em">The function used to apply to the application the preferences as returned by getFn</p></li>
+<li><b>fnScope</b> : Object<p style="margin-left:1em">The scope of the getFn and setFn functions. Optional. If not present window is used</p></li>
+<li><b>getAllPrefURL</b> : String<p style="margin-left:1em">The URL used to get all the preferences by user. It loads a Store, using a JsonReader as reader.
+This URL corresponds to a web page that loads a range of preferences for the given user and id. It must be called with the following parameters:
+<ul>
+  <li><b>id</b> : String<p style="margin-left:1em">The id of the preference manager</p></li>
+  <li><b>userName</b> : String<p style="margin-left:1em">The name of the user using the application</p></li>
+  <li><b>start</b> : Number<p style="margin-left:1em">The first preference in the range of preferences to return</p></li>
+  <li><b>limit</b> : Number<p style="margin-left:1em">The The number of preferences to return</p></li>
+</ul>
+The page must return a json encoded object in the following format:
+<PRE>
+{totalCount: &lt;total number of the preferences&gt;, 
+  preferences:[
+    {prefId   : &lt;id of the preference&gt;,
+     prefName : &lt;name of the preference&gt;,
+     prefDesc : &lt;the description of the preference&gt;,
+     isDefault: &lt;true if default, false otherwise&gt;},
+    {.....}
+   ]
+ }
+</PRE>
+</p></li>
+<li><b>applyDefaultPrefURL</b> : String<p style="margin-left:1em">The URL used to apply the default preference.
+This URL corresponds to a web page that returns the default preference for the given user and id. It must be called with the following parameters:
+<ul>
+  <li><b>id</b> : String<p style="margin-left:1em">The id of the preference manager</p></li>
+  <li><b>userName</b> : String<p style="margin-left:1em">The name of the user using the application</p></li>
+</ul>
+The page returns the preference in the same format saved by method savePreference and then it's applied. If there is no default preference the response text must be empty.
+</p></li>
+<li><b>loadPrefURL</b> : String<p style="margin-left:1em">The URL used to load a specified preference.
+This URL corresponds to a web page that returns the selected preference for the given user and id. It must be called with the following parameters:
+<ul>
+  <li><b>id</b> : String<p style="margin-left:1em">The id of the preference manager</p></li>
+  <li><b>userName</b> : String<p style="margin-left:1em">The name of the user using the application</p></li>
+  <li><b>prefId</b> : String<p style="margin-left:1em">The id of the selected preference</p></li>
+</ul>
+The page returns the preference in the same format saved by method savePreference and then it's applied.
+</p></li>
+<li><b>savePrefURL</b> : String<p style="margin-left:1em">The URL used to save a preference with a given name.
+This URL must be called with the following parameters:
+<ul>
+  <li><b>id</b> : String<p style="margin-left:1em">The id of the preference manager</p></li>
+  <li><b>userName</b> : String<p style="margin-left:1em">The name of the user using the application</p></li>
+  <li><b>prefId</b> : String<p style="margin-left:1em">The id of the selected preference.
+  If the value exist means that there is an update, otherwise is an insertion </p></li>
+  <li><b>prefName</b> : String<p style="margin-left:1em">Name of the preference to save</p></li>
+  <li><b>prefDesc</b> : String<p style="margin-left:1em">Description of the preference to save</p></li>
+  <li><b>prefValue</b> : String<p style="margin-left:1em">Value of the preference to save, encoded Json</p></li>
+  <li><b>isDefault</b> : boolean<p style="margin-left:1em">True if it's default preference, false otherwise</p></li>
+</ul>
+</p></li>
+<li><b>deletePrefURL</b> : String<p style="margin-left:1em">The URL used to delete one or more selected preferences.
+This URL must be called with the following parameters:
+<ul>
+  <li><b>id</b> : String<p style="margin-left:1em">The id of the preference manager</p></li>
+  <li><b>userName</b> : String<p style="margin-left:1em">The name of the user using the application</p></li>
+  <li><b>prefIdArray</b> : [String]<p style="margin-left:1em">Array of preference's Id to delete</p></li>
+</ul>
+</p></li> 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="applyDefaultPreference"> </a> <h3>applyDefaultPreference</h3>
+		<pre>void&nbsp;<b>applyDefaultPreference</b>()</pre> 
+	<ul>
+		
+		This method returns the default preference by userName.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>void</i>&nbsp;</code> 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="applyDefaultPreferenceCbk"> </a> <h3>applyDefaultPreferenceCbk</h3>
+		<pre>&lt;private&gt;&nbsp;void&nbsp;<b>applyDefaultPreferenceCbk</b>(response, options)</pre> 
+	<ul>
+		
+		This method applies the default preference, it it exist
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;response</code> - The XMLHttpRequest object containing the preference. 
+		</ul>
+		<ul>
+			<code><i>Object</i>&nbsp;options</code> - The parameter to the request call. 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>void</i>&nbsp;</code> 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="applyPreference"> </a> <h3>applyPreference</h3>
+		<pre>void&nbsp;<b>applyPreference</b>(prefName, prefValue)</pre> 
+	<ul>
+		
+		This method loads the preference selected.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;prefName</code> - The name of the preference 
+		</ul>
+		<ul>
+			<code><i>Object</i>&nbsp;prefValue</code> - The value of preferences in JSON format 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>void</i>&nbsp;</code> 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="applyPreferenceCbk"> </a> <h3>applyPreferenceCbk</h3>
+		<pre>&lt;private&gt;&nbsp;void&nbsp;<b>applyPreferenceCbk</b>(response, options)</pre> 
+	<ul>
+		
+		This method converts decodes the responseText using JSON and then it calls the setter function.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;response</code> - The XMLHttpRequest object containing the preference. 
+		</ul>
+		<ul>
+			<code><i>Object</i>&nbsp;options</code> - The parameter to the request call. 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>void</i>&nbsp;</code> 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="deletePreferences"> </a> <h3>deletePreferences</h3>
+		<pre>String&nbsp;<b>deletePreferences</b>(prefIdArray)</pre> 
+	<ul>
+		
+		This method deletes the preference selected.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;prefIdArray</code> - Array of preference's Id to delete 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>output decoded with JSON. If it's true (===) it means success, otherwise it's an error message 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getAllPreferences"> </a> <h3>getAllPreferences</h3>
+		<pre>Ext.data.Store&nbsp;<b>getAllPreferences</b>()</pre> 
+	<ul>
+		
+		This method returns a store that loads the preferences by userName.
+The store returned has these columns: prefName, prefDesc, isDefault
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Ext.data.Store</i>&nbsp;</code>store The store contains all of a user's preferences 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="savePreference"> </a> <h3>savePreference</h3>
+		<pre>String&nbsp;<b>savePreference</b>(prefId, prefName, prefDesc, isDefault)</pre> 
+	<ul>
+		
+		The method that saves the preference.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;prefId</code> - The id of the preference to save 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;prefName</code> - The name of the preference to save 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;prefDesc</code> - The description of the preference 
+		</ul>
+		<ul>
+			<code><i>boolean</i>&nbsp;isDefault</code> - True if it's default preference 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>output decoded with JSON. If it's true (===) it means success, otherwise it's an error message 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Event Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="applyDefaultPreferenceFailed"> </a> <h3>applyDefaultPreferenceFailed</h3>
+		<pre><b>applyDefaultPreferenceFailed</b>(prefIdArray, response)</pre> 
+	<ul>
+		
+		Fires when applying the default preference failed, that is when the applyDefaultPrefURL returned an error HTTP status code (for example 500)
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;prefIdArray</code> - An array with all the preferences to delete. 
+		</ul>
+		<ul>
+			<code><i>XMLHttpRequest</i>&nbsp;response</code> - The response of the ajax method. See <a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference </a> for more details 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="applyPreferenceFailed"> </a> <h3>applyPreferenceFailed</h3>
+		<pre><b>applyPreferenceFailed</b>(prefId, response)</pre> 
+	<ul>
+		
+		Fires when applying a preference failed, that is when the loadPrefURL returned an error HTTP status code (for example 500)
+<b> NB: </b> This event is not fired when the loading of the default preference fails. Look at applyDefaultPreferenceFailed instead
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;prefId</code> - The id of the preference that was not applied 
+		</ul>
+		<ul>
+			<code><i>XMLHttpRequest</i>&nbsp;response</code> - The response of the ajax method. See <a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference </a> for more details 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="loadPreferencesFailed"> </a> <h3>loadPreferencesFailed</h3>
+		<pre><b>loadPreferencesFailed</b>(response)</pre> 
+	<ul>
+		
+		Fires when a load on the store that lists the preferences fails, that is when the getAllPrefURL returned an error HTTP status code (for example 500)
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>XMLHttpRequest</i>&nbsp;response</code> - The response of the ajax method. See <a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference </a> for more details 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="preferenceDeleted"> </a> <h3>preferenceDeleted</h3>
+		<pre><b>preferenceDeleted</b>(prefIdArray)</pre> 
+	<ul>
+		
+		Fires when a preference is deleted
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;prefIdArray</code> - An array with the ids of all the deleted preferences. 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="preferenceDeleteFailed"> </a> <h3>preferenceDeleteFailed</h3>
+		<pre><b>preferenceDeleteFailed</b>(prefIdArray, response)</pre> 
+	<ul>
+		
+		Fires when a preference delete failed, that is when the deletePrefURL returned an error HTTP status code (for example 500)
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;prefIdArray</code> - An array with the ids of all the preferences to delete. 
+		</ul>
+		<ul>
+			<code><i>XMLHttpRequest</i>&nbsp;response</code> - The response of the ajax method. See <a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference </a> for more details 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="preferenceSaved"> </a> <h3>preferenceSaved</h3>
+		<pre><b>preferenceSaved</b>(prefId, prefName)</pre> 
+	<ul>
+		
+		Fires when a preference is saved
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;prefId</code> - The id of the preference that was saved 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;prefName</code> - The name of the saved preference 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="preferenceSaveFailed"> </a> <h3>preferenceSaveFailed</h3>
+		<pre><b>preferenceSaveFailed</b>(prefId, prefName, response)</pre> 
+	<ul>
+		
+		Fires when saving a preference failed, that is when the savePrefURL returned an error HTTP status code (for example 500)
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;prefId</code> - The id of the preference that was not saved 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;prefName</code> - The name of the preference that was not saved 
+		</ul>
+		<ul>
+			<code><i>XMLHttpRequest</i>&nbsp;response</code> - The response of the ajax method. See <a HREF="http://www.w3.org/TR/XMLHttpRequest/"> XMLHttpRequest reference </a> for more details 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:18 GMT+0100 (CET)</div>
+</body>
+</html>

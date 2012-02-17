@@ -1,0 +1,413 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: FilterModel.js 181 2008-09-12 14:06:10Z bobbicat71 $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox.core'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** Creates a new FilterModel. It can have as input parametr a fieldManager or the config to build the fieldManager
+<span class='linenumber'>  6</span>   * @class The filter model is the core class of the whole filter design, and probably the one you will interact most. It's the class that mantains the filter, it's the class used to obtain
+<span class='linenumber'>  7</span>   * an export of the filter in a predefined way (look at getFilterObj for more information about the format), to import a filter, to add or remove a filter and so on. All the views (for example QuickFilterModelView, StaticFilterModelView and DynamicFilterModelView)
+<span class='linenumber'>  8</span>   * just shows the data contained in the filter model, and use the filterModel to perform some operation on the filter.
+<span class='linenumber'>  9</span>   * A filter model only manages elementary filters that have their field inside the fieldManager that is used to build the filterModel.
+<span class='linenumber'> 10</span>   * &lt;h4> Examples &lt;/h4>
+<span class='linenumber'> 11</span>   * Build a filter model given the fieldManager
+<span class='linenumber'> 12</span>   * &lt;pre>
+<span class='linenumber'> 13</span>   * var fieldManager=new Ext.ux.netbox.core.FieldManager(fieldManager);
+<span class='linenumber'> 14</span>   * &lt;/pre>
+<span class='linenumber'> 15</span>   * Build a filter model using the config to a fieldManager:
+<span class='linenumber'> 16</span>   * &lt;pre>
+<span class='linenumber'> 17</span>   *  var filterCfg=[
+<span class='linenumber'> 18</span>   *    {id: 'company',label: 'Company'},
+<span class='linenumber'> 19</span>   *    {id: 'price',label: 'Price', type: 'float'},
+<span class='linenumber'> 20</span>   *    {id: 'change',label: 'Change', type: 'float'},
+<span class='linenumber'> 21</span>   *    {id: 'pctChange',label: '% Change', type: 'float'},
+<span class='linenumber'> 22</span>   *    {id: 'lastChange',label: 'Last Updated', type: 'date', format: 'd/m/Y H:i'},
+<span class='linenumber'> 23</span>   *    {id: 'shouldBuy',label: 'Should Buy', type: 'enum', availableValues: availableValuesStore, remoteStore: false}
+<span class='linenumber'> 24</span>   *  ];
+<span class='linenumber'> 25</span>   *  var fieldManager=new Ext.ux.netbox.core.FieldManager(filterCfg);
+<span class='linenumber'> 26</span>   * &lt;/pre>
+<span class='linenumber'> 27</span>   * @constructor
+<span class='linenumber'> 28</span>   * @param {Mixed} fieldManager A Ext.ux.netbox.core.FieldManager or a config to create a FieldMAnager. In this last case the fieldManager will be built directly by the filter model
+<span class='linenumber'> 29</span>   */</span><span class="WHIT">
+<span class='linenumber'> 30</span> </span><span class="NAME">Ext.ux.netbox.core.FilterModel</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">config</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 31</span>   </span><span class="NAME">Ext.ux.netbox.core.FilterModel.superclass.constructor.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 32</span>   </span><span class="NAME">this.addEvents</span><span class="PUNC">(</span><span class="COMM">/** @scope Ext.ux.netbox.core.FilterModel.prototype */</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 33</span>     </span><span class="COMM">/** Fires when an elementaryFilter is added
+<span class='linenumber'> 34</span>       * @event elementaryFilterAdded
+<span class='linenumber'> 35</span>       * @param {Ext.ux.netbox.core.FilterModel} filterModel The filterModel containing the added elementaryFilter
+<span class='linenumber'> 36</span>       * @param {Ext.ux.netbox.core.ElementaryFilter} elementaryFilter The added elementaryFilter
+<span class='linenumber'> 37</span>       */</span><span class="WHIT">
+<span class='linenumber'> 38</span>     </span><span class="NAME">elementaryFilterAdded</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 39</span>     </span><span class="COMM">/** Fires when an elementaryFilter is removed
+<span class='linenumber'> 40</span>       * @event elementaryFilterRemoved
+<span class='linenumber'> 41</span>       * @param {Ext.ux.netbox.core.FilterModel} filterModel The filterModel containing the removed elementaryFilter
+<span class='linenumber'> 42</span>       * @param {Ext.ux.netbox.core.ElementaryFilter} elementaryFilter The removed elementaryFilter
+<span class='linenumber'> 43</span>       */</span><span class="WHIT">
+<span class='linenumber'> 44</span>     </span><span class="NAME">elementaryFilterRemoved</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 45</span>     </span><span class="COMM">/** Fires when the filter managed by this filterModel is changed
+<span class='linenumber'> 46</span>       * @event filterChanged
+<span class='linenumber'> 47</span>       * @param {Ext.ux.netbox.core.FilterModel} filterModel The filterModel that has the new filter
+<span class='linenumber'> 48</span>       */</span><span class="WHIT">
+<span class='linenumber'> 49</span>     </span><span class="NAME">filterChanged</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="WHIT">
+<span class='linenumber'> 50</span>   </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 51</span>   </span><span class="COMM">/** The filter
+<span class='linenumber'> 52</span>     * @property {Ext.ux.netbox.core.Filter}
+<span class='linenumber'> 53</span>     * @private
+<span class='linenumber'> 54</span>     */</span><span class="WHIT">
+<span class='linenumber'> 55</span>   </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 56</span>   </span><span class="COMM">/** The fieldManager
+<span class='linenumber'> 57</span>     * @property {Ext.ux.netbox.core.FieldManager}
+<span class='linenumber'> 58</span>     * @private
+<span class='linenumber'> 59</span>     */</span><span class="WHIT">
+<span class='linenumber'> 60</span>   </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">config</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.FieldManager</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'> 61</span>     </span><span class="NAME">this.fieldManager</span><span class="PUNC">=</span><span class="NAME">config</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 62</span>   </span><span class="KEYW">else</span><span class="WHIT">
+<span class='linenumber'> 63</span>     </span><span class="NAME">this.fieldManager</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.FieldManager</span><span class="PUNC">(</span><span class="NAME">config</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 64</span>   </span><span class="NAME">this.fieldManager.on</span><span class="PUNC">(</span><span class="STRN">"beforeFieldRemoved"</span><span class="PUNC">,</span><span class="NAME">this.onBeforeFieldRemoved</span><span class="PUNC">,</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 65</span>   </span><span class="COMM">/** The logicalOperator
+<span class='linenumber'> 66</span>     * @property {Ext.ux.netbox.core.CompositeFilter.AND or Ext.ux.netbox.core.CompositeFilter.OR}
+<span class='linenumber'> 67</span>     * @private
+<span class='linenumber'> 68</span>     */</span><span class="WHIT">
+<span class='linenumber'> 69</span>   </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">config.logicalOperator</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'> 70</span>     </span><span class="NAME">this.logicalOperator</span><span class="PUNC">=</span><span class="NAME">Ext.ux.netbox.core.CompositeFilter.AND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 71</span>   </span><span class="KEYW">else</span><span class="WHIT">
+<span class='linenumber'> 72</span>     </span><span class="NAME">this.logicalOperator</span><span class="PUNC">=</span><span class="NAME">config.logicalOperator</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 73</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 74</span> 
+<span class='linenumber'> 75</span> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.netbox.core.FilterModel</span><span class="PUNC">,</span><span class="NAME">Ext.util.Observable</span><span class="PUNC">,</span><span class="COMM">/** @scope Ext.ux.netbox.core.FilterModel.prototype */</span><span class="WHIT">
+<span class='linenumber'> 76</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 77</span>   </span><span class="COMM">/** It doesn't allow the removal of a field if there are filters on that field
+<span class='linenumber'> 78</span>   * @private
+<span class='linenumber'> 79</span>   */</span><span class="WHIT">
+<span class='linenumber'> 80</span>   </span><span class="NAME">onBeforeFieldRemoved</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">field</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 81</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getElementaryFiltersByFieldId</span><span class="PUNC">(</span><span class="NAME">field.getId</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">length</span><span class="PUNC">></span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'> 82</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 83</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 84</span>   </span><span class="COMM">/** @private
+<span class='linenumber'> 85</span>     *
+<span class='linenumber'> 86</span>     */</span><span class="WHIT">
+<span class='linenumber'> 87</span>   </span><span class="NAME">_createFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">fieldId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">operator</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">values</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 88</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">myField</span><span class="PUNC">=</span><span class="NAME">this.getFieldManager</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getFieldById</span><span class="PUNC">(</span><span class="NAME">fieldId</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 89</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">myField</span><span class="PUNC">==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="STRN">"Field "</span><span class="PUNC">+</span><span class="NAME">fieldId</span><span class="PUNC">+</span><span class="STRN">" not found!"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 90</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">elementaryFilter</span><span class="PUNC">=</span><span class="NAME">myField.getElementaryFilterInstance</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 91</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">operator</span><span class="PUNC">!=</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="NAME">elementaryFilter.setOperator</span><span class="PUNC">(</span><span class="NAME">operator</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 92</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">values</span><span class="PUNC">!=</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="NAME">elementaryFilter.setValues</span><span class="PUNC">(</span><span class="NAME">values</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 93</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 94</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 95</span>   </span><span class="COMM">/** @private
+<span class='linenumber'> 96</span>     *
+<span class='linenumber'> 97</span>     */</span><span class="WHIT">
+<span class='linenumber'> 98</span>   </span><span class="NAME">_addFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 99</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>100</span>       </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="NAME">elementaryFilter</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>101</span>     </span><span class="KEYW">else</span><span class="WHIT">
+<span class='linenumber'>102</span>       </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.CompositeFilter</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.logicalOperator</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>103</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">"elementaryFilterAdded"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>104</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>105</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>106</span>     *
+<span class='linenumber'>107</span>     */</span><span class="WHIT">
+<span class='linenumber'>108</span>   </span><span class="NAME">_decodeFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filterObject</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>109</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filterObject.fieldId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>110</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">myField</span><span class="PUNC">=</span><span class="NAME">this.getFieldManager</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getFieldById</span><span class="PUNC">(</span><span class="NAME">filterObject.fieldId</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>111</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">myField</span><span class="PUNC">==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="STRN">"Field "</span><span class="PUNC">+</span><span class="NAME">filterObject.fieldId</span><span class="PUNC">+</span><span class="STRN">" not found!"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>112</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">operator</span><span class="PUNC">=</span><span class="NAME">myField.getAvailableOperatorById</span><span class="PUNC">(</span><span class="NAME">filterObject.operatorId</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>113</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">operator</span><span class="PUNC">===</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>114</span>         </span><span class="NAME">operator</span><span class="PUNC">=</span><span class="NAME">undefined</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>115</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">elementaryFilter</span><span class="PUNC">=</span><span class="NAME">myField.getElementaryFilterInstance</span><span class="PUNC">(</span><span class="NAME">operator</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>116</span>       </span><span class="NAME">elementaryFilter.setFilterObj</span><span class="PUNC">(</span><span class="NAME">filterObject</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>117</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>118</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>119</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">leftTmp</span><span class="PUNC">=</span><span class="NAME">this._decodeFilter</span><span class="PUNC">(</span><span class="NAME">filterObject.left</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>120</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">rightTmp</span><span class="PUNC">=</span><span class="NAME">this._decodeFilter</span><span class="PUNC">(</span><span class="NAME">filterObject.right</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>121</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">myCompositeFilter</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.CompositeFilter</span><span class="PUNC">(</span><span class="NAME">leftTmp</span><span class="PUNC">,</span><span class="NAME">filterObject.logicalOperator</span><span class="PUNC">,</span><span class="NAME">rightTmp</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>122</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">myCompositeFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>123</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>124</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>125</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>126</span>     *
+<span class='linenumber'>127</span>     */</span><span class="WHIT">
+<span class='linenumber'>128</span>   </span><span class="NAME">_encodeFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>129</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter.setValues</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>130</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">filter.getFilterObj</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>131</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>132</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">filterTmp</span><span class="PUNC">=</span><span class="NAME">filter.getFilterObj</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>133</span>       </span><span class="NAME">filterTmp.left</span><span class="PUNC">=</span><span class="NAME">this._encodeFilter</span><span class="PUNC">(</span><span class="NAME">filterTmp.left</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>134</span>       </span><span class="NAME">filterTmp.right</span><span class="PUNC">=</span><span class="NAME">this._encodeFilter</span><span class="PUNC">(</span><span class="NAME">filterTmp.right</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>135</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">filterTmp</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>136</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>137</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>138</span>   </span><span class="COMM">/** @private
+<span class='linenumber'>139</span>     *
+<span class='linenumber'>140</span>     */</span><span class="WHIT">
+<span class='linenumber'>141</span>   </span><span class="NAME">_findAndRemoveFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">parentExpression</span><span class="PUNC">,</span><span class="NAME">expression</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>142</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">expression</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.ElementaryFilter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>143</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">matchFn.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">expression</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>144</span>         </span><span class="NAME">toRemove.push</span><span class="PUNC">(</span><span class="NAME">expression</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>145</span>         </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>146</span>       </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>147</span>         </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>148</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>149</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>150</span> 
+<span class='linenumber'>151</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">=</span><span class="NAME">this._findAndRemoveFilter</span><span class="PUNC">(</span><span class="NAME">expression</span><span class="PUNC">,</span><span class="NAME">expression.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>152</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">shouldRemoveRight</span><span class="PUNC">=</span><span class="NAME">this._findAndRemoveFilter</span><span class="PUNC">(</span><span class="NAME">expression</span><span class="PUNC">,</span><span class="NAME">expression.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>153</span> 
+<span class='linenumber'>154</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveRight</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>155</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>156</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>157</span> 
+<span class='linenumber'>158</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>159</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">parentExpression.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="NAME">expression</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>160</span>         </span><span class="NAME">parentExpression.setLeftSide</span><span class="PUNC">(</span><span class="NAME">expression.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>161</span>       </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>162</span>         </span><span class="NAME">parentExpression.setRightSide</span><span class="PUNC">(</span><span class="NAME">expression.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>163</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>164</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>165</span> 
+<span class='linenumber'>166</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveRight</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>167</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">parentExpression.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="NAME">expression</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>168</span>         </span><span class="NAME">parentExpression.setLeftSide</span><span class="PUNC">(</span><span class="NAME">expression.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>169</span>       </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>170</span>         </span><span class="NAME">parentExpression.setRightSide</span><span class="PUNC">(</span><span class="NAME">expression.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>171</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>172</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>173</span> 
+<span class='linenumber'>174</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>175</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>176</span>   </span><span class="COMM">/** This method returns the FieldManager associated to this filterModel.
+<span class='linenumber'>177</span>     * @return {Ext.ux.netbox.core.FieldManager} The FieldManager
+<span class='linenumber'>178</span>     */</span><span class="WHIT">
+<span class='linenumber'>179</span>   </span><span class="NAME">getFieldManager</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>180</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">this.fieldManager</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>181</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>182</span>   </span><span class="COMM">/** This method returns the filter setted in this filterModel or null if is not setted.
+<span class='linenumber'>183</span>     * @return {Ext.ux.netbox.core.Filter} The filter setted
+<span class='linenumber'>184</span>     */</span><span class="WHIT">
+<span class='linenumber'>185</span>   </span><span class="NAME">getFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>186</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">this.filter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>187</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>188</span>   </span><span class="COMM">/** This method returns an object representing the actual filter or null if is not setted.
+<span class='linenumber'>189</span>     * &lt;PRE>
+<span class='linenumber'>190</span>     * Filter::=ElementaryFilter|CompositeFilter
+<span class='linenumber'>191</span>     * ElementaryFilter::={fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [...]}
+<span class='linenumber'>192</span>     * CompositeFilter::={left : Ext.ux.netbox.core.Filter, logicalOperator : String, right : Ext.ux.netbox.core.Filter}
+<span class='linenumber'>193</span>     * logicalOperator::="AND"|"OR"
+<span class='linenumber'>194</span>     * &lt;/PRE>
+<span class='linenumber'>195</span>     * &lt;h4> Example &lt;/h4>
+<span class='linenumber'>196</span>     * &lt;PRE>
+<span class='linenumber'>197</span>     * {
+<span class='linenumber'>198</span>     *    left:{
+<span class='linenumber'>199</span>     *      left:{fieldId:"field4",operatorId:"DATE_EQUAL",values:[{label:"12/10/2009 12:12",value:"2009-10-12 12:12:00"}]},
+<span class='linenumber'>200</span>     *      logicalOperator:"AND",
+<span class='linenumber'>201</span>     *      right:{fieldId:"field3",operatorId:"STRING_EQUAL",values:[{label:"label1",value:"valore1"}]}
+<span class='linenumber'>202</span>     *    },
+<span class='linenumber'>203</span>     *    logicalOperator:"AND",
+<span class='linenumber'>204</span>     *    right:{fieldId:"field",operatorId:"NUMBER_EQUAL",values:[{label:5,value:5}]}
+<span class='linenumber'>205</span>     * }
+<span class='linenumber'>206</span>     * &lt;/pre>
+<span class='linenumber'>207</span>     * @param {boolean} evenInvalid (optional) default false
+<span class='linenumber'>208</span>     * @param {Object} additionalFilterObj (optional)
+<span class='linenumber'>209</span>     * @param {String} additionalLogicalOper Ext.ux.netbox.core.CompositeFilter.AND/OR (optional)
+<span class='linenumber'>210</span>     * @return {Object} the filter object
+<span class='linenumber'>211</span>     */</span><span class="WHIT">
+<span class='linenumber'>212</span>   </span><span class="NAME">getFilterObj</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">evenInvalid</span><span class="PUNC">,</span><span class="NAME">additionalFilterObj</span><span class="PUNC">,</span><span class="NAME">additionalLogicalOper</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>213</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">additionalFilter</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>214</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">additionalFilterObj</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>215</span>       </span><span class="NAME">additionalFilter</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>216</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>217</span>       </span><span class="NAME">additionalFilter</span><span class="PUNC">=</span><span class="NAME">this._decodeFilter</span><span class="PUNC">(</span><span class="NAME">additionalFilterObj</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>218</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>219</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">additionalLogicalOper</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>220</span>       </span><span class="NAME">additionalLogicalOper</span><span class="PUNC">=</span><span class="NAME">Ext.ux.netbox.core.CompositeFilter.AND</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>221</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">filter</span><span class="PUNC">=</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>222</span> 
+<span class='linenumber'>223</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>224</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">!==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>225</span> 
+<span class='linenumber'>226</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">===</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>227</span>       </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="NAME">additionalFilter</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>228</span>     </span><span class="KEYW">else</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>229</span>       </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="NAME">this._decodeFilter</span><span class="PUNC">(</span><span class="NAME">this._encodeFilter</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="COMM">//clone the filter</span><span class="WHIT">
+<span class='linenumber'>230</span>       </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">additionalFilter</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>231</span>         </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.CompositeFilter</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="PUNC">,</span><span class="NAME">additionalLogicalOper</span><span class="PUNC">,</span><span class="NAME">additionalFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>232</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>233</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>234</span> 
+<span class='linenumber'>235</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.ElementaryFilter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>236</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">filterToExport.isValid</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>237</span>         </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>238</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>239</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>240</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">matchFn</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>241</span>         </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">filter.isValid</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>242</span>       </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>243</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">toRemove</span><span class="PUNC">=</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>244</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">=</span><span class="NAME">this._findAndRemoveFilter</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="PUNC">,</span><span class="NAME">filterToExport.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>245</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">shouldRemoveRight</span><span class="PUNC">=</span><span class="NAME">this._findAndRemoveFilter</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="PUNC">,</span><span class="NAME">filterToExport.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>246</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveLeft</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">shouldRemoveRight</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>247</span>         </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>248</span>       </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>249</span>         </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="NAME">filterToExport.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>250</span>       </span><span class="PUNC">}</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveRight</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>251</span>         </span><span class="NAME">filterToExport</span><span class="PUNC">=</span><span class="NAME">filterToExport.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>252</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>253</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>254</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="PUNC">!=</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>255</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">this._encodeFilter</span><span class="PUNC">(</span><span class="NAME">filterToExport</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>256</span>     </span><span class="KEYW">else</span><span class="WHIT">
+<span class='linenumber'>257</span>       </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>258</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>259</span>   </span><span class="COMM">/** This method sets the filter with an object formatted:
+<span class='linenumber'>260</span>     * &lt;PRE>
+<span class='linenumber'>261</span>     * Filter::=ElementaryFilter|CompositeFilter
+<span class='linenumber'>262</span>     * ElementaryFilter::={fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [...]}
+<span class='linenumber'>263</span>     * CompositeFilter::={left : Ext.ux.netbox.core.ElementaryFilter, logicalOperator : String, right : Ext.ux.netbox.core.ElementaryFilter}
+<span class='linenumber'>264</span>     * logicalOperator::="AND"|"OR"
+<span class='linenumber'>265</span>     * &lt;/PRE>
+<span class='linenumber'>266</span>     * If this succeeds the event "filterChanged" is triggered.
+<span class='linenumber'>267</span>     * @param {Object} filterObject
+<span class='linenumber'>268</span>     */</span><span class="WHIT">
+<span class='linenumber'>269</span>   </span><span class="NAME">setFilterObj</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filterObject</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>270</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filterObject</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>271</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">filterObject.setFilterObj</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>272</span>         </span><span class="NAME">filterObject</span><span class="PUNC">=</span><span class="NAME">this._decodeFilter</span><span class="PUNC">(</span><span class="NAME">filterObject</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>273</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>274</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>275</span>     </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="NAME">filterObject</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>276</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">"filterChanged"</span><span class="PUNC">,</span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>277</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>278</span>   </span><span class="COMM">/** This method returns an elementaryFilter by Id. If not found returns null.
+<span class='linenumber'>279</span>     * @param {String} id The id of the filter
+<span class='linenumber'>280</span>     * @return {Ext.ux.netbox.core.ElementaryFilter} The elementaryFilter with the given id or null if it is not found
+<span class='linenumber'>281</span>     */</span><span class="WHIT">
+<span class='linenumber'>282</span>   </span><span class="NAME">getElementaryFilterById</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">id</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>283</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">!=</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>284</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getElementaryFilterById</span><span class="PUNC">(</span><span class="NAME">id</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>285</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>286</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>287</span>   </span><span class="COMM">/** This method returns an array of elementaryFilter by fieldId or an empty array if not found.
+<span class='linenumber'>288</span>     * @param {String} fieldId The id of the field
+<span class='linenumber'>289</span>     * @return {Array of Ext.ux.netbox.core.ElementaryFilter} array of elementaryFilter setted with the same fieldId
+<span class='linenumber'>290</span>     */</span><span class="WHIT">
+<span class='linenumber'>291</span>   </span><span class="NAME">getElementaryFiltersByFieldId</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">fieldId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>292</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">!=</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>293</span>       </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getElementaryFiltersByFieldId</span><span class="PUNC">(</span><span class="NAME">fieldId</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>294</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>295</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>296</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>297</span>   </span><span class="COMM">/** This method add an elementaryFilter by field Id. If this succeeds the event "elementaryFilterAdded" is triggered.
+<span class='linenumber'>298</span>     * @param {String} fieldId
+<span class='linenumber'>299</span>     * @return {String} id of elementaryFilter added
+<span class='linenumber'>300</span>     */</span><span class="WHIT">
+<span class='linenumber'>301</span>   </span><span class="NAME">addElementaryFilterByFieldId</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">fieldId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>302</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">elementaryFilter</span><span class="PUNC">=</span><span class="NAME">this._createFilter</span><span class="PUNC">(</span><span class="NAME">fieldId</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>303</span>     </span><span class="NAME">this._addFilter</span><span class="PUNC">(</span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>304</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">elementaryFilter.getId</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>305</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>306</span>   </span><span class="COMM">/** This method add an elementaryFilter receiving an object that represents it. If this succeeds the event "filterAdded" is triggered.
+<span class='linenumber'>307</span>     * @param {Object} filterObject &#123;fieldId : "&lt;fieldId&gt;", operatorId : "&lt;operatorId&gt;", values : [...]&#125;
+<span class='linenumber'>308</span>     * @return {String} id of elementaryFilter added
+<span class='linenumber'>309</span>     */</span><span class="WHIT">
+<span class='linenumber'>310</span>   </span><span class="NAME">addElementaryFilter</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">filterObject</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>311</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">elementaryFilter</span><span class="PUNC">=</span><span class="NAME">this._createFilter</span><span class="PUNC">(</span><span class="NAME">filterObject.fieldId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">filterObject.operatorId</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">filterObject.values</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>312</span>     </span><span class="NAME">this._addFilter</span><span class="PUNC">(</span><span class="NAME">elementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>313</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">elementaryFilter.getId</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>314</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>315</span>   </span><span class="COMM">/** This method remove an elementaryFilter from the FilterModel by Id. If this succeeds the event "elementaryFilterRemoved" is triggered.
+<span class='linenumber'>316</span>     * @param {String} filterId The id of elementaryFilter to remove
+<span class='linenumber'>317</span>     * @throws {String} if the elementaryFilter to remove is not found
+<span class='linenumber'>318</span>     */</span><span class="WHIT">
+<span class='linenumber'>319</span>   </span><span class="NAME">removeElementaryFilterById</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filterId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>320</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">removedElementaryFilter</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>321</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>322</span>       </span><span class="KEYW">throw</span><span class="PUNC">(</span><span class="STRN">"Unable to remove the elementaryFilter with id "</span><span class="PUNC">+</span><span class="NAME">filterId</span><span class="PUNC">+</span><span class="STRN">". The elementaryFilter doesn't exist."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>323</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.ElementaryFilter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>324</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getId</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="NAME">filterId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>325</span>         </span><span class="NAME">removedElementaryFilter</span><span class="PUNC">=</span><span class="NAME">this.filter</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>326</span>         </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>327</span>       </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>328</span>         </span><span class="KEYW">throw</span><span class="PUNC">(</span><span class="STRN">"Unable to remove the elementaryFilter with id "</span><span class="PUNC">+</span><span class="NAME">filterId</span><span class="PUNC">+</span><span class="STRN">". The elementaryFilter doesn't exist"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>329</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>330</span>     </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>331</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">matchFn</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>332</span>         </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter.getId</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">===</span><span class="NAME">filterId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>333</span>           </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>334</span>         </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>335</span>           </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>336</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>337</span>       </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>338</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">toRemove</span><span class="PUNC">=</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>339</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">=</span><span class="NAME">this._findAndRemoveFilter</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>340</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">shouldRemoveRight</span><span class="PUNC">=</span><span class="NAME">this._findAndRemoveFilter</span><span class="PUNC">(</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">matchFn</span><span class="PUNC">,</span><span class="NAME">toRemove</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>341</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">toRemove.length</span><span class="PUNC">===</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>342</span>         </span><span class="KEYW">throw</span><span class="PUNC">(</span><span class="STRN">"Unable to remove the elementaryFilter with id "</span><span class="PUNC">+</span><span class="NAME">filterId</span><span class="PUNC">+</span><span class="STRN">". The elementaryFilter doesn't exist"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>343</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>344</span>       </span><span class="NAME">removedElementaryFilter</span><span class="PUNC">=</span><span class="NAME">toRemove</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>345</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveLeft</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>346</span>         </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>347</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>348</span> 
+<span class='linenumber'>349</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">shouldRemoveRight</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>350</span>         </span><span class="NAME">this.filter</span><span class="PUNC">=</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>351</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>352</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>353</span>     </span><span class="NAME">this.fireEvent</span><span class="PUNC">(</span><span class="STRN">"elementaryFilterRemoved"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">removedElementaryFilter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>354</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>355</span>   </span><span class="COMM">/** This method returns all the elementaryFilter stored in the filter expression or an empty array if filter is null.
+<span class='linenumber'>356</span>     * @param {Ext.ux.netbox.core.Filter} filter The filter from which the elementaryFilters must be extracted. Optional. If not supplied the filter in the filterModel is used
+<span class='linenumber'>357</span>     * @return {Array of Ext.ux.netbox.core.ElementaryFilter}
+<span class='linenumber'>358</span>     */</span><span class="WHIT">
+<span class='linenumber'>359</span>   </span><span class="NAME">getAllElementaryFilters</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>360</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>361</span>       </span><span class="NAME">filter</span><span class="PUNC">=</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>362</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">elementaryFilters</span><span class="PUNC">=</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>363</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">!=</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>364</span>       </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter.setValues</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>365</span>         </span><span class="NAME">elementaryFilters.push</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>366</span>       </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>367</span>         </span><span class="NAME">elementaryFilters</span><span class="PUNC">=</span><span class="NAME">elementaryFilters.concat</span><span class="PUNC">(</span><span class="NAME">this.getAllElementaryFilters</span><span class="PUNC">(</span><span class="NAME">filter.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>368</span>         </span><span class="NAME">elementaryFilters</span><span class="PUNC">=</span><span class="NAME">elementaryFilters.concat</span><span class="PUNC">(</span><span class="NAME">this.getAllElementaryFilters</span><span class="PUNC">(</span><span class="NAME">filter.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>369</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>370</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>371</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="NAME">elementaryFilters</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>372</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>373</span>   </span><span class="COMM">/** This method returns the logical operator setted in the filter model. The default is Ext.ux.netbox.core.CompositeFilter.AND
+<span class='linenumber'>374</span>     * @return {String} The logical operator setted
+<span class='linenumber'>375</span>     */</span><span class="WHIT">
+<span class='linenumber'>376</span>   </span><span class="NAME">getLogicalOperator</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>377</span>     </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.logicalOperator</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>378</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>379</span>   </span><span class="COMM">/** This method sets the logical operator in the filter model.
+<span class='linenumber'>380</span>     * @param {String} logicalOperator The logical operator to set in the filter model
+<span class='linenumber'>381</span>     */</span><span class="WHIT">
+<span class='linenumber'>382</span>   </span><span class="NAME">setLogicalOperator</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">logicalOperator</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>383</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">logicalOperator</span><span class="PUNC">===</span><span class="NAME">Ext.ux.netbox.core.CompositeFilter.OR</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">logicalOperator</span><span class="PUNC">===</span><span class="NAME">Ext.ux.netbox.core.CompositeFilter.AND</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>384</span>       </span><span class="NAME">this.logicalOperator</span><span class="PUNC">=</span><span class="NAME">logicalOperator</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>385</span>       </span><span class="COMM">//evento?</span><span class="WHIT">
+<span class='linenumber'>386</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>387</span>   </span><span class="COMM">/** This method calls the function with the scope on the filter passed as parameters.
+<span class='linenumber'>388</span>     * @param {Function} fn The function to call
+<span class='linenumber'>389</span>     * @param {Object} scope (optional) The scope in which to execute the function
+<span class='linenumber'>390</span>     * @param {Ext.ux.netbox.core.Filter} filter The filter on which execute the function
+<span class='linenumber'>391</span>     */</span><span class="WHIT">
+<span class='linenumber'>392</span>   </span><span class="NAME">each</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">fn</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">scope</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>393</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>394</span>       </span><span class="NAME">filter</span><span class="PUNC">=</span><span class="NAME">this.getFilter</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>395</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="PUNC">==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>396</span>       </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>397</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">scope</span><span class="PUNC">===</span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT">
+<span class='linenumber'>398</span>       </span><span class="NAME">scope</span><span class="PUNC">=</span><span class="NAME">window</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>399</span>     </span><span class="NAME">fn.call</span><span class="PUNC">(</span><span class="NAME">scope</span><span class="PUNC">,</span><span class="NAME">filter</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>400</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filter</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.CompositeFilter</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>401</span>       </span><span class="NAME">this.each</span><span class="PUNC">(</span><span class="NAME">fn</span><span class="PUNC">,</span><span class="NAME">scope</span><span class="PUNC">,</span><span class="NAME">filter.getLeftSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>402</span>       </span><span class="NAME">this.each</span><span class="PUNC">(</span><span class="NAME">fn</span><span class="PUNC">,</span><span class="NAME">scope</span><span class="PUNC">,</span><span class="NAME">filter.getRightSide</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>403</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>404</span>   </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>405</span> 
+<span class='linenumber'>406</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

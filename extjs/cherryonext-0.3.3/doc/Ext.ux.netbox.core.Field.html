@@ -1,0 +1,1670 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.core.Field</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.core.Field</h2>
+
+
+<i>Defined in <a href="Field.src.html">Field.js</a></i>
+
+<p>
+A field is an item on whch I want to perform filter operations.
+For example if I have a grid with a column 'Price' and I want to filter on the price column, surelly I have a filter on the price column.
+In a filter the operators available are defined (for example, on the Price column I want only to have the =, and > operators. The Price field will have these 2 operators.
+Among all the operators there is an operator of default, that will be used as default when a new elementary filter is instantiated.
+A field can have a list of available values, a default way to render and editor for the values of the elementary filters and so on.
+Usually you should not instantiate a field directly, but the Ext.ux.netbox.core.FieldManager (or directly the Ext.ux.netbox.core.FieldModel) instantiates them.</p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#availableOperators">availableOperators</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The list of all the available operators for this Field
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#availableValueStore">availableValueStore</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Store or array used to obtain the list of the available values.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#caseSensitive">caseSensitive</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This attribute says if the value should be compared with the store's one with case sensitive.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#defaultOperator">defaultOperator</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The default operator for this Field
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#defaultValues">defaultValues</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The default values of this Field.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#editor">editor</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The editor used to edit the value of an elementary filter based on this Field,
+when the operator doesn't provide a specialized implementation.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#emptyNotAllowed">emptyNotAllowed</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text to show when the field is empty and this is not allowed
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#forceReload">forceReload</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This value says if the store is always to reload.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#id">id</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The id of this Field
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#isRemote">isRemote</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This value says if the store used to obtain the availableValues uses remote or local data
+If true it uses remote data, if false it uses local data.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#label">label</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The label of this Field
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#validateFunc">validateFunc</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The validate function of this Field.
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.core.Field">Ext.ux.netbox.core.Field</a></b>(id, label)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  Implements the field class.
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;
+				&nbsp;int
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#_getOperatorIndexById">_getOperatorIndexById</a></b>(id) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search an operator and returns the index.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#addOperator">addOperator</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Add a operator to the list of available operator.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.Editor
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#createEditor">createEditor</a></b>(operatorId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method creates the editor for the grid when the operator doesn't provide a specialized implementation.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#emptyNotAllowedFn">emptyNotAllowedFn</a></b>(value) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Function to use as validator if an empty value is not allowed
+<h4> Example</h4>
+<pre>
+field.setValidateFn(field.emptyNotAllowedFn);
+</pre>
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.Operator
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getAvailableOperatorById">getAvailableOperatorById</a></b>(id) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the operator by Id.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Array
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getAvailableOperators">getAvailableOperators</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the list of the available operators.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.data.Store
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getAvailableValues">getAvailableValues</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Returns the array or store used to obtain the list of available values for this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.Operator
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getDefaultOperator">getDefaultOperator</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the default operator for this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Array
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getDefaultValues">getDefaultValues</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the default values for this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.ElementaryFilter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getElementaryFilterInstance">getElementaryFilterInstance</a></b>(operator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns an elementaryFilter's instance of the type of this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getId">getId</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the id of this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getLabel">getLabel</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the label of this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;boolean
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#isAvailableValuesAvailable">isAvailableValuesAvailable</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It says if there is a list of available values.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;boolean
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#isCaseSensitive">isCaseSensitive</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Returns true if the added value should be compared with case sensitive.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;boolean
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#isForceReload">isForceReload</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Returns true if the store is always to reload.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;boolean
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#isStoreRemote">isStoreRemote</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns a value that says if the store of the available values is local or remote.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#removeOperator">removeOperator</a></b>(id) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method remove an operator from the list of the operators.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#render">render</a></b>(value, operatorId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns a string rendering the value.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setAvailableValues">setAvailableValues</a></b>(store) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the store or Array of the available values.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setCaseSensitive">setCaseSensitive</a></b>(caseSensitive) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set the attribute that decide whether the added value should be compared with case sensitive.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setDefaultOperator">setDefaultOperator</a></b>(defaultOperator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the default operator for this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setDefaultValues">setDefaultValues</a></b>(values) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the default values for this Field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setForceReload">setForceReload</a></b>(forceReload) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sets the attribute that decides forced reloading of store.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setStoreRemote">setStoreRemote</a></b>(isRemote) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method is used to set a variable that says if the store of the available values is local or remote.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setValidateFn">setValidateFn</a></b>(func) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the function used to validate the values on the field.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;boolean&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#validate">validate</a></b>(values) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method calls the validation function provided for the field.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+<a name="event_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Event Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#defaultOperatorChanged">defaultOperatorChanged</a></b>(defaultOperator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a defaultOperator is changed
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#operatorAdded">operatorAdded</a></b>(operator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a operator is added
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#operatorRemoved">operatorRemoved</a></b>(operator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a operator is removed
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="availableOperators">
+	<!-- -->
+	</a> <h3>availableOperators</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>availableOperators</b></pre> 
+	<ul>
+		
+		The list of all the available operators for this Field
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="availableValueStore">
+	<!-- -->
+	</a> <h3>availableValueStore</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>availableValueStore</b></pre> 
+	<ul>
+		
+		The Store or array used to obtain the list of the available values.
+It must contain a value field and a label field.
+Example:<PRE>
+var store = new Ext.data.SimpleStore({
+fields: ['label', 'value'],
+data : exampleData
+});</PRE>
+<B>NB:</B> Both fields must be strings
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="caseSensitive">
+	<!-- -->
+	</a> <h3>caseSensitive</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>caseSensitive</b></pre> 
+	<ul>
+		
+		This attribute says if the value should be compared with the store's one with case sensitive. The default is true.
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="defaultOperator">
+	<!-- -->
+	</a> <h3>defaultOperator</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>defaultOperator</b></pre> 
+	<ul>
+		
+		The default operator for this Field
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="defaultValues">
+	<!-- -->
+	</a> <h3>defaultValues</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>defaultValues</b></pre> 
+	<ul>
+		
+		The default values of this Field. Optional.
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="editor">
+	<!-- -->
+	</a> <h3>editor</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>editor</b></pre> 
+	<ul>
+		
+		The editor used to edit the value of an elementary filter based on this Field,
+when the operator doesn't provide a specialized implementation.
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="emptyNotAllowed">
+	<!-- -->
+	</a> <h3>emptyNotAllowed</h3>
+		<pre>object <b>emptyNotAllowed</b></pre> 
+	<ul>
+		
+		Text to show when the field is empty and this is not allowed
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="forceReload">
+	<!-- -->
+	</a> <h3>forceReload</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>forceReload</b></pre> 
+	<ul>
+		
+		This value says if the store is always to reload.
+If true it reloads data everytime expanding the combo, if false it loads once. The default is false.
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="id">
+	<!-- -->
+	</a> <h3>id</h3>
+		<pre>&lt;private&gt;&nbsp;String <b>id</b></pre> 
+	<ul>
+		
+		The id of this Field
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="isRemote">
+	<!-- -->
+	</a> <h3>isRemote</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>isRemote</b></pre> 
+	<ul>
+		
+		This value says if the store used to obtain the availableValues uses remote or local data
+If true it uses remote data, if false it uses local data. The default is true.
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="label">
+	<!-- -->
+	</a> <h3>label</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>label</b></pre> 
+	<ul>
+		
+		The label of this Field
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="validateFunc">
+	<!-- -->
+	</a> <h3>validateFunc</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>validateFunc</b></pre> 
+	<ul>
+		
+		The validate function of this Field. Optional.
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.core.Field"> </a>
+<h3>Ext.ux.netbox.core.Field</h3>
+
+	<pre><b>Ext.ux.netbox.core.Field</b>(id, label)</pre>
+	<ul>
+		
+		Implements the field class.
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The field id. 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;label</code> - The label of the filter. If not supplied the id is used. Optional 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="_getOperatorIndexById"> </a> <h3>_getOperatorIndexById</h3>
+		<pre>&lt;private&gt;&nbsp;int&nbsp;<b>_getOperatorIndexById</b>(id)</pre> 
+	<ul>
+		
+		Search an operator and returns the index.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The id of the operator to search 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>int</i>&nbsp;</code>The index of the operator with the given id, or null if the operator doesn't exists 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="addOperator"> </a> <h3>addOperator</h3>
+		<pre><b>addOperator</b>()</pre> 
+	<ul>
+		
+		Add a operator to the list of available operator.
+If this succeeds the event "operatorAdded" is triggered.
+If the Field of the operator is not null and different that this one an exception is thrown.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;operator.</code> - The operator to add 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="createEditor"> </a> <h3>createEditor</h3>
+		<pre>Ext.Editor&nbsp;<b>createEditor</b>(operatorId)</pre> 
+	<ul>
+		
+		This method creates the editor for the grid when the operator doesn't provide a specialized implementation.
+In this default implementation it simply returns an Ext.ux.netbox.core.AvailableValuesEditor (ie a ComboBox) if there are availble values
+or a Ext.ux.netbox.core.TextValuesEditor (ie a TextField) otherwise.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;operatorId</code> - The operatorId actually used in the filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Ext.Editor</i>&nbsp;</code>The field used to edit the values of this filter 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="emptyNotAllowedFn"> </a> <h3>emptyNotAllowedFn</h3>
+		<pre><b>emptyNotAllowedFn</b>(value)</pre> 
+	<ul>
+		
+		Function to use as validator if an empty value is not allowed
+<h4> Example</h4>
+<pre>
+field.setValidateFn(field.emptyNotAllowedFn);
+</pre>
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code>value</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getAvailableOperatorById"> </a> <h3>getAvailableOperatorById</h3>
+		<pre><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a>&nbsp;<b>getAvailableOperatorById</b>(id)</pre> 
+	<ul>
+		
+		This method returns the operator by Id.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The id of the operator 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;</code>The operator with the given id or null if no operator is found 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getAvailableOperators"> </a> <h3>getAvailableOperators</h3>
+		<pre>Array&nbsp;<b>getAvailableOperators</b>()</pre> 
+	<ul>
+		
+		This method returns the list of the available operators.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;</code>An array containing all the available operators.
+If no operator is available it returns an empty array 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getAvailableValues"> </a> <h3>getAvailableValues</h3>
+		<pre>Ext.data.Store&nbsp;<b>getAvailableValues</b>()</pre> 
+	<ul>
+		
+		Returns the array or store used to obtain the list of available values for this Field.
+In this base class it throws an exception since isAvailableValuesAvailable always returns false
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Ext.data.Store</i>&nbsp;</code>The store used to obtain the available values 
+		</ul>
+	</ul>
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If isAvailableValuesAvailable returns false this method throws an Exception 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getDefaultOperator"> </a> <h3>getDefaultOperator</h3>
+		<pre><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a>&nbsp;<b>getDefaultOperator</b>()</pre> 
+	<ul>
+		
+		This method returns the default operator for this Field.
+Before the setDefaultOperator method is called it returns null.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;</code>The default operator for this Field 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getDefaultValues"> </a> <h3>getDefaultValues</h3>
+		<pre>Array&nbsp;<b>getDefaultValues</b>()</pre> 
+	<ul>
+		
+		This method returns the default values for this Field.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;</code>The default values for this Field 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getElementaryFilterInstance"> </a> <h3>getElementaryFilterInstance</h3>
+		<pre><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a>&nbsp;<b>getElementaryFilterInstance</b>(operator)</pre> 
+	<ul>
+		
+		This method returns an elementaryFilter's instance of the type of this Field.
+The operator of the elementaryFilter is the default operator of this Field.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;operator</code> - The operator to set on the filter. Optional. As defult the default operator is used. 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;</code>The elementaryFilter's instance 
+		</ul>
+	</ul>
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If the given operator is not in this field 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getId"> </a> <h3>getId</h3>
+		<pre>String&nbsp;<b>getId</b>()</pre> 
+	<ul>
+		
+		This method returns the id of this Field.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>the id of this Field 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getLabel"> </a> <h3>getLabel</h3>
+		<pre>String&nbsp;<b>getLabel</b>()</pre> 
+	<ul>
+		
+		This method returns the label of this Field.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>the label of this Field 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="isAvailableValuesAvailable"> </a> <h3>isAvailableValuesAvailable</h3>
+		<pre>boolean&nbsp;<b>isAvailableValuesAvailable</b>()</pre> 
+	<ul>
+		
+		It says if there is a list of available values.
+In this implementation it returns false if the setAvailableValues was not called with a Store or Array,
+or if the last time you called it, the passed value is different from null
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;</code>true if the operator supports a list of available values, false otherwise 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="isCaseSensitive"> </a> <h3>isCaseSensitive</h3>
+		<pre>boolean&nbsp;<b>isCaseSensitive</b>()</pre> 
+	<ul>
+		
+		Returns true if the added value should be compared with case sensitive. Default is false.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;</code>True if the value should be compared with the store's one with case sensitive, false otherwise 
+		</ul>
+	</ul>
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If isAvailableValuesAvailable returns false this method throws an exception 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="isForceReload"> </a> <h3>isForceReload</h3>
+		<pre>boolean&nbsp;<b>isForceReload</b>()</pre> 
+	<ul>
+		
+		Returns true if the store is always to reload. Default is false.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;</code>True if the store is always to reload, false otherwise 
+		</ul>
+	</ul>
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If isAvailableValuesAvailable returns false this method throws an exception 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="isStoreRemote"> </a> <h3>isStoreRemote</h3>
+		<pre>boolean&nbsp;<b>isStoreRemote</b>()</pre> 
+	<ul>
+		
+		This method returns a value that says if the store of the available values is local or remote.
+If it returns true the store fetches data from remote, if it returns false the store uses local data.
+If isAvailableValuesAvailable returns false, the method throws an exception.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;</code>True if the store fetches data from remote, false otherwise 
+		</ul>
+	</ul>
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If isAvailableValuesAvailable returns false this method throws an exception 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="removeOperator"> </a> <h3>removeOperator</h3>
+		<pre><b>removeOperator</b>(id)</pre> 
+	<ul>
+		
+		This method remove an operator from the list of the operators.
+If this succeeds the event "operatorRemoved" is triggered. Is not possible to remove the defaultOperator.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The id of the operator to remove 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If the operator to remove is the defaultOperator 
+		</ul>
+		<ul>
+			<code>String</code> If the operator with the given id is not found 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="render"> </a> <h3>render</h3>
+		<pre>String&nbsp;<b>render</b>(value, operatorId)</pre> 
+	<ul>
+		
+		This method returns a string rendering the value. It's used when the operator doesn't provide a specialized implementation.
+In this default implementation it returns:
+<PRE>
+      Condition                Returns
+----------------------         ---------
+is undefined or null          Empty String
+array with length 0           Empty String
+array with length > 0         The return of this function called on the the values of the array concatenated using ","
+object with the label         this function called on value.label
+and the value fields
+something else                String(value)
+</PRE>
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;value</code> - The value to render 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;operatorId</code> - The id of the operator in the Filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>the HTML fragment used to render the value of the Filter 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setAvailableValues"> </a> <h3>setAvailableValues</h3>
+		<pre><b>setAvailableValues</b>(store)</pre> 
+	<ul>
+		
+		This method sets the store or Array of the available values.
+If the value is not null, isAvailableValuesAvailable values available will return true
+The store must contain a value field and a label field.
+Example: <PRE>
+var store = new Ext.data.SimpleStore({
+fields: ['label', 'value'],
+data : exampleData
+});</PRE>
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Ext.ux.Store</i>&nbsp;store</code> - The store used to obtain the available values 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setCaseSensitive"> </a> <h3>setCaseSensitive</h3>
+		<pre><b>setCaseSensitive</b>(caseSensitive)</pre> 
+	<ul>
+		
+		Set the attribute that decide whether the added value should be compared with case sensitive.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;caseSensitive</code> - True if the value should be compared with the store's one with case sensitive, false otherwise 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setDefaultOperator"> </a> <h3>setDefaultOperator</h3>
+		<pre><b>setDefaultOperator</b>(defaultOperator)</pre> 
+	<ul>
+		
+		This method sets the default operator for this Field.
+The default operator must be among the operators of this Field. If not an exception is thrown.
+If this succeeds the event "defaultOperatorChanged" is triggered.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;defaultOperator</code> - The default operator for this Field 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setDefaultValues"> </a> <h3>setDefaultValues</h3>
+		<pre><b>setDefaultValues</b>(values)</pre> 
+	<ul>
+		
+		This method sets the default values for this Field.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;values</code> - The default values for this Field 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setForceReload"> </a> <h3>setForceReload</h3>
+		<pre><b>setForceReload</b>(forceReload)</pre> 
+	<ul>
+		
+		Sets the attribute that decides forced reloading of store.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;forceReload</code> - True if the store is always to reload, false otherwise 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setStoreRemote"> </a> <h3>setStoreRemote</h3>
+		<pre><b>setStoreRemote</b>(isRemote)</pre> 
+	<ul>
+		
+		This method is used to set a variable that says if the store of the available values is local or remote.
+If isAvailableValuesAvailable returns false the value is ignored. The default is true.
+<B>NB:</B> This method is used to instantiate the editor, and this happens on the first edit.
+After this moment every change in the parameter is ignored
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;isRemote</code> - True if the store is remote, false otherwise 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setValidateFn"> </a> <h3>setValidateFn</h3>
+		<pre><b>setValidateFn</b>(func)</pre> 
+	<ul>
+		
+		This method sets the function used to validate the values on the field. Example of usage:
+<PRE>
+var myValidateFunction=function(valuesArray){
+  if(valuesArray.length > 0){
+    if(valuesArray[0].value > 1)
+      return true;
+    else
+      return "The value is too small";
+  }else{
+    return "The value is required";
+  }
+};
+field.setValidateFn(myValidateFunction);
+</PRE>
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>function</i>&nbsp;func</code> - The function used to validate the values on the field. This function has only the value of the filter as parameter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="validate"> </a> <h3>validate</h3>
+		<pre>boolean&nbsp;String&nbsp;<b>validate</b>(values)</pre> 
+	<ul>
+		
+		This method calls the validation function provided for the field. If none is supplied returns always true.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array</i>&nbsp;values</code> - The values to be validated 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>boolean</i>&nbsp;</code>true if the values are valid 
+		</ul>
+		<ul>
+			<code><i>String</i>&nbsp;</code>the message returned by the custom validator if the values are not valid 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Event Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="defaultOperatorChanged"> </a> <h3>defaultOperatorChanged</h3>
+		<pre><b>defaultOperatorChanged</b>(defaultOperator)</pre> 
+	<ul>
+		
+		Fires when a defaultOperator is changed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;defaultOperator</code> - The changed defaultOperator 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="operatorAdded"> </a> <h3>operatorAdded</h3>
+		<pre><b>operatorAdded</b>(operator)</pre> 
+	<ul>
+		
+		Fires when a operator is added
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;operator</code> - The added operator 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="operatorRemoved"> </a> <h3>operatorRemoved</h3>
+		<pre><b>operatorRemoved</b>(operator)</pre> 
+	<ul>
+		
+		Fires when a operator is removed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Operator.html">Ext.ux.netbox.core.Operator</a></i>&nbsp;operator</code> - The removed operator 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:20 GMT+0100 (CET)</div>
+</body>
+</html>

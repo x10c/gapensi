@@ -1,0 +1,40 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: TextFieldOperator.js 104 2008-02-29 16:01:33Z bobbicat71 $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox.string'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** Create a new TextFieldOperator
+<span class='linenumber'>  6</span>   * @constructor
+<span class='linenumber'>  7</span>   * @extends Ext.ux.netbox.core.Operator
+<span class='linenumber'>  8</span>   * @class This is the class that implements an operator that wants always a TextField
+<span class='linenumber'>  9</span>   * even if availableValues are available.
+<span class='linenumber'> 10</span>   */</span><span class="WHIT">
+<span class='linenumber'> 11</span> </span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">id</span><span class="PUNC">,</span><span class="NAME">label</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 12</span> 
+<span class='linenumber'> 13</span> </span><span class="WHIT">  </span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator.superclass.constructor.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="NAME">id</span><span class="PUNC">,</span><span class="NAME">label</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 14</span> 
+<span class='linenumber'> 15</span> </span><span class="WHIT">  </span><span class="COMM">/** With this operator I want always a TextField, even if there are available values
+<span class='linenumber'> 16</span>     * This is the variable that contains the editor
+<span class='linenumber'> 17</span>     * @property {Ext.Editor} editor
+<span class='linenumber'> 18</span>     */</span><span class="WHIT">
+<span class='linenumber'> 19</span> </span><span class="WHIT">  </span><span class="NAME">this.editor</span><span class="PUNC">=</span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 20</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 21</span> 
+<span class='linenumber'> 22</span> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.netbox.string.TextFieldOperator</span><span class="PUNC">,</span><span class="NAME">Ext.ux.netbox.core.Operator</span><span class="PUNC">,</span><span class="COMM">/** @scope Ext.ux.netbox.string.TextFieldOperator.prototype */</span><span class="WHIT">
+<span class='linenumber'> 23</span> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 24</span> </span><span class="WHIT">  </span><span class="COMM">/** This method creates an Ext.ux.netbox.core.TextValuesEditor as editor.
+<span class='linenumber'> 25</span>     * @param {String} operatorId The operatorId actually used in the filter
+<span class='linenumber'> 26</span>     * @return {Ext.Editor} The field used to edit the values of this filter
+<span class='linenumber'> 27</span>     */</span><span class="WHIT">
+<span class='linenumber'> 28</span> </span><span class="WHIT">  </span><span class="NAME">createEditor</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">operatorId</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 29</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">=</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.ux.netbox.core.TextValuesEditor</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 30</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">editor</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 31</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 32</span> 
+<span class='linenumber'> 33</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span></pre></body></html>

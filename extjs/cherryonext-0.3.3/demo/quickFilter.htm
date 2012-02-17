@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Quick Filter Demo</title>
+  <link rel="stylesheet" type="text/css" href="../ext/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="../resources/cherryonext.css" />
+  <script type="text/javascript" src="../ext/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../ext/ext-all.js"></script>
+  <script type="text/javascript" src="../cherryonext.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="myStylesheet.css" />  
+  <script type="text/javascript" src="mydata.js"></script>
+
+  <script language="JavaScript" type="text/javascript">
+
+    Ext.BLANK_IMAGE_URL="../ext/resources/images/default/s.gif";
+
+    var fieldManager;
+    var filterModel;
+    var localFilterResolver;
+    var availableValuesStore=new Ext.data.SimpleStore({fields: ['label', 'value'],
+      data: [
+        ["Yes","0"],
+        ["No","1"],
+        ["I don't remember","2"]
+      ]});
+    Ext.onReady(function(){
+
+      var filterCfg=[
+        {id: 'company',label: 'Company'},
+        {id: 'price',label: 'Price', type: 'float'},
+        {id: 'change',label: 'Change', type: 'float'},
+        {id: 'pctChange',label: '% Change', type: 'float'},
+        {id: 'lastChange',label: 'Last Updated', type: 'date', format: 'd/m/Y H:i'},
+        {id: 'inPortfolio',label: 'In Portfolio', type: 'enum', availableValues: availableValuesStore, remoteStore: false}
+      ];
+
+      //FilterModel
+      fieldManager=new Ext.ux.netbox.core.FieldManager(filterCfg);
+      filterModel=new Ext.ux.netbox.core.FilterModel(fieldManager);
+      localFilterResolver=new Ext.ux.netbox.core.LocalStoreFilterResolver(filterModel);
+
+      //--------------------------------------------------------------------------------------
+      // QuickFilter
+      var quickFilter= new Ext.ux.netbox.core.QuickFilterModelView({
+        filterModel: filterModel
+      });
+
+      quickFilter.on("filterChanged",filterTable);
+
+/*
+      var myMenu= new Ext.menu.Menu(
+        {items:[quickFilter.getFilterMenu(),quickFilter.getRemoveFilterMenu()]}
+      );
+*/
+      //You can instantiate the contextMenuManager directly passing to it the config for the menu
+      var contextMenuManager=new Ext.ux.netbox.ContextMenuManager({menu: {items:[quickFilter.getFilterMenu(),quickFilter.getRemoveFilterMenu()]}});
+      //--------------------------------------------------------------------------------------
+
+      // create the Grid
+      var grid = new Ext.grid.GridPanel({
+        store: store,
+        columns: [
+          {id:'company',header: "Company", width: 160, sortable: true, dataIndex: 'company'},
+          {header: "Price", width: 75, sortable: true, renderer: 'usMoney', dataIndex: 'price'},
+          {header: "Change", width: 75, sortable: true, renderer: change, dataIndex: 'change'},
+          {header: "% Change", width: 75, sortable: true, renderer: pctChange, dataIndex: 'pctChange'},
+          {header: "Last Updated", width: 95, sortable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i'), dataIndex: 'lastChange'},
+          {header: "In Portfolio", width: 85, sortable: true, renderer: inPortfolio, dataIndex: 'inPortfolio'}
+        ],
+        stripeRows: true,
+        plugins: [new Ext.ux.netbox.core.FilterHeaderPlugin(filterModel),contextMenuManager],
+        autoExpandColumn: 'company',
+        width: 800,
+        height: 500
+      });
+
+      grid.render("mettiloQui");
+
+    });
+
+    function filterTable(){
+     localFilterResolver.apply(store);
+    }
+
+    </script>
+</head>
+
+<body>
+<h1>Quick Filter</h1>
+<p> In this demo you can add or remove filters right clicking on the grid</p>
+<div id="mettiloQui"></div>
+</body>
+</html>

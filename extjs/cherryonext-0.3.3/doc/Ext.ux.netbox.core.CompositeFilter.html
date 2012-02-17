@@ -1,0 +1,770 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.core.CompositeFilter</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.core.CompositeFilter</h2>
+
+
+	Extends <a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a>.<br/>
+
+<i>Defined in <a href="CompositeFilter.src.html">CompositeFilter.js</a></i>
+
+<p>
+The class implements composite filter, for example (A=1 AND B=2) OR C=3 is a composite filter.Since the logical operators (AND,OR) are binary operator, a composite filter has 2 sides (the left and the right one), and the logical operator between the 2.More composite filters can be built combining other composite filter.For example (A=1 AND B=2) OR C=3 is a composite filter which has on the left a composite filter A=1 AND B=2 and on the right an elementary filter (C=3).</p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#AND">AND</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A constant representing the AND logical operator.
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>String</code></font>
+			</td>
+			<td>
+				<code><b><a href="#OR">OR</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A constant representing the OR logical operator.
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.core.CompositeFilter">Ext.ux.netbox.core.CompositeFilter</a></b>(left, logicalOperator, right)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  It create a new composite filter
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.ElementaryFilter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getElementaryFilterById">getElementaryFilterById</a></b>(id) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns an elementary filter by Id.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Array of Ext.ux.netbox.core.ElementaryFilter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getElementaryFiltersByFieldId">getElementaryFiltersByFieldId</a></b>(fieldId) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns an array of elemenatry filter with the same fieldId.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Object
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getFilterObj">getFilterObj</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns a javascript object representing the composite filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.Filter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getLeftSide">getLeftSide</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the left side of this composite filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;String
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getLogicalOperator">getLogicalOperator</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the logical operator of this composite filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.Filter
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getRightSide">getRightSide</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the right side of this composite filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setFilterObj">setFilterObj</a></b>(filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the current composite filter.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setLeftSide">setLeftSide</a></b>(left) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the left side of this composite filter and fires the event leftSideChanged.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setLogicalOperator">setLogicalOperator</a></b>(logicalOperator) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the logical operator of this composite filter and fires the event operatorChanged.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#setRightSide">setRightSide</a></b>(right) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method sets the right side of a composite filter and fires the event rightSideChanged.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+<a name="event_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Event Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#leftSideChanged">leftSideChanged</a></b>(filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when the left side of the filter is changed
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#operatorChanged">operatorChanged</a></b>(filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when the logical operator is changed
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#rightSideChanged">rightSideChanged</a></b>(filter) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when the right side of the filter is changed
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="AND">
+	<!-- -->
+	</a> <h3>AND</h3>
+		<pre>String <b>AND</b></pre> 
+	<ul>
+		
+		A constant representing the AND logical operator. This is a static property of CompositeFilter
+		
+	</ul>
+	<hr>
+
+	<!-- One single method detail entry -->
+	<a name="OR">
+	<!-- -->
+	</a> <h3>OR</h3>
+		<pre>String <b>OR</b></pre> 
+	<ul>
+		
+		A constant representing the OR logical operator. This is a static property of CompositeFilter
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.core.CompositeFilter"> </a>
+<h3>Ext.ux.netbox.core.CompositeFilter</h3>
+
+	<pre><b>Ext.ux.netbox.core.CompositeFilter</b>(left, logicalOperator, right)</pre>
+	<ul>
+		
+		It create a new composite filter
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;left</code> - The left side of the composite filter 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;logicalOperator</code> - The logical operator. Must be one between <em>Ext.ux.netbox.core.CompositeFilter.AND</em> and <em>Ext.ux.netbox.core.CompositeFilter.OR</em>. If not an exception is thown. 
+		</ul>
+		
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;right</code> - The right side of the composite filter. Can be null. If null the value of logical operator is ignored. 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="getElementaryFilterById"> </a> <h3>getElementaryFilterById</h3>
+		<pre><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a>&nbsp;<b>getElementaryFilterById</b>(id)</pre> 
+	<ul>
+		
+		This method returns an elementary filter by Id. If not found returns null.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The id of the elemenatry filter 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;</code>The elemenatry filter with the given id or null if elemenatry filter is not found 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getElementaryFiltersByFieldId"> </a> <h3>getElementaryFiltersByFieldId</h3>
+		<pre>Array of <a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a>&nbsp;<b>getElementaryFiltersByFieldId</b>(fieldId)</pre> 
+	<ul>
+		
+		This method returns an array of elemenatry filter with the same fieldId. If not found returns an empty array.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;fieldId</code> - The id of the field 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Array of <a href="Ext.ux.netbox.core.ElementaryFilter.html">Ext.ux.netbox.core.ElementaryFilter</a></i>&nbsp;</code>The array of elemenatry filters with the same fieldId or an empty array If not found 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getFilterObj"> </a> <h3>getFilterObj</h3>
+		<pre>Object&nbsp;<b>getFilterObj</b>()</pre> 
+	<ul>
+		
+		This method returns a javascript object representing the composite filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Object</i>&nbsp;</code>{left : Ext.ux.netbox.core.Filter, logicalOperator : String, right : Ext.ux.netbox.core.Filter} 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getLeftSide"> </a> <h3>getLeftSide</h3>
+		<pre><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a>&nbsp;<b>getLeftSide</b>()</pre> 
+	<ul>
+		
+		This method returns the left side of this composite filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;</code>The left side of this composite filter 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getLogicalOperator"> </a> <h3>getLogicalOperator</h3>
+		<pre>String&nbsp;<b>getLogicalOperator</b>()</pre> 
+	<ul>
+		
+		This method returns the logical operator of this composite filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>String</i>&nbsp;</code>The logical operator 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getRightSide"> </a> <h3>getRightSide</h3>
+		<pre><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a>&nbsp;<b>getRightSide</b>()</pre> 
+	<ul>
+		
+		This method returns the right side of this composite filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;</code>The right side of this composite filter 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setFilterObj"> </a> <h3>setFilterObj</h3>
+		<pre><b>setFilterObj</b>(filter)</pre> 
+	<ul>
+		
+		This method sets the current composite filter.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>left : <a href="Ext.ux.netbox.core.Filter.html"><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></a>, logicalOperator : String, right : Ext.ux.netbox.core.Filter</i>&nbsp;filter</code> 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setLeftSide"> </a> <h3>setLeftSide</h3>
+		<pre><b>setLeftSide</b>(left)</pre> 
+	<ul>
+		
+		This method sets the left side of this composite filter and fires the event leftSideChanged.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;left</code> - The new left side. 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setLogicalOperator"> </a> <h3>setLogicalOperator</h3>
+		<pre><b>setLogicalOperator</b>(logicalOperator)</pre> 
+	<ul>
+		
+		This method sets the logical operator of this composite filter and fires the event operatorChanged.The logical operator must be one among <em>Ext.ux.netbox.core.CompositeFilter.AND</em> and <em>Ext.ux.netbox.core.CompositeFilter.OR</em>. If not an exception is thrown.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;logicalOperator</code> - The logical operator 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	<ul>
+		<b>Throws:</b>
+		<ul>
+			<code>String</code> If the logical operator is unknown 
+		</ul>
+	</ul>
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="setRightSide"> </a> <h3>setRightSide</h3>
+		<pre><b>setRightSide</b>(right)</pre> 
+	<ul>
+		
+		This method sets the right side of a composite filter and fires the event rightSideChanged.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Filter.html">Ext.ux.netbox.core.Filter</a></i>&nbsp;right</code> - The new right side. 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Event Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="leftSideChanged"> </a> <h3>leftSideChanged</h3>
+		<pre><b>leftSideChanged</b>(filter)</pre> 
+	<ul>
+		
+		Fires when the left side of the filter is changed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.CompositeFilter.html">Ext.ux.netbox.core.CompositeFilter</a></i>&nbsp;filter</code> - The composite filter that fires the event 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="operatorChanged"> </a> <h3>operatorChanged</h3>
+		<pre><b>operatorChanged</b>(filter)</pre> 
+	<ul>
+		
+		Fires when the logical operator is changed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.CompositeFilter.html">Ext.ux.netbox.core.CompositeFilter</a></i>&nbsp;filter</code> - The composite filter that fires the event 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="rightSideChanged"> </a> <h3>rightSideChanged</h3>
+		<pre><b>rightSideChanged</b>(filter)</pre> 
+	<ul>
+		
+		Fires when the right side of the filter is changed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.CompositeFilter.html">Ext.ux.netbox.core.CompositeFilter</a></i>&nbsp;filter</code> - The composite filter that fires the event 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:19 GMT+0100 (CET)</div>
+</body>
+</html>

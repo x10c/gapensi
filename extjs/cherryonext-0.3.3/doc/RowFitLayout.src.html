@@ -1,0 +1,237 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.layout'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="COMM">/**
+<span class='linenumber'>  4</span>  * @class Ext.ux.layout.RowFitLayout
+<span class='linenumber'>  5</span>  * @extends Ext.layout.ContainerLayout
+<span class='linenumber'>  6</span>  * &lt;p>Layout that distributes heights of elements so they take 100% of the
+<span class='linenumber'>  7</span>  * container height.&lt;/p>
+<span class='linenumber'>  8</span>  * &lt;p>Height of the child element can be given in pixels (as an integer) or
+<span class='linenumber'>  9</span>  * in percent. All elements with absolute height (i.e. in pixels) always will
+<span class='linenumber'> 10</span>  * have the given height. All "free" space (that is not filled with elements
+<span class='linenumber'> 11</span>  * with 'absolute' height) will be distributed among other elements in
+<span class='linenumber'> 12</span>  * proportion of their height percentage. Elements without 'height' in the
+<span class='linenumber'> 13</span>  * config will take equal portions of the "unallocated" height.&lt;/p>
+<span class='linenumber'> 14</span>  * &lt;p>Supports panel collapsing, hiding, removal/addition. The adapter is provided
+<span class='linenumber'> 15</span>  * to use with Ext.SplitBar: &lt;b>Ext.ux.layout.RowFitLayout.SplitAdapter&lt;/b>.&lt;/p>
+<span class='linenumber'> 16</span>  * &lt;p>Example usage:&lt;/p>
+<span class='linenumber'> 17</span>  * &lt;pre>&lt;code>
+<span class='linenumber'> 18</span>  var vp = new Ext.Viewport({
+<span class='linenumber'> 19</span>    layout: 'row-fit',
+<span class='linenumber'> 20</span>    items: [
+<span class='linenumber'> 21</span>      { xtype: 'panel', height: 100, title: 'Height in pixels', html: 'panel height = 100px' },
+<span class='linenumber'> 22</span>      { xtype: 'panel', height: "50%", title: '1/2', html: 'Will take half of remaining height' },
+<span class='linenumber'> 23</span>      { xtype: 'panel', title: 'No height 1', html: 'Panel without given height' },
+<span class='linenumber'> 24</span>      { xtype: 'panel', title: 'No height 2', html: 'Another panel' }
+<span class='linenumber'> 25</span>    ]
+<span class='linenumber'> 26</span>  });
+<span class='linenumber'> 27</span>  * &lt;/code>&lt;/pre>
+<span class='linenumber'> 28</span>  * Usage of the split bar adapter:
+<span class='linenumber'> 29</span>  * &lt;pre>&lt;code>
+<span class='linenumber'> 30</span>  var split = new Ext.SplitBar("elementToDrag", "elementToSize", Ext.SplitBar.VERTICAL, Ext.SplitBar.TOP);
+<span class='linenumber'> 31</span>  // note the Ext.SplitBar object is passed to the adapter constructor to set
+<span class='linenumber'> 32</span>  // correct minSize and maxSize:
+<span class='linenumber'> 33</span>  split.setAdapter(new Ext.ux.layout.RowFitLayout.SplitAdapter(split));
+<span class='linenumber'> 34</span>  * &lt;/code>&lt;/pre>
+<span class='linenumber'> 35</span>  */</span><span class="WHIT">
+<span class='linenumber'> 36</span> 
+<span class='linenumber'> 37</span> </span><span class="NAME">Ext.ux.layout.RowFitLayout</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.layout.ContainerLayout</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 38</span> </span><span class="WHIT">  </span><span class="COMM">// private</span><span class="WHIT">
+<span class='linenumber'> 39</span> </span><span class="WHIT">  </span><span class="NAME">monitorResize</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 40</span> 
+<span class='linenumber'> 41</span> </span><span class="WHIT">  </span><span class="COMM">// private</span><span class="WHIT">
+<span class='linenumber'> 42</span> </span><span class="WHIT">  </span><span class="NAME">trackChildEvents</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="STRN">'collapse'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'expand'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'hide'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'show'</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 43</span> 
+<span class='linenumber'> 44</span> </span><span class="WHIT">  </span><span class="COMM">// private</span><span class="WHIT">
+<span class='linenumber'> 45</span> </span><span class="WHIT">  </span><span class="NAME">renderAll</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">ct</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 46</span> </span><span class="WHIT">    </span><span class="NAME">Ext.ux.layout.RowFitLayout.superclass.renderAll.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 47</span> </span><span class="WHIT">    </span><span class="COMM">// add event listeners on addition/removal of children</span><span class="WHIT">
+<span class='linenumber'> 48</span> </span><span class="WHIT">    </span><span class="NAME">ct.on</span><span class="PUNC">(</span><span class="STRN">'add'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.containerListener</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 49</span> </span><span class="WHIT">    </span><span class="NAME">ct.on</span><span class="PUNC">(</span><span class="STRN">'remove'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.containerListener</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 50</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 51</span> 
+<span class='linenumber'> 52</span> </span><span class="WHIT">  </span><span class="COMM">// private</span><span class="WHIT">
+<span class='linenumber'> 53</span> </span><span class="WHIT">  </span><span class="NAME">renderItem</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">c</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">position</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 54</span> </span><span class="WHIT">    </span><span class="NAME">Ext.ux.layout.RowFitLayout.superclass.renderItem.apply</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 55</span> 
+<span class='linenumber'> 56</span> </span><span class="WHIT">    </span><span class="COMM">// add event listeners</span><span class="WHIT">
+<span class='linenumber'> 57</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.trackChildEvents.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">n</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 58</span> </span><span class="WHIT">      </span><span class="NAME">c.on</span><span class="PUNC">(</span><span class="NAME">this.trackChildEvents</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.itemListener</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 59</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 60</span> </span><span class="WHIT">    </span><span class="NAME">c.animCollapse</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// looks ugly together with row-fit layout</span><span class="WHIT">
+<span class='linenumber'> 61</span> 
+<span class='linenumber'> 62</span> </span><span class="WHIT">    </span><span class="COMM">// store some layout-specific calculations</span><span class="WHIT">
+<span class='linenumber'> 63</span> </span><span class="WHIT">    </span><span class="NAME">c.rowFit</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 64</span> </span><span class="WHIT">      </span><span class="NAME">hasAbsHeight</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// whether the component has absolute height (in pixels)</span><span class="WHIT">
+<span class='linenumber'> 65</span> </span><span class="WHIT">      </span><span class="NAME">relHeight</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// relative height, in pixels (if applicable)</span><span class="WHIT">
+<span class='linenumber'> 66</span> </span><span class="WHIT">      </span><span class="NAME">calcRelHeight</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// calculated relative height (used when element is resized)</span><span class="WHIT">
+<span class='linenumber'> 67</span> </span><span class="WHIT">      </span><span class="NAME">calcAbsHeight</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="COMM">// calculated absolute height</span><span class="WHIT">
+<span class='linenumber'> 68</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 69</span> 
+<span class='linenumber'> 70</span> </span><span class="WHIT">    </span><span class="COMM">// process height config option</span><span class="WHIT">
+<span class='linenumber'> 71</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">c.height</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 72</span> </span><span class="WHIT">      </span><span class="COMM">// store relative (given in percent) height</span><span class="WHIT">
+<span class='linenumber'> 73</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">c.height</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"string"</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">c.height.indexOf</span><span class="PUNC">(</span><span class="STRN">"%"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 74</span> </span><span class="WHIT">        </span><span class="NAME">c.rowFit.relHeight</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">c.height</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 75</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 76</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="COMM">// set absolute height</span><span class="WHIT">
+<span class='linenumber'> 77</span> </span><span class="WHIT">        </span><span class="NAME">c.setHeight</span><span class="PUNC">(</span><span class="NAME">c.height</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 78</span> </span><span class="WHIT">        </span><span class="NAME">c.rowFit.hasAbsHeight</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 79</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 80</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 81</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 82</span> 
+<span class='linenumber'> 83</span> </span><span class="WHIT">  </span><span class="COMM">// private</span><span class="WHIT">
+<span class='linenumber'> 84</span> </span><span class="WHIT">  </span><span class="NAME">onLayout</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">ct</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 85</span> </span><span class="WHIT">    </span><span class="NAME">Ext.ux.layout.RowFitLayout.superclass.onLayout.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">ct</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">target</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 86</span> 
+<span class='linenumber'> 87</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.container.collapsed</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">ct.items</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">ct.items.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 88</span> 
+<span class='linenumber'> 89</span> </span><span class="WHIT">    </span><span class="COMM">// first loop: determine how many elements with relative height are there,</span><span class="WHIT">
+<span class='linenumber'> 90</span> </span><span class="WHIT">    </span><span class="COMM">// sums of absolute and relative heights etc.</span><span class="WHIT">
+<span class='linenumber'> 91</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">absHeightSum</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// sum of elements' absolute heights</span><span class="WHIT">
+<span class='linenumber'> 92</span> </span><span class="WHIT">        </span><span class="NAME">relHeightSum</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// sum of all percent heights given in children configs</span><span class="WHIT">
+<span class='linenumber'> 93</span> </span><span class="WHIT">        </span><span class="NAME">relHeightRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// "scale" ratio used in case sum &lt;> 100%</span><span class="WHIT">
+<span class='linenumber'> 94</span> </span><span class="WHIT">        </span><span class="NAME">relHeightElements</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// array of elements with 'relative' height for the second loop</span><span class="WHIT">
+<span class='linenumber'> 95</span> </span><span class="WHIT">        </span><span class="NAME">noHeightCount</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// number of elements with no height given</span><span class="WHIT">
+<span class='linenumber'> 96</span> 
+<span class='linenumber'> 97</span> </span><span class="WHIT">    </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">n</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ct.items.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">n</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 98</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">c</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ct.items.itemAt</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 99</span> 
+<span class='linenumber'>100</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">c.isVisible</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>101</span> 
+<span class='linenumber'>102</span> </span><span class="WHIT">      </span><span class="COMM">// collapsed panel is treated as an element with absolute height</span><span class="WHIT">
+<span class='linenumber'>103</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">c.collapsed</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">absHeightSum</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">c.getFrameHeight</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>104</span> </span><span class="WHIT">      </span><span class="COMM">// element that has an absolute height</span><span class="WHIT">
+<span class='linenumber'>105</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">c.rowFit.hasAbsHeight</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>106</span> </span><span class="WHIT">        </span><span class="NAME">absHeightSum</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">c.height</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>107</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>108</span> </span><span class="WHIT">      </span><span class="COMM">// 'relative-heighted'</span><span class="WHIT">
+<span class='linenumber'>109</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>110</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">c.rowFit.relHeight</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">noHeightCount</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="COMM">// element with no height given</span><span class="WHIT">
+<span class='linenumber'>111</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">relHeightSum</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">c.rowFit.relHeight</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>112</span> </span><span class="WHIT">        </span><span class="NAME">relHeightElements.push</span><span class="PUNC">(</span><span class="NAME">c</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>113</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>114</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>115</span> 
+<span class='linenumber'>116</span> </span><span class="WHIT">    </span><span class="COMM">// if sum of relative heights &lt;> 100% (e.g. error in config or consequence</span><span class="WHIT">
+<span class='linenumber'>117</span> </span><span class="WHIT">    </span><span class="COMM">// of collapsing/removing panels), scale 'em so it becomes 100%</span><span class="WHIT">
+<span class='linenumber'>118</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">noHeightCount</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">relHeightSum</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="NUMB">100</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>119</span> </span><span class="WHIT">      </span><span class="NAME">relHeightRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">100</span><span class="WHIT"> </span><span class="REGX">/ relHeightSum;
+<span class='linenumber'>120</span>     }
+<span class='linenumber'>121</span> 
+<span class='linenumber'>122</span>     var freeHeight = target.getStyleSize().height - absHeightSum, /</span><span class="REGX">/ "unallocated" height we have
+<span class='linenumber'>123</span>         absHeightLeft = freeHeight; /</span><span class="REGX">/ track how much free space we have
+<span class='linenumber'>124</span> 
+<span class='linenumber'>125</span>     while (relHeightElements.length) {
+<span class='linenumber'>126</span>       var c = relHeightElements.shift(), /</span><span class="REGX">/ element we're working with
+<span class='linenumber'>127</span>           relH = c.rowFit.relHeight * relHeightRatio, /</span><span class="REGX">/ height of this element in percent
+<span class='linenumber'>128</span>           absH = 0; /</span><span class="REGX">/ height in pixels
+<span class='linenumber'>129</span> 
+<span class='linenumber'>130</span>       /</span><span class="REGX">/ no height in config
+<span class='linenumber'>131</span>       if (!relH) {
+<span class='linenumber'>132</span>         relH = (100 - relHeightSum) /</span><span class="WHIT"> </span><span class="NAME">noHeightCount</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>133</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>134</span> 
+<span class='linenumber'>135</span> </span><span class="WHIT">      </span><span class="COMM">// last element takes all remaining space</span><span class="WHIT">
+<span class='linenumber'>136</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">relHeightElements.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">absH</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">absHeightLeft</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>137</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">absH</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.round</span><span class="PUNC">(</span><span class="NAME">freeHeight</span><span class="WHIT"> </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">relH</span><span class="WHIT"> </span><span class="REGX">/ 100); }
+<span class='linenumber'>138</span> 
+<span class='linenumber'>139</span>       /</span><span class="REGX">/ anyway, height can't be negative
+<span class='linenumber'>140</span>       if (absH &lt; 0) { absH = 0; }
+<span class='linenumber'>141</span> 
+<span class='linenumber'>142</span>       c.rowFit.calcAbsHeight = absH;
+<span class='linenumber'>143</span>       c.rowFit.calcRelHeight = relH;
+<span class='linenumber'>144</span> 
+<span class='linenumber'>145</span>       c.setHeight(absH);
+<span class='linenumber'>146</span>       absHeightLeft -= absH;
+<span class='linenumber'>147</span>     }
+<span class='linenumber'>148</span> 
+<span class='linenumber'>149</span>   },
+<span class='linenumber'>150</span> 
+<span class='linenumber'>151</span> 
+<span class='linenumber'>152</span>   /</span><span class="PUNC">*</span><span class="PUNC">*</span><span class="WHIT">
+<span class='linenumber'>153</span> </span><span class="WHIT">   </span><span class="PUNC">*</span><span class="WHIT"> </span><span class="NAME">Event</span><span class="WHIT"> </span><span class="NAME">listener</span><span class="WHIT"> </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="NAME">container</span><span class="STRN">'s children
+<span class='linenumber'>154</span>    * @private
+<span class='linenumber'>155</span>    */
+<span class='linenumber'>156</span>   itemListener: function(item) {
+<span class='linenumber'>157</span>     item.ownerCt.doLayout();
+<span class='linenumber'>158</span>   },
+<span class='linenumber'>159</span> 
+<span class='linenumber'>160</span> 
+<span class='linenumber'>161</span>   /**
+<span class='linenumber'>162</span>    * Event listener for the container (on add, remove)
+<span class='linenumber'>163</span>    * @private
+<span class='linenumber'>164</span>    */
+<span class='linenumber'>165</span>   containerListener: function(ct) {
+<span class='linenumber'>166</span>     ct.doLayout();
+<span class='linenumber'>167</span>   }
+<span class='linenumber'>168</span> 
+<span class='linenumber'>169</span> });
+<span class='linenumber'>170</span> 
+<span class='linenumber'>171</span> // Split adapter
+<span class='linenumber'>172</span> if (Ext.SplitBar.BasicLayoutAdapter) {
+<span class='linenumber'>173</span> 
+<span class='linenumber'>174</span>   /**
+<span class='linenumber'>175</span>    * @param {Ext.SplitBar} splitbar to which adapter is applied.
+<span class='linenumber'>176</span>    *   If supplied, will set correct minSize and maxSize.
+<span class='linenumber'>177</span>    */
+<span class='linenumber'>178</span>   Ext.ux.layout.RowFitLayout.SplitAdapter = function(splitbar) {
+<span class='linenumber'>179</span>     if (splitbar && splitbar.el.dom.nextSibling) {
+<span class='linenumber'>180</span>       var next = Ext.getCmp( splitbar.el.dom.nextSibling.id ),
+<span class='linenumber'>181</span>           resized = Ext.getCmp(splitbar.resizingEl.id);
+<span class='linenumber'>182</span> 
+<span class='linenumber'>183</span>       if (next) {
+<span class='linenumber'>184</span>         splitbar.maxSize = (resized.height || resized.rowFit.calcAbsHeight) +
+<span class='linenumber'>185</span>                            next.getInnerHeight() - 1; // seems can'</span><span class="NAME">t</span><span class="WHIT"> </span><span class="NAME">set</span><span class="WHIT"> </span><span class="NAME">height</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="WHIT"> </span><span class="KEYW">in</span><span class="WHIT"> </span><span class="NAME">IE</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"1"</span><span class="WHIT"> </span><span class="NAME">works</span><span class="WHIT"> </span><span class="NAME">fine</span><span class="WHIT">
+<span class='linenumber'>186</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>187</span> </span><span class="WHIT">      </span><span class="NAME">splitbar.minSize</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">resized.getFrameHeight</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>188</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>189</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>190</span> 
+<span class='linenumber'>191</span> </span><span class="WHIT">  </span><span class="NAME">Ext.extend</span><span class="PUNC">(</span><span class="NAME">Ext.ux.layout.RowFitLayout.SplitAdapter</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">Ext.SplitBar.BasicLayoutAdapter</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>192</span> 
+<span class='linenumber'>193</span> </span><span class="WHIT">    </span><span class="NAME">setElementSize</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">splitbar</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">newSize</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">onComplete</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>194</span> </span><span class="WHIT">      </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">resized</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Ext.getCmp</span><span class="PUNC">(</span><span class="NAME">splitbar.resizingEl.id</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>195</span> 
+<span class='linenumber'>196</span> </span><span class="WHIT">      </span><span class="COMM">// can't resize absent, collapsed or hidden panel</span><span class="WHIT">
+<span class='linenumber'>197</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">resized</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">resized.collapsed</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">resized.isVisible</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>198</span> 
+<span class='linenumber'>199</span> </span><span class="WHIT">      </span><span class="COMM">// resizingEl has absolute height: just change it</span><span class="WHIT">
+<span class='linenumber'>200</span> </span><span class="WHIT">      </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">resized.rowFit.hasAbsHeight</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>201</span> </span><span class="WHIT">        </span><span class="NAME">resized.setHeight</span><span class="PUNC">(</span><span class="NAME">newSize</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>202</span> </span><span class="WHIT">      </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'>203</span> </span><span class="WHIT">      </span><span class="COMM">// resizingEl has relative height: affects next sibling</span><span class="WHIT">
+<span class='linenumber'>204</span> </span><span class="WHIT">      </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>205</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">splitbar.el.dom.nextSibling</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'>206</span> </span><span class="WHIT">          </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nextSibling</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Ext.getCmp</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">splitbar.el.dom.nextSibling.id</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>207</span> </span><span class="WHIT">              </span><span class="NAME">deltaAbsHeight</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">newSize</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">resized.rowFit.calcAbsHeight</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// pixels</span><span class="WHIT">
+<span class='linenumber'>208</span> </span><span class="WHIT">              </span><span class="NAME">nsRf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nextSibling.rowFit</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="COMM">// shortcut</span><span class="WHIT">
+<span class='linenumber'>209</span> </span><span class="WHIT">              </span><span class="NAME">rzRf</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">resized.rowFit</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'>210</span> </span><span class="WHIT">              </span><span class="COMM">// pixels in a percent</span><span class="WHIT">
+<span class='linenumber'>211</span> </span><span class="WHIT">              </span><span class="NAME">pctPxRatio</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">rzRf.calcRelHeight</span><span class="WHIT"> </span><span class="REGX">/ rzRf.calcAbsHeight,
+<span class='linenumber'>212</span>               deltaRelHeight = pctPxRatio * deltaAbsHeight; /</span><span class="REGX">/ change in height in percent
+<span class='linenumber'>213</span> 
+<span class='linenumber'>214</span>           rzRf.relHeight = rzRf.calcRelHeight + deltaRelHeight;
+<span class='linenumber'>215</span> 
+<span class='linenumber'>216</span>           if (nsRf.hasAbsHeight) {
+<span class='linenumber'>217</span>             var newHeight = nextSibling.height - deltaAbsHeight;
+<span class='linenumber'>218</span>             nextSibling.height = newHeight;
+<span class='linenumber'>219</span>             nextSibling.setHeight(newHeight);
+<span class='linenumber'>220</span>           }
+<span class='linenumber'>221</span>           else {
+<span class='linenumber'>222</span>             nsRf.relHeight = nsRf.calcRelHeight - deltaRelHeight;
+<span class='linenumber'>223</span>           }
+<span class='linenumber'>224</span>         }
+<span class='linenumber'>225</span>       }
+<span class='linenumber'>226</span>       /</span><span class="REGX">/ recalculate heights
+<span class='linenumber'>227</span>       resized.ownerCt.doLayout();
+<span class='linenumber'>228</span>     } /</span><span class="REGX">/ of setElementSize
+<span class='linenumber'>229</span> 
+<span class='linenumber'>230</span>   }); /</span><span class="TOKN"></span></pre></body></html>

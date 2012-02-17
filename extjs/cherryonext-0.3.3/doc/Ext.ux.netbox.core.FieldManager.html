@@ -1,0 +1,662 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>JsDoc: Ext.ux.netbox.core.FieldManager</title>
+	<style type="text/css">
+		body { background-color: #FFFFFF; }
+		.TableHeadingColor { background: #CCCCFF; }
+		.TableSubHeadingColor { background: #EEEEFF; }
+		.TableRowColor { background: #FFFFFF; }
+		
+		.FrameTitleFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameHeadingFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.FrameItemFont
+		{
+			font-size: 10pts;
+			font-family: Helvetica, Arial, san-serif;
+		}
+		
+		.NavBar
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #FFFFFF;
+		}
+		
+		.jsdoc_ctime
+		{
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 9pt;
+			text-align: right;
+		}
+		
+		.optional
+		{
+			font-variant: normal;
+			color: #AAAFD1;
+			font-size: 75%;
+			font-style: italic;
+			vertical-align: super;
+		}
+	</style>
+</head>
+
+<body>
+
+<table style="width: 100%">
+<tr>
+<td class="NavBar" valign="top"><font size="-2">SUMMARY:&nbsp;<a href="#field_summary">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_summary">CONSTR</a>&nbsp;|&nbsp;<a href="#method_summary">METHOD</a></font></td>
+<td class="NavBar" valign="top"><font size="-2">DETAIL:&nbsp;<a href="#field_detail">FIELD</a>&nbsp;|&nbsp;<a href="#constructor_detail">CONSTR</a>&nbsp;|&nbsp;<a href="#method_detail">METHOD</a></font></td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Class Ext.ux.netbox.core.FieldManager</h2>
+
+
+<i>Defined in <a href="FieldManager.src.html">FieldManager.js</a></i>
+
+<p>
+This class manages the filter fields. You should use an instance of this class (obtained using filterModel.getFieldManager) to add or remove filter fields, or to obtain them to add or remove operators.More than one filter model can have the same FieldManager, allowing to have different sets of filters, but on the same set of fields.</p>
+
+
+
+
+<hr>
+
+<!-- =========== FIELD SUMMARY =========== -->
+
+<a name="field_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Field Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;object</code></font>
+			</td>
+			<td>
+				<code><b><a href="#fields">fields</a></b></code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+<!-- =========== END FIELD SUMMARY =========== -->
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<a name="constructor_summary"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+	<td colspan=2><font size="+2"><b>Constructor Summary</b></font></td>
+</tr>
+
+	<tr bgcolor="white" class="TableRowColor">
+	   <td>
+	
+		<code>
+		<b><a href="#Ext.ux.netbox.core.FieldManager">Ext.ux.netbox.core.FieldManager</a></b>(config)
+		</code>
+		  <br>
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  Creates a new FieldManager class in the Netbox Filter Framework, eventually instantiating the fields.
+		  </td>
+	</tr>
+
+</table>
+&nbsp;
+<!-- ======== END CONSTRUCTOR SUMMARY ======== -->
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Method Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#addField">addField</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method add a Field to the array in FieldManager.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>&lt;private&gt;&nbsp;
+				&nbsp;Ext.ux.netbox.core.Field
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#createFieldFromCfg">createFieldFromCfg</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It creates a field given a field config
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Array of Ext.ux.netbox.core.Field
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getAllFields">getAllFields</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns the list of all fields.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+				&nbsp;Ext.ux.netbox.core.Field
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#getFieldById">getFieldById</a></b>(id) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method returns a field by Id or null if it is not found.
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#reconfigure">reconfigure</a></b>(config) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It removes all the fields from the field managerand it readds the fields in the given config
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#removeAll">removeAll</a></b>() </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It removes all the fiels from this FieldManager
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code></code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#removeField">removeField</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This method remove a Field from the array in FieldManager.
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+<!-- ========== EVENT SUMMARY =========== -->
+
+
+<a name="event_summary"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=2>
+			<font size="+2"> <b>Event Summary</b></font>
+		</td>
+	</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#beforeFieldRemoved">beforeFieldRemoved</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires before a Field is removed
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#fieldAdded">fieldAdded</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a Field is added
+ 
+			</td>
+		</tr>
+	
+		<tr bgcolor="white" class="TableRowColor">
+			<td align="right" valign="top" width="1%">
+				<font size="-1"><code>
+                
+                
+                
+                  void
+				</code></font> 
+			</td>
+			<td>
+				<code> <b> <a href="#fieldRemoved">fieldRemoved</a></b>(field) </code> 
+				<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fires when a Field is removed
+ 
+			</td>
+		</tr>
+	
+</table>
+&nbsp;
+
+
+
+<!-- ========== INHERITED METHODS SUMMARY =========== -->
+
+<br/>
+
+<!-- ========== END INHERITED METHODS SUMMARY =========== -->
+
+<!-- ============ FIELD DETAIL START ========= -->
+
+<a name="field_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Field Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<!-- One single method detail entry -->
+	<a name="fields">
+	<!-- -->
+	</a> <h3>fields</h3>
+		<pre>&lt;private&gt;&nbsp;object <b>fields</b></pre> 
+	<ul>
+		
+		
+		
+	</ul>
+	<hr>
+
+
+<!-- ============ FIELD DETAIL END ========== -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL START ======== -->
+<a name="constructor_detail"> </a>
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+   <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+      <td colspan=1>
+      <font size="+2"><b>Constructor Detail</b></font>
+      </td>
+   </tr>
+
+</table>
+
+<a name="Ext.ux.netbox.core.FieldManager"> </a>
+<h3>Ext.ux.netbox.core.FieldManager</h3>
+
+	<pre><b>Ext.ux.netbox.core.FieldManager</b>(config)</pre>
+	<ul>
+		
+		Creates a new FieldManager class in the Netbox Filter Framework, eventually instantiating the fields.<br><b> NB: </b> If availableValues is specified and the type of the field is string the STRING_LIST and STRING_NOT_IN_LIST operators will be added to the fields.
+	</ul>
+	
+	<!-- PARAMETERS START -->
+	
+	<ul>
+		<b>Parameters:</b>
+		
+		<ul>
+			<code><i>Array of field config</i>&nbsp;config</code> - An array of configuration object for the fields in this object. Optional, if not present an empty FieldManager is created. 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;config.id</code> - The id of the field (for example the id of the column) 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;config.label</code> - The label of the field (for example the header of the column) 
+		</ul>
+		
+		<ul>
+			<code><i>Array</i>&nbsp;config.defaultValues</code> - The default values of the field in the format {value: ... , label: ...} Optional 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;config.type</code> - The type of the field. Available values are: string, enum, float, int, date. Default type is string 
+		</ul>
+		
+		<ul>
+			<code><i>String</i>&nbsp;config.format</code> - Only for dates, the format of the date. Look Ext.ux.netbox.data.DateFilterType for more details 
+		</ul>
+		
+		<ul>
+			<code><i>Ext.data.Store</i>&nbsp;config.availableValues</code> - The store containing the available values for this field. Look at Ext.ux.netbox.core.Field.setAvailableValues for more details 
+		</ul>
+		
+		<ul>
+			<code><i>boolean</i>&nbsp;config.remoteStore</code> - True if the store is remote, false otherwise. Look at Ext.ux.netbox.core.Field.setStoreRemote for more details 
+		</ul>
+		
+		<ul>
+			<code><i>boolean</i>&nbsp;config.forceReload</code> - True if you want reload the store everytime expand the combo. Look at Ext.ux.netbox.core.Field.setForceReload for more details 
+		</ul>
+		
+		<ul>
+			<code><i>boolean</i>&nbsp;config.caseSensitive</code> - True if the value should be compared with the store's one with case sensitive. Look at Ext.ux.netbox.core.Field.setCaseSensitive for more details 
+		</ul>
+		
+		<ul>
+			<code><i>function</i>&nbsp;config.validate</code> - The function used to validate the values of the Field. Look at Ext.ux.netbox.core.Field.setValidateFn for more details 
+		</ul>
+		
+	</ul>
+	
+	<!-- PARAMETERS END -->
+
+<hr/>
+<!-- END ADDITIONAL ATTRIBUTES  -->
+<!-- ========= CONSTRUCTOR DETAIL END ======== -->
+
+
+<!-- ============ METHOD DETAIL START ======= -->
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Method Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="addField"> </a> <h3>addField</h3>
+		<pre><b>addField</b>(field)</pre> 
+	<ul>
+		
+		This method add a Field to the array in FieldManager.If this succeeds the event "fieldAdded" is triggered.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a> or field config</i>&nbsp;field</code> - The Field to add 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="createFieldFromCfg"> </a> <h3>createFieldFromCfg</h3>
+		<pre>&lt;private&gt;&nbsp;<a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a>&nbsp;<b>createFieldFromCfg</b>()</pre> 
+	<ul>
+		
+		It creates a field given a field config
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>field config</i>&nbsp;fieldCfg.</code> - See the constructor for more details 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;</code>the field built using 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getAllFields"> </a> <h3>getAllFields</h3>
+		<pre>Array of <a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a>&nbsp;<b>getAllFields</b>()</pre> 
+	<ul>
+		
+		This method returns the list of all fields.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i>Array of <a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;</code>The collection of fields for this Filter 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="getFieldById"> </a> <h3>getFieldById</h3>
+		<pre><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a>&nbsp;<b>getFieldById</b>(id)</pre> 
+	<ul>
+		
+		This method returns a field by Id or null if it is not found.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>String</i>&nbsp;id</code> - The id of field 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	<ul>
+		<b>Returns:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;</code>The field with the given id 
+		</ul>
+	</ul>
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="reconfigure"> </a> <h3>reconfigure</h3>
+		<pre><b>reconfigure</b>(config)</pre> 
+	<ul>
+		
+		It removes all the fields from the field managerand it readds the fields in the given config
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i>Array of field config</i>&nbsp;config</code> - An array of configuration object for the fields in this object. Optional, if not present an empty FieldManager is created. See the constructort description for more details 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="removeAll"> </a> <h3>removeAll</h3>
+		<pre><b>removeAll</b>()</pre> 
+	<ul>
+		
+		It removes all the fiels from this FieldManager
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="removeField"> </a> <h3>removeField</h3>
+		<pre><b>removeField</b>(field)</pre> 
+	<ul>
+		
+		This method remove a Field from the array in FieldManager.If this succeeds the event "fieldRemoved" is triggered. A removal can be vetoed returning false to the beforeFieldRemoved eventFor example if an elementary filter exists for the given field, the FilterModel doesn't allow the removal.
+		
+	</ul>
+	<!-- METHOD PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The Field to remove 
+		</ul>
+	</ul>
+	<!-- METHOD PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+<!-- ============ METHOD DETAIL END ========== -->
+
+<!-- ============ EVENT DETAIL START ======= -->
+
+
+<a name="method_detail"> </a> 
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+	<tr bgcolor="#CCCCFF" class="TableHeadingColor">
+		<td colspan=1>
+			<font size="+2"> <b>Event Detail</b></font> 
+		</td>
+	</tr>
+</table>
+
+
+	<a name="beforeFieldRemoved"> </a> <h3>beforeFieldRemoved</h3>
+		<pre><b>beforeFieldRemoved</b>(field)</pre> 
+	<ul>
+		
+		Fires before a Field is removed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The field to remove. To block the event removing just returns false 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="fieldAdded"> </a> <h3>fieldAdded</h3>
+		<pre><b>fieldAdded</b>(field)</pre> 
+	<ul>
+		
+		Fires when a Field is added
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The added field 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+	<a name="fieldRemoved"> </a> <h3>fieldRemoved</h3>
+		<pre><b>fieldRemoved</b>(field)</pre> 
+	<ul>
+		
+		Fires when a Field is removed
+		
+	</ul>
+	<!-- EVENT PARAMETERS START -->
+	<ul>
+		<b>Parameters:</b>
+		<ul>
+			<code><i><a href="Ext.ux.netbox.core.Field.html">Ext.ux.netbox.core.Field</a></i>&nbsp;field</code> - The removed field 
+		</ul>
+	</ul>
+	<!-- EVENT PARAMETERS END -->
+	<!-- ADDITIONAL ATTRIBUTES START -->
+	
+	
+	<!-- ADDITIONAL ATTRIBUTES  END -->
+	<hr>
+
+
+
+<!-- ============ EVENT DETAIL END ========== -->
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoctoolkit.org/" target="_parent">JsDoc Toolkit</a> 1.4.0 on Thu Oct 30 2008 09:40:19 GMT+0100 (CET)</div>
+</body>
+</html>

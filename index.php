@@ -25,7 +25,6 @@
 <script type="text/javascript" src="<?php echo $base_url; ?>js/MD5.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>js/all.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>layout.js"></script>
-
 </head>
 
 <body>

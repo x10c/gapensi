@@ -1,0 +1,81 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.linenumber {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='linenumber'>  1</span> <span class="COMM">// $Id: FilterHeaderPlugin.js 107 2008-03-03 16:18:01Z bobbicat71 $</span><span class="WHIT">
+<span class='linenumber'>  2</span> 
+<span class='linenumber'>  3</span> </span><span class="NAME">Ext.namespace</span><span class="PUNC">(</span><span class="STRN">'Ext.ux.netbox.core'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'>  4</span> 
+<span class='linenumber'>  5</span> </span><span class="COMM">/** It creates a new filter header plugin.
+<span class='linenumber'>  6</span>   * @class This is a plugin for an Ext.grid.GridPanel useful to highlight the columns of the grid on which there is at least a filter.
+<span class='linenumber'>  7</span>   * It assumes that the id of the fields and the dataIndex of the columns are the same.
+<span class='linenumber'>  8</span>   * &lt;h4> Example&lt;/h4>
+<span class='linenumber'>  9</span>   * &lt;pre>
+<span class='linenumber'> 10</span>   * grid = new Ext.grid.GridPanel({
+<span class='linenumber'> 11</span>   *   store: store,
+<span class='linenumber'> 12</span>   *   columns: [
+<span class='linenumber'> 13</span>   *     ....
+<span class='linenumber'> 14</span>   *   ],
+<span class='linenumber'> 15</span>   *   ...
+<span class='linenumber'> 16</span>   *   plugins: [new Ext.ux.netbox.core.FilterHeaderPlugin(filterModel)],
+<span class='linenumber'> 17</span>   *   ....
+<span class='linenumber'> 18</span>   * });
+<span class='linenumber'> 19</span>   * &lt;/pre>
+<span class='linenumber'> 20</span>   * @constructor
+<span class='linenumber'> 21</span>   * @param {Ext.ux.netbox.core.FilterModel} filterModel The filterModel that owns the filter
+<span class='linenumber'> 22</span>   */</span><span class="WHIT">
+<span class='linenumber'> 23</span> </span><span class="NAME">Ext.ux.netbox.core.FilterHeaderPlugin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">filterModel</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 24</span>   </span><span class="NAME">this.filterModel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">filterModel</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 25</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 26</span> 
+<span class='linenumber'> 27</span> </span><span class="NAME">Ext.ux.netbox.core.FilterHeaderPlugin.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="COMM">/** @scope Ext.ux.netbox.core.FilterHeaderPlugin.prototype */</span><span class="WHIT">
+<span class='linenumber'> 28</span> 
+<span class='linenumber'> 29</span>   </span><span class="COMM">/** The css class to be applied to column headers that active filters. Defaults to 'ux-filterd-column'
+<span class='linenumber'> 30</span>     *
+<span class='linenumber'> 31</span>     */</span><span class="WHIT">
+<span class='linenumber'> 32</span>   </span><span class="NAME">filterCls</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'ux-filtered-column'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 33</span> 
+<span class='linenumber'> 34</span>   </span><span class="COMM">/** @private
+<span class='linenumber'> 35</span>     *
+<span class='linenumber'> 36</span>     */</span><span class="WHIT">
+<span class='linenumber'> 37</span>   </span><span class="NAME">init</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">grid</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 38</span>     </span><span class="NAME">this.grid</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">grid</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 39</span>     </span><span class="NAME">grid.on</span><span class="PUNC">(</span><span class="STRN">"render"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.onRender</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 40</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 41</span> 
+<span class='linenumber'> 42</span>   </span><span class="COMM">/** @private
+<span class='linenumber'> 43</span>     *
+<span class='linenumber'> 44</span>     */</span><span class="WHIT">
+<span class='linenumber'> 45</span>   </span><span class="NAME">onRender</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 46</span>     </span><span class="NAME">this.grid.getView</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">on</span><span class="PUNC">(</span><span class="STRN">"refresh"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.onRefresh</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 47</span>     </span><span class="NAME">this.updateColumnHeadings</span><span class="PUNC">(</span><span class="NAME">this.grid.getView</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 48</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 49</span> 
+<span class='linenumber'> 50</span>   </span><span class="COMM">/** @private
+<span class='linenumber'> 51</span>     *
+<span class='linenumber'> 52</span>     */</span><span class="WHIT">
+<span class='linenumber'> 53</span>   </span><span class="NAME">onRefresh</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">view</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 54</span>     </span><span class="NAME">this.updateColumnHeadings</span><span class="PUNC">(</span><span class="NAME">view</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 55</span>   </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='linenumber'> 56</span> 
+<span class='linenumber'> 57</span>   </span><span class="COMM">/** @private
+<span class='linenumber'> 58</span>     *
+<span class='linenumber'> 59</span>     */</span><span class="WHIT">
+<span class='linenumber'> 60</span>   </span><span class="NAME">updateColumnHeadings</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">view</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 61</span>     </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">view</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">view.mainHd</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 62</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">hds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">view.mainHd.select</span><span class="PUNC">(</span><span class="STRN">'td'</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">removeClass</span><span class="PUNC">(</span><span class="NAME">this.filterCls</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 63</span>     </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">len</span><span class="PUNC">=</span><span class="NAME">view.cm.config.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">&lt;</span><span class="NAME">len</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 64</span>       </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">filters</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.filterModel.getElementaryFiltersByFieldId</span><span class="PUNC">(</span><span class="NAME">view.cm.config</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">dataIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 65</span>       </span><span class="KEYW">for</span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">j</span><span class="PUNC">=</span><span class="NUMB">0</span><span class="PUNC">;</span><span class="NAME">j</span><span class="PUNC">&lt;</span><span class="NAME">filters.length</span><span class="PUNC">;</span><span class="NAME">j</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 66</span>         </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">filters</span><span class="PUNC">[</span><span class="NAME">j</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">isValid</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">===</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='linenumber'> 67</span>           </span><span class="NAME">hds.item</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">addClass</span><span class="PUNC">(</span><span class="NAME">this.filterCls</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 68</span>           </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='linenumber'> 69</span>         </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 70</span>       </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 71</span>     </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 72</span>   </span><span class="PUNC">}</span><span class="WHIT">
+<span class='linenumber'> 73</span> 
+<span class='linenumber'> 74</span> </span><span class="PUNC">}</span><span class="PUNC">;</span></pre></body></html>

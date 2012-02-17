@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>All Togheter Demo</title>
+  <link rel="stylesheet" type="text/css" href="../ext/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="../resources/cherryonext.css" />
+  <script type="text/javascript" src="../ext/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../ext/ext-all.js"></script>
+  <script type="text/javascript" src="../cherryonext.js"></script>
+  <script type="text/javascript" src="mydata.js"></script>
+
+  <!--Ajax call simulation-->
+  <script language="JavaScript" type="text/javascript" src="jsUnitAjax.js"></script>
+  <script language="JavaScript" type="text/javascript" src="simulateAjaxCall.js"></script>
+  <!--End ajax call simulation-->
+
+  <script language="JavaScript" type="text/javascript">
+
+    Ext.BLANK_IMAGE_URL="../ext/resources/images/default/s.gif";
+
+    var fieldManager;
+    var filterModel;
+    var localFilterResolver;
+    var grid;
+    var filterDialog;
+    var filterBackup;
+
+    //show the shares only if I have some shares in my portfolio
+    function shouldShowShares(grid,row,column){
+      //if I click outside the grid, I don't want to show nothing
+      if(row<0){
+        return;
+      }
+      var record=grid.getStore().getAt(row);
+      if(record.get('inPortfolio')==0)
+        return true;
+      else
+        return false;
+    }
+
+    function showShares(grid,row,column){
+      var record=grid.getStore().getAt(row);
+      var company = record.get('company');
+      var msg ='You have <b>'+company+"</b>'s shares in your portfolio.<br>";
+      msg = msg+'If this were a serious demo here there would be the number of your shares';
+      Ext.Msg.alert("Sorry, we don't know your shares' amount... for now ", msg);
+    }
+
+    function showDetails(grid,row,column){
+      var record=grid.getStore().getAt(row);
+      var company = record.get('company');
+      Ext.Msg.alert(company+' is very cool', "Marketing material here...");
+    }
+
+    var availableValuesStore=new Ext.data.SimpleStore({fields: ['label', 'value'],
+      data: [
+        ["Yes","0"],
+        ["No","1"],
+        ["I don't remember","2"]
+      ]});
+
+    Ext.onReady(function(){
+
+      var filterCfg=[
+        {id: 'company',label: 'Company',defaultValues:[{value:"default value"}]},
+        {id: 'price',label: 'Price', type: 'float'},
+        {id: 'change',label: 'Change', type: 'float'},
+        {id: 'pctChange',label: '% Change', type: 'float'},
+        {id: 'lastChange',label: 'Last Updated', type: 'date', format: 'd/m/Y H:i'},
+        {id: 'inPortfolio',label: 'In Portfolio', type: 'enum', availableValues: availableValuesStore, remoteStore: false}
+      ];
+
+      //FilterModel
+      fieldManager=new Ext.ux.netbox.core.FieldManager(filterCfg);
+      filterModel=new Ext.ux.netbox.core.FilterModel(fieldManager);
+      localFilterResolver=new Ext.ux.netbox.core.LocalStoreFilterResolver(filterModel);
+
+      //--------------------------------------------------------------------------------------
+      // QuickFilter
+      var quickFilter= new Ext.ux.netbox.core.QuickFilterModelView({
+        filterModel: filterModel
+      });
+
+      quickFilter.on("filterChanged",filterTable);
+
+      var contextMenuManager= new Ext.ux.netbox.ContextMenuManager({
+       menu:{
+        items:[{
+          text: 'Show my shares',
+          // isToShow, method that decides whether or not to show the menu
+          isToShow: shouldShowShares,
+          // handler, method that decides what to do when you press the menu item
+          handler: showShares},
+        {
+          text: 'Details',
+          handler: showDetails
+        },quickFilter.getFilterMenu(),quickFilter.getRemoveFilterMenu()]
+       }
+      });
+
+      //--------------------------------------------------------------------------------------
+
+      // create the Grid
+      grid = new Ext.grid.GridPanel({
+        store: store,
+        columns: [
+          {id:'company',header: "Company", width: 160, sortable: true, dataIndex: 'company'},
+          {header: "Price", width: 75, sortable: true, renderer: 'usMoney', dataIndex: 'price'},
+          {header: "Change", width: 75, sortable: true, renderer: change, dataIndex: 'change'},
+          {header: "% Change", width: 75, sortable: true, renderer: pctChange, dataIndex: 'pctChange'},
+          {header: "Last Updated", width: 95, sortable: true, renderer: Ext.util.Format.dateRenderer('d/m/Y H:i'), dataIndex: 'lastChange'},
+          {header: "In Portfolio", width: 85, sortable: true, renderer: inPortfolio, dataIndex: 'inPortfolio'}
+        ],
+        stripeRows: true,
+        plugins: [new Ext.ux.netbox.core.FilterHeaderPlugin(filterModel),contextMenuManager],
+        autoExpandColumn: 'company',
+        region: "center",
+        tbar: [{
+           text: 'Filters...',
+           handler: function(){
+             filterDialog.show();
+           }
+        }]
+      });
+
+      var viewport = new Ext.Viewport(
+          {layout: "border",
+           items: [
+             grid
+           ]
+          }
+      );
+
+      var button2=new Ext.Button({text: "Apply"});
+      button2.on("click",filterTable);
+
+      filterDialog = new Ext.Window({
+            title: 'Filters',
+            width:600,
+            height:350,
+            layout: 'border',
+            closeAction: 'hide',
+            items: [{ filterModel: filterModel,
+               region: 'center',
+               xtype: 'dynamicFilter',
+               buttons: [button2]
+            }]
+          });
+      filterDialog.on('beforeshow', onShowFilterDialog);
+      filterDialog.on('beforehide', onCloseFilterDialog);
+
+      //--------------------------------------------------------------------------------------
+      // Preference Manager
+      prefManager=new Ext.ux.netbox.PreferenceManager({
+        id: 'prefManagerId',
+        userName: 'user',
+        getFn: provaGetFunc,
+        setFn: provaSetFunc,
+        fnScope: this,
+        getAllPrefURL:'http://getAllPrefURL',
+        applyDefaultPrefURL:'http://applyDefaultPrefURL',
+        loadPrefURL:'http://loadPrefURL',
+        savePrefURL:'http://savePrefURL',
+        deletePrefURL:'http://deletePrefURL'
+      });
+
+      prefManagView = new Ext.ux.netbox.PreferenceManagerView({preferenceManager: prefManager});
+      grid.getTopToolbar().add({text: 'Preference', menu: prefManagView});
+
+      prefManager.applyDefaultPreference();
+      //--------------------------------------------------------------------------------------
+    });
+
+    function onShowFilterDialog(){
+      filterBackup = filterModel.getFilterObj();
+    }
+
+    function onCloseFilterDialog(){
+      if(Ext.util.JSON.encode(filterBackup)!=Ext.util.JSON.encode(filterModel.getFilterObj())){
+        Ext.MessageBox.confirm('Confirm', 'The filter was not applied. Do you want to do it now?', whatDoYouWantToDo);
+      }
+    }
+
+    function whatDoYouWantToDo(btn){
+      if(btn=='yes')
+        filterTable();
+      if(btn=='no')
+        filterModel.setFilterObj(filterBackup);
+    }
+
+    function filterTable(){
+     localFilterResolver.apply(store);
+    }
+
+    function provaGetFunc(){
+      return({grid:grid.getState(),filter: filterModel.getFilterObj()});
+    }
+
+    function provaSetFunc(pref){
+      if(pref.filter){
+        filterModel.setFilterObj(pref.filter);
+      }
+      if(pref.grid){
+        grid.getView().userResized=true;
+        grid.applyState(pref.grid);
+        grid.getColumnModel().setConfig(grid.getColumnModel().config);
+      }
+      filterTable();
+    }
+
+  </script>
+</head>
+
+<body id="mettiloQui">
+</body>
+</html>

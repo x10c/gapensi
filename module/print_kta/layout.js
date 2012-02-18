@@ -42,12 +42,22 @@ function M_PrintKTADetail()
 		,	width		: 300	
 	});
 
-	this.btn_proses = new Ext.Button({
+	this.btn_preview = new Ext.Button({
 			text		: 'Preview'
-		,	iconCls		: 'print16'
+		,	iconCls		: 'print_preview16'
 		,	scope		: this
 		,	handler		: function() {
-				this.do_proses();
+				this.do_preview();
+			}
+	});
+	
+	this.btn_print = new Ext.Button({
+			text		: 'Print'
+		,	iconCls		: 'print16'
+		,	disabled	: true
+		,	scope		: this
+		,	handler		: function() {
+				this.do_print();
 			}
 	});
 	
@@ -63,7 +73,8 @@ function M_PrintKTADetail()
 		,	style			: 'margin: 8px;'
 		,	bodyCssClass	: 'stop-panel-form'
 		,	buttons			: [
-				this.btn_proses
+					this.btn_preview
+				,	this.btn_print
 			]
 		,	items			: [
 					this.form_badan_usaha
@@ -149,33 +160,25 @@ function M_PrintKTADetail()
 				}
 			,	scope	: this
 		});
-		
-		this.btn_proses.setText('Print');
+
+		this.btn_print.setDisabled(false);
 	}
 	
 	this.do_print = function(){  
 		// method 1
-		Ext.ux.Printer.print(this.print_panel);
+		// Ext.ux.Printer.print(this.print_panel);
 		
 		// method 2
-		// var myWindow = window.open('', '', 'width=200,height=100');
-		// myWindow.document.write('<html><head>');
-		// myWindow.document.write('<title>' + 'KTA' + '</title>');
-		// myWindow.document.write('</head><body>');
-		// myWindow.document.write(this.print_panel.body.dom.innerHTML);
-		// myWindow.document.write('</body></html>');
-		// myWindow.print();
+		var myWindow = window.open('', '', 'fullscreen=yes,scrollbars=yes');
+		myWindow.document.write('<html><head>');
+		myWindow.document.write('<title>' + 'KTA' + '</title>');
+		myWindow.document.write('<link rel="stylesheet" type="text/css" href="../print_kta/print.css"/>');
+		myWindow.document.write('</head><body>');
+		myWindow.document.write(this.print_panel.body.dom.innerHTML);
+		myWindow.document.write('</body></html>');
+		myWindow.print();
 	}
 
-	this.do_proses = function()
-	{
-		if (this.btn_proses.getText() == 'Preview') {
-			this.do_preview();
-		} else if (this.btn_proses.getText() == 'Print') {
-			this.do_print();
-		}
-	}
-	
 	this.do_back = function()
 	{
 		m_print_kta.panel.layout.setActiveItem(0);
@@ -187,7 +190,7 @@ function M_PrintKTADetail()
 		this.form_no_blanko.setValue('');
 		this.form_no_iujk.setValue('');
 		
-		this.btn_proses.setText('Preview');
+		this.btn_print.setDisabled(true);
 		
 		this.print_panel.load({
 				scope	: this
@@ -475,7 +478,7 @@ function M_PrintKTAList()
 					m_print_kta.panel.layout.setActiveItem(1);
 				}
 			,	scope	: this		
-		});		
+		});
 	}
 	
 	this.do_load = function()

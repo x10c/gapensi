@@ -17,6 +17,7 @@
 <link rel="shortcut icon" href="<?php echo $base_url; ?>images/icon.png"/>
 <link rel="stylesheet" type="text/css" href="<?php echo $base_url; ?>css/main.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo $base_url; ?>css/all.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $base_url; ?>module/print_kta/print.css"/>
 
 <script type="text/javascript" src="<?php echo $base_url; ?>extjs/extjs-ux-all.js"></script>
 

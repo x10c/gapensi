@@ -292,7 +292,28 @@ function M_AppAdmUser()
 		Ext.MessageBox.confirm('Konfirmasi', 'Hapus Data?', function(btn, text){
 			if (btn == 'yes'){
 				this.dml_type = 4;
-				this.do_save(data[0]);
+				
+				Ext.Ajax.request({
+						url		: m_app_adm_user_d + 'submit.php'
+					,	params  : {
+								dml_type	: this.dml_type
+							,	user		: data[0].data['username']
+						}
+					,	waitMsg	: 'Mohon Tunggu ...'
+					,	success : function (response) {
+							var msg = Ext.util.JSON.decode(response.responseText);
+
+							if (msg.success == false) {
+								Ext.MessageBox.alert('Kesalahan', msg.info);
+								return;
+							} else {
+								Ext.MessageBox.alert('Informasi', msg.info);
+							}
+
+							this.do_load();
+						}
+					,	scope	: this
+				});
 			}
 		}, this);
 	}

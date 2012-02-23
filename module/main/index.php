@@ -38,6 +38,7 @@
 
 <script type="text/javascript" src="<?php echo $base_url; ?>module/app_home/layout.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>module/main/layout.js"></script>
+<script type="text/javascript" src="<?php echo $base_url; ?>module/print_kta/layout.js"></script>
 
 </head>
 

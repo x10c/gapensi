@@ -16,10 +16,14 @@
 						,	A.bentuk_bu			AS bentuk_bu
 						,	A.id_propinsi		AS id_propinsi
 						,	A.id_jenis_usaha	AS jenis_usaha
+						,	C.id_nomor_urut_badan_usaha	AS no_kta
 				FROM		kta_badan_usaha 	AS A
 						,	kta_proses 			AS B
+						,	kta_nomor_urut		AS C
 				WHERE		A.id_badan_usaha	= B.id_badan_usaha
 				AND			B.status 			= '4'
+				AND			A.id_badan_usaha	= C.id_badan_usaha
+				AND			A.id_propinsi		= C.id_propinsi
 				ORDER BY	A.id_badan_usaha	DESC
 			");
 		} else {
@@ -31,10 +35,14 @@
 						,	A.bentuk_bu			AS bentuk_bu
 						,	A.id_propinsi		AS id_propinsi
 						,	A.id_jenis_usaha	AS jenis_usaha
+						,	Z.id_nomor_urut_badan_usaha	AS no_kta
 				FROM		kta_badan_usaha 	AS A
 						,	kta_proses 			AS B
+						,	kta_nomor_urut		AS Z
 				WHERE		A.id_badan_usaha	= B.id_badan_usaha
 				AND			B.status 			= '4'
+				AND			A.id_badan_usaha	= Z.id_badan_usaha
+				AND			A.id_propinsi		= Z.id_propinsi
 				AND			A.id_propinsi		in	(
 														select	C.sektor
 														from	admin_grup	as C

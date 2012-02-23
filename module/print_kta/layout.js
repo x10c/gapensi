@@ -17,6 +17,7 @@ var m_print_kta_ha_level		= 0;
 
 function M_PrintKTADetail()
 {
+	this.mac_address = '';
 	this.form_badan_usaha = new Ext.form.TextField({
 			fieldLabel	: 'Nama Badan Usaha'
 		,	readOnly	: true
@@ -164,6 +165,17 @@ function M_PrintKTADetail()
 		this.btn_print.setDisabled(false);
 	}
 	
+	this.do_get_mac_address = function()
+	{
+		var browser = navigator.appName;
+		
+		if (browser == 'Microsoft Internet Explorer') {
+			this.mac_address	= get_mac_address();
+		} else {
+			this.mac_address	= 'Silahkan gunakan Browser IE untuk mengetahui Mac Address.';
+		}
+	}
+	
 	this.do_print = function(){  
 		// method 1
 		// Ext.ux.Printer.print(this.print_panel);
@@ -177,6 +189,37 @@ function M_PrintKTADetail()
 		myWindow.document.write(this.print_panel.body.dom.innerHTML);
 		myWindow.document.write('</body></html>');
 		myWindow.print();
+		this.do_save_print_log();
+	}
+	
+	this.do_save_print_log = function(){
+		this.do_get_mac_address();
+		Ext.Ajax.request({
+				url		: m_print_kta_d + 'submit.php'
+			,	params	: {
+						no_sert	: this.form_no_sert.getValue()
+					,	no_blanko : this.form_no_blanko.getValue()
+					,	no_iujk : this.form_no_iujk.getValue()
+					,	id_badan_usaha	: m_print_kta_id_badan_usaha
+					,	mac_address : 	this.mac_address
+				}
+			,	waitMsg	: 'Pemuatan ...'
+			,	failure	: function(response) {
+					Ext.MessageBox.alert('Gagal', response.responseText);
+				}
+			,	success : function (response) {
+					var msg = Ext.util.JSON.decode(response.responseText);
+
+					// if (msg.success == false) {
+						// Ext.MessageBox.alert('Kesalahan', msg.info);
+						// return;
+					// } else {
+						// Ext.MessageBox.alert('Informasi', msg.info);
+					 // }
+					
+				}
+			,	scope	: this		
+		});
 	}
 
 	this.do_back = function()
@@ -479,6 +522,8 @@ function M_PrintKTAList()
 				}
 			,	scope	: this		
 		});
+		m_print_kta_detail.do_refresh(data.get('nama'));
+		m_print_kta.panel.layout.setActiveItem(1);
 	}
 	
 	this.do_load = function()

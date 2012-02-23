@@ -17,12 +17,14 @@ function retrieve_data_badan_usaha($id_badan_usaha){
 				d.nama as nama_propinsi,
 				e.nama as nama_kabupaten,
 				c.nama_ketum as ketum_propinsi,
-				b.nama_ketum as ketum_kabupaten
+				b.nama_ketum as ketum_kabupaten,
+				f.nama_jenis_usaha
 			FROM kta_badan_usaha as a
 			left join   kta_data_kabupaten as b on b.id_kabupaten = a.id_kabupaten
 			left join   kta_data_propinsi as c on c.id_propinsi = a.id_propinsi
 			left join 	kta_mstr_propinsi as d on d.id_propinsi = a.id_propinsi
 			left join   kta_mstr_kabupaten as e on e.id_kabupaten = a.id_kabupaten
+			left join   jenis_usaha as f on f.id_jenis_usaha = a.id_jenis_usaha
 			WHERE a.id_badan_usaha = ".$id_badan_usaha;
 		$result = mysql_query($query);
 		$row = mysql_fetch_assoc($result);

@@ -1,351 +1,351 @@
 UPDATE gapensi.admin_user SET Password = 'c4ca4238a0b923820dcc509a6f75849b' WHERE ID_Admin_User = 'admin';
 
-CREATE TABLE __MENU
+create table __menu
 (
-   MENU_ID              VARCHAR(20) NOT NULL,
-   MENU_NAME            VARCHAR(100) NOT NULL,
-   MENU_FOLDER          VARCHAR(100),
-   MENU_LEAF            CHAR(1) DEFAULT '1' COMMENT '0 = not leaf; 1 = leaf',
-   MENU_LEVEL           SMALLINT DEFAULT 0,
-   MENU_PARENT          VARCHAR(100),
-   ICON                 VARCHAR(20),
-   PRIMARY KEY (MENU_ID)
+   menu_id              varchar(20) not null,
+   menu_name            varchar(100) not null,
+   menu_folder          varchar(100),
+   menu_leaf            char(1) default '1' comment '0 = not leaf; 1 = leaf',
+   menu_level           smallint default 0,
+   menu_parent          varchar(100),
+   icon                 varchar(20),
+   primary key (menu_id)
 );
 
-CREATE TABLE __HAK_AKSES
+create table __hak_akses
 (
-   HA_ID                BIGINT NOT NULL AUTO_INCREMENT,
-   ID_Grup              INT NOT NULL,
-   MENU_ID              VARCHAR(20) NOT NULL,
-   HA_LEVEL             SMALLINT NOT NULL DEFAULT 0 COMMENT '0 = tidak ada akses; 1 = view; 2 = insert; 3 = update; 4 = delete',
-   PRIMARY KEY (HA_ID)
+   ha_id                bigint not null auto_increment,
+   id_grup              int not null,
+   menu_id              varchar(20) not null,
+   ha_level             smallint not null default 0 comment '0 = tidak ada akses; 1 = view; 2 = insert; 3 = update; 4 = delete',
+   primary key (ha_id)
 );
 
-ALTER TABLE __HAK_AKSES ADD CONSTRAINT FK_ADMIN_GRUP___HAK_AKSES FOREIGN KEY (ID_Grup)
-      REFERENCES ADMIN_GRUP (ID_Grup) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table __hak_akses add constraint fk_admin_grup___hak_akses foreign key (id_grup)
+      references admin_grup (id_grup) on delete restrict on update restrict;
 
-ALTER TABLE __HAK_AKSES ADD CONSTRAINT FK___MENU___HAK_AKSES FOREIGN KEY (MENU_ID)
-      REFERENCES __MENU (MENU_ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table __hak_akses add constraint fk___menu___hak_akses foreign key (menu_id)
+      references __menu (menu_id) on delete restrict on update restrict;
 
-CREATE TABLE KTA_NOMOR_URUT
+create table kta_nomor_urut
 (
-	ID							BIGINT	NOT NULL	AUTO_INCREMENT
-,	ID_Nomor_Urut_Badan_Usaha 	INT(10)	NOT NULL
-,	ID_Badan_Usaha 				INT(10) NOT NULL
-,	ID_Propinsi 				CHAR(2)	NOT NULL
-,	Masa_Berlaku 				INT(2)				DEFAULT NULL
-,	Tgl_Pengambilan 			DATE 				DEFAULT NULL
-,	NRBU						INT(10) NOT NULL 	DEFAULT 0
-,	PRIMARY KEY (ID)
+	id							bigint	not null	auto_increment
+,	id_nomor_urut_badan_usaha 	int(10)	not null
+,	id_badan_usaha 				int(10) not null
+,	id_propinsi 				char(2)	not null
+,	masa_berlaku 				int(2)				default null
+,	tgl_pengambilan 			date 				default null
+,	nrbu						int(10) not null 	default 0
+,	primary key (id)
 );
 
-ALTER TABLE KTA_NOMOR_URUT ADD CONSTRAINT FK_KTA_BADAN_USAHA_KTA_NOMOR_URUT FOREIGN KEY (ID_Badan_Usaha)
-      REFERENCES KTA_BADAN_USAHA (ID_Badan_Usaha) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table kta_nomor_urut add constraint fk_kta_badan_usaha_kta_nomor_urut foreign key (id_badan_usaha)
+      references kta_badan_usaha (id_badan_usaha) on delete restrict on update restrict;
 
-ALTER TABLE KTA_NOMOR_URUT ADD CONSTRAINT FK_PROPINSI_KTA_NOMOR_URUT FOREIGN KEY (ID_Propinsi)
-      REFERENCES PROPINSI (ID_Propinsi) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table kta_nomor_urut add constraint fk_propinsi_kta_nomor_urut foreign key (id_propinsi)
+      references propinsi (id_propinsi) on delete restrict on update restrict;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'01'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_01;
+FROM 	kta_nomor_urut_01;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'02'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_02;
+FROM 	kta_nomor_urut_02;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'03'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_03;
+FROM 	kta_nomor_urut_03;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'04'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_04;
+FROM 	kta_nomor_urut_04;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'05'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_05;
+FROM 	kta_nomor_urut_05;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'06'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_06;
+FROM 	kta_nomor_urut_06;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'07'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_07;
+FROM 	kta_nomor_urut_07;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'08'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_08;
+FROM 	kta_nomor_urut_08;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'09'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_09;
+FROM 	kta_nomor_urut_09;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'10'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_10;
+FROM 	kta_nomor_urut_10;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'11'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_11;
+FROM 	kta_nomor_urut_11;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'12'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_12;
+FROM 	kta_nomor_urut_12;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'13'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_13;
+FROM 	kta_nomor_urut_13;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'14'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_14;
+FROM 	kta_nomor_urut_14;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'15'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_15;
+FROM 	kta_nomor_urut_15;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'16'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_16;
+FROM 	kta_nomor_urut_16;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'17'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_17;
+FROM 	kta_nomor_urut_17;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'18'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_18;
+FROM 	kta_nomor_urut_18;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'19'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_19;
+FROM 	kta_nomor_urut_19;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'20'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_20;
+FROM 	kta_nomor_urut_20;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'21'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_21;
+FROM 	kta_nomor_urut_21;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'22'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_22;
+FROM 	kta_nomor_urut_22;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'23'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_23;
+FROM 	kta_nomor_urut_23;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'24'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_24;
+FROM 	kta_nomor_urut_24;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'25'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_25;
+FROM 	kta_nomor_urut_25;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'26'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_26;
+FROM 	kta_nomor_urut_26;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'27'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_27;
+FROM 	kta_nomor_urut_27;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'28'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_28;
+FROM 	kta_nomor_urut_28;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'29'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_29;
+FROM 	kta_nomor_urut_29;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'30'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_30;
+FROM 	kta_nomor_urut_30;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'31'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_31;
+FROM 	kta_nomor_urut_31;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'32'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_32;
+FROM 	kta_nomor_urut_32;
 
-INSERT INTO KTA_NOMOR_URUT (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
+INSERT INTO kta_nomor_urut (ID_Nomor_Urut_Badan_Usaha, ID_Badan_Usaha, ID_Propinsi, Masa_Berlaku, Tgl_Pengambilan, NRBU)
 SELECT	ID_Nomor_Urut_Badan_Usaha
 	,	ID_Badan_Usaha
 	,	'33'
 	,	Masa_Berlaku
 	,	Tgl_Pengambilan
 	,	NRBU
-FROM 	KTA_NOMOR_URUT_33;
+FROM 	kta_nomor_urut_33;
 
 DELIMITER $$
 
-CREATE TRIGGER KTA_NOMOR_URUT_BIR
-BEFORE INSERT ON KTA_NOMOR_URUT
+CREATE TRIGGER kta_nomor_urut_BIR
+BEFORE INSERT ON kta_nomor_urut
 FOR EACH ROW
 BEGIN
 	DECLARE	vi_nomor_urut	INT(10);
@@ -361,14 +361,14 @@ $$
 
 DELIMITER ;
 
-CREATE TABLE JENIS_USAHA
+CREATE TABLE jenis_usaha
 (
 	ID_Jenis_Usaha		SMALLINT	NOT NULL AUTO_INCREMENT
 ,	Nama_Jenis_Usaha	VARCHAR(50) NOT NULL
 ,	PRIMARY KEY (ID_Jenis_Usaha)
 );
 
-CREATE UNIQUE INDEX JENIS_USAHA_UK ON JENIS_USAHA
+CREATE UNIQUE INDEX JENIS_USAHA_UK ON jenis_usaha
 (
    Nama_Jenis_Usaha
 );
@@ -382,29 +382,48 @@ INSERT INTO jenis_usaha (Nama_Jenis_Usaha) VALUES ('NV');
 INSERT INTO jenis_usaha (Nama_Jenis_Usaha) VALUES ('PB');
 INSERT INTO jenis_usaha (Nama_Jenis_Usaha) VALUES ('Koperasi');
 
-ALTER TABLE KTA_BADAN_USAHA
+ALTER TABLE kta_badan_usaha
 ADD COLUMN 	ID_Jenis_Usaha SMALLINT
 AFTER 		NRBU;
 
-ALTER TABLE KTA_BADAN_USAHA ADD CONSTRAINT FK_JENIS_USAHA_KTA_BADAN_USAHA FOREIGN KEY (ID_Jenis_Usaha)
+ALTER TABLE kta_badan_usaha ADD CONSTRAINT FK_JENIS_USAHA_KTA_BADAN_USAHA FOREIGN KEY (ID_Jenis_Usaha)
       REFERENCES JENIS_USAHA (ID_Jenis_Usaha) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 UPDATE	kta_badan_usaha 	AS A
 	,	jenis_usaha			AS B
 SET 	A.ID_Jenis_Usaha = B.ID_Jenis_Usaha
-WHERE	B.Nama_Jenis_Usaha = TRIM(SUBSTRING(A.Nama, IF(LOCATE(',', A.Nama) <> 0, LOCATE(',', A.Nama) + 1, 100)))
+WHERE	B.Nama_Jenis_Usaha = TRIM(SUBSTRING(A.Nama, IF(LOCATE(',', A.Nama) <> 0, LOCATE(',', A.Nama) + 1, 100)));
 
-CREATE TABLE __KOMPUTER_USER
+CREATE TABLE __komputer_user
 (
    ID_Admin_User		VARCHAR(32) NOT NULL,
-   MAC_ADDRESS			VARCHAR(20) NOT NULL,
-   STATUS             	CHAR(1) NOT NULL DEFAULT '0' COMMENT '0 = Belum Disetujui; 1 = Disetujui',
+   mac_address			VARCHAR(20) NOT NULL,
+   status             	CHAR(1) NOT NULL DEFAULT '0' COMMENT '0 = Belum Disetujui; 1 = Disetujui',
    PRIMARY KEY (ID_Admin_User)
 );
 
-ALTER TABLE __KOMPUTER_USER ADD CONSTRAINT FK_ADMIN_USER___KOMPUTER_USER FOREIGN KEY (ID_Admin_User)
+ALTER TABLE __komputer_user ADD CONSTRAINT FK_ADMIN_USER___KOMPUTER_USER FOREIGN KEY (ID_Admin_User)
       REFERENCES ADMIN_USER (ID_Admin_User) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+	  
+/*==============================================================*/
+/* Table: __PRINT_LOG                                           */
+/*==============================================================*/
+create table __print_log
+(
+   id                   bigint(8) not null AUTO_INCREMENT,
+   no_sert              varchar(10) not null,
+   no_iujk              varchar(14) not null,
+   no_blanko            varchar(10) not null,
+   id_badan_usaha       INT(10) not null,
+   id_user              varchar(11) not null,
+   mac_address          varchar(20) not null,
+  tanggal timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   primary key (ID)
+);
+
+	  
+	  
 insert into __MENU values ('01'		,'Aplikasi'									,'app'								,'0',1,'00','beranda');
 insert into __MENU values ('01.01'	,'Beranda'									,'app_home'							,'1',2,'01','beranda');
 insert into __MENU values ('01.02'	,'Pengaturan User'							,'app_adm_user'						,'1',2,'01','users');
@@ -416,7 +435,7 @@ insert into __MENU values ('02.02'	,'Pendaftaran Komputer Pengguna'			,'pendafta
 insert into __MENU values ('03'		,'Persetujuan'								,'persetujuan'						,'0',1,'00','app');
 insert into __MENU values ('03.01'	,'Persetujuan Anggota'						,'persetujuan_anggota'				,'1',2,'03','menu_leaf');
 insert into __MENU values ('04'		,'Pencetakan'								,'pencetakan'						,'0',1,'00','app');
-insert into __MENU values ('04.01'	,'Print KTA'								,'print_kta'						,'1',2,'04','menu_lead');
+insert into __MENU values ('04.01'	,'Print KTA'								,'print_kta'						,'1',2,'04','menu_leaf');
 
 
 

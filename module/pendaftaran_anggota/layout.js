@@ -494,6 +494,7 @@ function M_PendaftaranAnggotaList()
 		,	{ name	: 'bentuk_bu' }
 		,	{ name	: 'id_propinsi' }
 		,	{ name	: 'jenis_usaha' }
+		,	{ name	: 'no_kta' }
 	]);
 
 	this.store = new Ext.data.JsonStore({
@@ -570,6 +571,13 @@ function M_PendaftaranAnggotaList()
 					,	dataIndex	: 'npwp'
 					,	align		: 'center'
 					,	width		: 140
+					,	filterable	: true
+					}
+				,	{ 
+						header		: 'Nomor KTA'
+					,	dataIndex	: 'no_kta'
+					,	align		: 'center'
+					,	width		: 75
 					,	filterable	: true
 					}
 				,	{ 
@@ -787,7 +795,12 @@ function M_PendaftaranAnggotaList()
 	}
 	
 	this.do_load = function()
-	{
+	{	
+		var load_type = 'user';
+
+		if (m_pendaftaran_anggota_ha_level == 4) {
+			load_type = 'all';
+		}
 		this.store_jenis_usaha.load({
 				scope		: this
 			,	callback	: function() {
@@ -804,6 +817,7 @@ function M_PendaftaranAnggotaList()
 												,	params	: {
 														start	: 0
 													,	limit	: this.pageSize
+													,	load_type : load_type
 													}
 											});						
 										}

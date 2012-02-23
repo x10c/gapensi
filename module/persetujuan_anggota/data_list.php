@@ -1,22 +1,29 @@
 <?php
 	include('../../config/db_config.php');
 	
+	$load_type	= $_REQUEST['load_type'];
+	$user		= $_COOKIE['username'];
+	
 	try {
 		$data	= array();
 
 		$rows	= $dbh->query("
 			SELECT		A.id_badan_usaha	AS id_badan_usaha
-					,	A.nama				AS nama
-					,	A.alamat			AS alamat
-					,	A.npwp				AS npwp
-					,	A.bentuk_bu			AS bentuk_bu
-					,	A.id_propinsi		AS id_propinsi
-					,	A.id_jenis_usaha	AS jenis_usaha
-			FROM		kta_badan_usaha 	AS A
-					,	kta_proses 			AS B
-			WHERE		A.id_badan_usaha	= B.id_badan_usaha
-			AND			B.status 			= '1'
-			ORDER BY	A.id_badan_usaha	DESC
+						,	A.nama				AS nama
+						,	A.alamat			AS alamat
+						,	A.npwp				AS npwp
+						,	A.bentuk_bu			AS bentuk_bu
+						,	A.id_propinsi		AS id_propinsi
+						,	A.id_jenis_usaha	AS jenis_usaha
+						,	C.id_nomor_urut_badan_usaha	AS no_kta
+				FROM		kta_badan_usaha 	AS A
+						,	kta_proses 			AS B
+						,	kta_nomor_urut		AS C
+				WHERE		A.id_badan_usaha	= B.id_badan_usaha
+				AND			B.status 			= '1'
+				AND			A.id_badan_usaha	= C.id_badan_usaha
+				AND			A.id_propinsi		= C.id_propinsi
+				ORDER BY	A.id_badan_usaha	DESC
 		");
 		
 		foreach ($rows as $row) {
@@ -28,6 +35,7 @@
 				,	"bentuk_bu"			=> $row['bentuk_bu']
 				,	"id_propinsi"		=> $row['id_propinsi']
 				,	"jenis_usaha"		=> $row['jenis_usaha']
+				,	"no_kta"			=> $row['no_kta']
 			);
 		}
 

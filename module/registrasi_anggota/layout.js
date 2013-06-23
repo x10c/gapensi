@@ -6,40 +6,40 @@
  *   - agus sugianto (agus.delonge@gmail.com)
  */
 
-var m_pendaftaran_anggota;
-var m_pendaftaran_anggota_list;
-var m_pendaftaran_anggota_detail;
-var m_pendaftaran_anggota_id_badan_usaha	= 0;
-var m_pendaftaran_anggota_d 				= _g_root + 'module/pendaftaran_anggota/';
-var m_pendaftaran_anggota_ha_level 			= 0;
+var m_registrasi_anggota;
+var m_registrasi_anggota_list;
+var m_registrasi_anggota_detail;
+var m_registrasi_anggota_id_badan_usaha	= 0;
+var m_registrasi_anggota_d 				= _g_root + 'module/registrasi_anggota/';
+var m_registrasi_anggota_ha_level 			= 0;
 
-function M_PendaftaranAnggotaDetail()
+function M_RegistrasiAnggotaDetail()
 {
 	this.dml_type	= 0;
 
 	this.store_jenis_usaha = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_jenis_usaha.php'
+			url			: m_registrasi_anggota_d + 'data_jenis_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
 	});
 
 	this.store_bentuk_badan_usaha = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_bentuk_badan_usaha.php'
+			url			: m_registrasi_anggota_d + 'data_bentuk_badan_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
 	});
 
 	this.store_propinsi = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_propinsi.php'
+			url			: m_registrasi_anggota_d + 'data_propinsi.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
 	});
 	
 	this.store_kabupaten = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_kabupaten.php'
+			url			: m_registrasi_anggota_d + 'data_kabupaten.php'
 		,	fields		: ['id_propinsi', 'id_kabupaten', 'nama']
 		,	autoLoad	: false
 		,	idIndex		: 1
@@ -262,7 +262,7 @@ function M_PendaftaranAnggotaDetail()
 	});
 
 	this.btn_save	= new Ext.Button({
-			text	: 'Simpan'
+			text	: 'Registrasi'
 		,	iconCls	: 'save16'
 		,	scope	: this
 		,	handler	: function() {
@@ -342,7 +342,7 @@ function M_PendaftaranAnggotaDetail()
 		this.dml_type	= 3;
 
 		Ext.Ajax.request({
-			url		: m_pendaftaran_anggota_d + 'data.php'
+			url		: m_registrasi_anggota_d + 'data.php'
 		,	params	: {
 				id_badan_usaha	: id
 			}
@@ -366,7 +366,7 @@ function M_PendaftaranAnggotaDetail()
 
 	this.do_back = function()
 	{
-		m_pendaftaran_anggota.panel.layout.setActiveItem(0);
+		m_registrasi_anggota.panel.layout.setActiveItem(0);
 	}
 
 	this.is_valid = function()
@@ -420,10 +420,10 @@ function M_PendaftaranAnggotaDetail()
 		main_load.show();
 		
 		Ext.Ajax.request({
-				url		: m_pendaftaran_anggota_d + 'submit.php'
+				url		: m_registrasi_anggota_d + 'submit.php'
 			,	params  : {
 						dml_type		: this.dml_type
-					,	id_badan_usaha	: m_pendaftaran_anggota_id_badan_usaha
+					,	id_badan_usaha	: m_registrasi_anggota_id_badan_usaha
 					,	nama			: this.form_nama_badan_usaha.getValue()
 					,	alamat			: this.form_alamat.getValue()
 					,	kodepos			: this.form_kode_pos.getValue()
@@ -457,8 +457,8 @@ function M_PendaftaranAnggotaDetail()
 						
 						Ext.MessageBox.alert('Informasi', msg.info);
 
-						m_pendaftaran_anggota_list.do_load();
-						m_pendaftaran_anggota.panel.layout.setActiveItem(0);
+						m_registrasi_anggota_list.do_load();
+						m_registrasi_anggota.panel.layout.setActiveItem(0);
 					}
 			,	scope	: this
 		});
@@ -477,7 +477,7 @@ function M_PendaftaranAnggotaDetail()
 	}
 }
 
-function M_PendaftaranAnggotaList()
+function M_RegistrasiAnggotaList()
 {
 	this.load_type = 'user';
 	this.dml_type	= 0;
@@ -492,6 +492,7 @@ function M_PendaftaranAnggotaList()
 		,	{ name	: 'id_propinsi' }
 		,	{ name	: 'jenis_usaha' }
 		,	{ name	: 'no_kta' }
+		,	{ name	: 'tahun' }
 	]);
 	
 	this.reader = new Ext.data.JsonReader(
@@ -504,14 +505,14 @@ function M_PendaftaranAnggotaList()
 	);
 	
 	this.store = new Ext.data.Store({
-			url			: m_pendaftaran_anggota_d + 'data_list.php'
+			url			: m_registrasi_anggota_d + 'data_list.php'
 		,	autoLoad	: false
 		,	pageSize : this.pageSize
 		,	reader : this.reader
 	});
 
 	this.store_jenis_usaha = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_jenis_usaha.php'
+			url			: m_registrasi_anggota_d + 'data_jenis_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -529,7 +530,7 @@ function M_PendaftaranAnggotaList()
 	});
 
 	this.store_bentuk_badan_usaha = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_bentuk_badan_usaha.php'
+			url			: m_registrasi_anggota_d + 'data_bentuk_badan_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -547,7 +548,7 @@ function M_PendaftaranAnggotaList()
 	});
 
 	this.store_propinsi = new Ext.data.ArrayStore({
-			url			: m_pendaftaran_anggota_d + 'data_propinsi.php'
+			url			: m_registrasi_anggota_d + 'data_propinsi.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -584,6 +585,20 @@ function M_PendaftaranAnggotaList()
 	this.cm = new Ext.grid.ColumnModel({
 			columns	: [
 					new Ext.grid.RowNumberer()
+				,	{ 
+						header		: 'DAFTAR ULANG TAHUN INI'
+					,	dataIndex	: 'tahun'
+					,	align		: 'center'
+					,	width		: 140
+					,	filterable	: true
+					,	renderer	: function (value){
+										if (value == 0){
+											return 'BELUM';
+										}else{
+											return 'SUDAH';
+										}
+									}
+					}
 				,	{ 
 						header		: 'NPWP'
 					,	dataIndex	: 'npwp'
@@ -665,9 +680,9 @@ function M_PendaftaranAnggotaList()
 					var data = sm.getSelections();
 					
 					if (data.length){
-						m_pendaftaran_anggota_id_badan_usaha = data[0].data['id_badan_usaha'];
+						m_registrasi_anggota_id_badan_usaha = data[0].data['id_badan_usaha'];
 					} else {
-						m_pendaftaran_anggota_id_badan_usaha = 0;
+						m_registrasi_anggota_id_badan_usaha = 0;
 					}
 				}
 			}
@@ -679,15 +694,6 @@ function M_PendaftaranAnggotaList()
 		,	scope	: this
 		,	handler	: function() {
 				this.do_load();
-			}
-	});
-
-	this.btn_add = new Ext.Button({
-			text	: 'Tambah'
-		,	iconCls	: 'add16'
-		,	scope	: this
-		,	handler	: function() {
-				this.do_add();
 			}
 	});
 
@@ -721,8 +727,6 @@ function M_PendaftaranAnggotaList()
 	this.tbar = new Ext.Toolbar({
 		items	: [
 			this.btn_ref
-		,	'-'
-		,	this.btn_add
 		,	'-'
 		,	this.btn_edit
 		,	'-'
@@ -765,9 +769,9 @@ function M_PendaftaranAnggotaList()
 
 	this.do_add = function()
 	{
-		m_pendaftaran_anggota_detail.do_add();
-		m_pendaftaran_anggota_detail.do_refresh(0);
-		m_pendaftaran_anggota.panel.layout.setActiveItem(1);
+		m_registrasi_anggota_detail.do_add();
+		m_registrasi_anggota_detail.do_refresh(0);
+		m_registrasi_anggota.panel.layout.setActiveItem(1);
 	}
 
 	this.do_edit = function()
@@ -778,9 +782,9 @@ function M_PendaftaranAnggotaList()
 			return;
 		}
 
-		m_pendaftaran_anggota_detail.do_refresh(data.get('id_propinsi'));
-		m_pendaftaran_anggota_detail.do_edit(data.get('id_badan_usaha'));
-		m_pendaftaran_anggota.panel.layout.setActiveItem(1);
+		m_registrasi_anggota_detail.do_refresh(data.get('id_propinsi'));
+		m_registrasi_anggota_detail.do_edit(data.get('id_badan_usaha'));
+		m_registrasi_anggota.panel.layout.setActiveItem(1);
 	}
 	
 	this.do_del = function()
@@ -802,7 +806,7 @@ function M_PendaftaranAnggotaList()
 	this.do_save = function(record)
 	{
 		Ext.Ajax.request({
-				url		: m_pendaftaran_anggota_d + 'submit.php'
+				url		: m_registrasi_anggota_d + 'submit.php'
 			,	params  : {
 						dml_type		: this.dml_type
 					,	id_badan_usaha	: record.get('id_badan_usaha')
@@ -828,7 +832,7 @@ function M_PendaftaranAnggotaList()
 	this.do_search = function (){
 		var load_type = 'user';
 
-		if (m_pendaftaran_anggota_ha_level == 4) {
+		if (m_registrasi_anggota_ha_level == 4) {
 			load_type = 'all';
 		}
 		
@@ -849,7 +853,7 @@ function M_PendaftaranAnggotaList()
 	this.do_load = function()
 	{	
 
-		if (m_pendaftaran_anggota_ha_level == 4) {
+		if (m_registrasi_anggota_ha_level == 4) {
 			this.load_type = 'all';
 			this.store.setBaseParam('load_type', 'all');
 		}
@@ -886,27 +890,21 @@ function M_PendaftaranAnggotaList()
 
 	this.do_refresh = function()
 	{
-		if (m_pendaftaran_anggota_ha_level < 1) {
+		if (m_registrasi_anggota_ha_level < 1) {
 			Ext.MessageBox.alert('Hak Akses', 'Maaf, Anda tidak memiliki hak akses untuk melihat menu ini!');
 			this.panel.setDisabled(true);
 			return;
 		} else {
 			this.panel.setDisabled(false);
 		}
-
-		if (m_pendaftaran_anggota_ha_level >= 2) {
-			this.btn_add.setDisabled(false);
-		} else {
-			this.btn_add.setDisabled(true);
-		}
 		
-		if (m_pendaftaran_anggota_ha_level < 3) {
+		if (m_registrasi_anggota_ha_level < 3) {
 			this.btn_edit.setDisabled(true);
 		} else {
 			this.btn_edit.setDisabled(false);
 		}
 
-		if (m_pendaftaran_anggota_ha_level == 4) {
+		if (m_registrasi_anggota_ha_level == 4) {
 			this.btn_del.setDisabled(false);
 		} else {
 			this.btn_del.setDisabled(true);
@@ -916,32 +914,32 @@ function M_PendaftaranAnggotaList()
 	}
 }
 
-function M_PendaftaranAnggota(title)
+function M_RegistrasiAnggota(title)
 {
-	m_pendaftaran_anggota_list		= new M_PendaftaranAnggotaList();
-	m_pendaftaran_anggota_detail	= new M_PendaftaranAnggotaDetail();
+	m_registrasi_anggota_list		= new M_RegistrasiAnggotaList();
+	m_registrasi_anggota_detail	= new M_RegistrasiAnggotaDetail();
 	
 	this.panel = new Ext.Panel({
-			id				: 'pendaftaran_anggota_panel'
+			id				: 'registrasi_anggota_panel'
 		,	title			: title
 		,	layout			: 'card'
 		,	activeItem		: 0
 		,	autoWidth		: true
 		,	autoScroll		: true
 		,	items			: [
-					m_pendaftaran_anggota_list.panel
-				,	m_pendaftaran_anggota_detail.panel
+					m_registrasi_anggota_list.panel
+				,	m_registrasi_anggota_detail.panel
 			]
 	});
 	
 	this.do_refresh = function(ha_level)
 	{
-		m_pendaftaran_anggota_ha_level = ha_level;
+		m_registrasi_anggota_ha_level = ha_level;
 		
-		m_pendaftaran_anggota_list.do_refresh();
+		m_registrasi_anggota_list.do_refresh();
 	}
 }
 
-m_pendaftaran_anggota = new M_PendaftaranAnggota('Pendaftaran Anggota');
+m_registrasi_anggota = new M_RegistrasiAnggota('Registrasi Anggota');
 
-//@ sourceURL=pendaftaran_anggota.layout.js
+//@ sourceURL=registrasi_anggota.layout.js

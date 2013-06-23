@@ -210,13 +210,10 @@ function M_PrintKTADetail()
 			,	success : function (response) {
 					var msg = Ext.util.JSON.decode(response.responseText);
 
-					// if (msg.success == false) {
-						// Ext.MessageBox.alert('Kesalahan', msg.info);
-						// return;
-					// } else {
-						// Ext.MessageBox.alert('Informasi', msg.info);
-					 // }
-					
+					 if (msg.success == false) {
+						 Ext.MessageBox.alert('Kesalahan', 'log print gagal di simpan :' + msg.info);
+						 return;
+					 } 					
 				}
 			,	scope	: this		
 		});
@@ -256,13 +253,23 @@ function M_PrintKTAList()
 		,	{ name	: 'bentuk_bu' }
 		,	{ name	: 'id_propinsi' }
 		,	{ name	: 'jenis_usaha' }
+		,	{ name  : 'no_kta' }
 	]);
 
-	this.store = new Ext.data.JsonStore({
+	this.reader = new Ext.data.JsonReader(
+		{	
+				successProperty : 'success'
+			,	totalProperty : 'results'
+			,	root		: 'data'
+		}
+		, this.record
+	);
+	
+	this.store = new Ext.data.Store({
 			url			: m_print_kta_d + 'data_list.php'
-		,	root		: 'data'
-		,	fields		: this.record
 		,	autoLoad	: false
+		,	pageSize : this.pageSize
+		,	reader : this.reader
 	});
 
 	this.store_jenis_usaha = new Ext.data.ArrayStore({
@@ -288,6 +295,18 @@ function M_PrintKTAList()
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
+	});
+	
+	this.form_search_nama =  new Ext.form.TextField({
+			fieldLabel	: 'Nama Perusahaan'
+		,	width		: 200	
+		,	emptyText	: ' - Nama Perusahaan - '
+	});
+	
+	this.form_search_no_kta =  new Ext.form.TextField({
+			fieldLabel	: 'Nomor KTA'
+		,	width		: 200	
+		,	emptyText	: ' - NO KTA - '
 	});
 	
 	this.form_bentuk_badan_usaha = new Ext.form.ComboBox({
@@ -332,6 +351,13 @@ function M_PrintKTAList()
 					,	dataIndex	: 'npwp'
 					,	align		: 'center'
 					,	width		: 140
+					,	filterable	: true
+					}
+				,	{ 
+						header		: 'No KTA'
+					,	dataIndex	: 'no_kta'
+					,	align		: 'center'
+					,	width		: 50
 					,	filterable	: true
 					}
 				,	{ 
@@ -419,6 +445,14 @@ function M_PrintKTAList()
 				this.do_load();
 			}
 	});
+	
+	this.btn_search = new Ext.Button({
+			text	: 'Search'
+		,	scope	: this
+		,	handler	: function() {
+				this.do_search();
+			}
+	});
 
 	this.btn_print = new Ext.Button({
 			text	: 'Print'
@@ -432,7 +466,11 @@ function M_PrintKTAList()
 	this.tbar = new Ext.Toolbar({
 		items	: [
 				this.btn_ref
-			,	'->'
+			,	'-'
+			,	this.form_search_nama
+			,	this.form_search_no_kta
+			,	this.btn_search
+			,	'-'
 			,	this.btn_print
 		]
 	});
@@ -526,14 +564,36 @@ function M_PrintKTAList()
 		m_print_kta.panel.layout.setActiveItem(1);
 	}
 	
+	this.do_search = function (){
+		var load_type = 'user';
+
+		if (m_print_kta_ha_level == 4) {
+			load_type = 'all';
+		}
+		this.store.setBaseParam('nama', this.form_search_nama.getValue());
+		this.store.setBaseParam('no_kta', this.form_search_no_kta.getValue());
+		this.store.load({
+					scope	: this
+				,	params	: {
+						start		: 0
+					,	limit		: this.pageSize
+					,	load_type	: load_type
+					,	nama		: this.form_search_nama.getValue()
+					,	no_kta		: this.form_search_no_kta.getValue()
+					}
+			});	
+	}
 	this.do_load = function()
 	{
 		var load_type = 'user';
 
 		if (m_print_kta_ha_level == 4) {
 			load_type = 'all';
+			this.store.setBaseParam('load_type', 'all');
 		}
-
+		this.store.setBaseParam('nama', '');
+		this.store.setBaseParam('no_kta', '');
+		
 		this.store_jenis_usaha.load({
 				scope		: this
 			,	callback	: function() {

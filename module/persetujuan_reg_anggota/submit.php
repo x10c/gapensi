@@ -16,38 +16,16 @@
 			set		nrbu			= $nrbu
 			where	id_badan_usaha	= $id_badan_usaha
 		");
-		// check if badan_usaha is already has nomor KTA
-		$q = "
-			SELECT		count(*) as total
-			FROM		kta_nomor_urut 	AS A
-			WHERE		A.id_badan_usaha	= $id_badan_usaha
-		";
-		
-		$result	= $dbh->query($q)->fetchAll();
 
-		foreach ($result as $row){
-			$total	= $row['total'];								
-		}
-		if (($total < 1)) {
-		// insert into table kta_nomor_urut
-			$dbh->exec("
-				insert into	kta_nomor_urut (
-						id_badan_usaha 
-					,	id_propinsi
-					,	masa_berlaku
-					,	tgl_pengambilan
-					,	nrbu
-				)
-				values (
-						$id_badan_usaha
-					,	'$id_propinsi'
-					,	1
-					,	now()
-					,	$nrbu
-				)
-			");
-		}
-		
+		// update into table kta_nomor_urut
+		$dbh->exec("
+			update	kta_nomor_urut
+				set 	masa_berlaku = 1
+				,		tgl_pengambilan = now()
+				,		nrbu = $nrbu
+			where id_badan_usaha =	$id_badan_usaha
+			and	 id_propinsi = '$id_propinsi'
+		");
 
 		// update table kta_proses set status = '4' (Persetujuan)
 		$dbh->exec("

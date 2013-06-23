@@ -6,18 +6,18 @@
  *   - agus sugianto (agus.delonge@gmail.com)
  */
 
-var m_persetujuan_anggota;
-var m_persetujuan_anggota_list;
-var m_persetujuan_anggota_detail;
-var m_persetujuan_anggota_id_badan_usaha	= 0;
-var m_persetujuan_anggota_id_propinsi		= 0;
-var m_persetujuan_anggota_d 				= _g_root + 'module/persetujuan_anggota/';
-var m_persetujuan_anggota_ha_level 			= 0;
+var m_persetujuan_reg_anggota;
+var m_persetujuan_reg_anggota_list;
+var m_persetujuan_reg_anggota_detail;
+var m_persetujuan_reg_anggota_id_badan_usaha	= 0;
+var m_persetujuan_reg_anggota_id_propinsi		= 0;
+var m_persetujuan_reg_anggota_d 				= _g_root + 'module/persetujuan_reg_anggota/';
+var m_persetujuan_reg_anggota_ha_level 			= 0;
 
 function M_PersetujuanAnggotaDetail()
 {
 	this.store_jenis_usaha = new Ext.data.ArrayStore({
-			url			: m_persetujuan_anggota_d + 'data_jenis_usaha.php'
+			url			: m_persetujuan_reg_anggota_d + 'data_jenis_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -133,7 +133,7 @@ function M_PersetujuanAnggotaDetail()
 		this.dml_type	= 3;
 
 		Ext.Ajax.request({
-			url		: m_persetujuan_anggota_d + 'data.php'
+			url		: m_persetujuan_reg_anggota_d + 'data.php'
 		,	params	: {
 				id_badan_usaha	: id
 			}
@@ -157,7 +157,7 @@ function M_PersetujuanAnggotaDetail()
 
 	this.do_back = function()
 	{
-		m_persetujuan_anggota.panel.layout.setActiveItem(0);
+		m_persetujuan_reg_anggota.panel.layout.setActiveItem(0);
 	}
 
 	this.is_valid = function()
@@ -191,10 +191,10 @@ function M_PersetujuanAnggotaDetail()
 		main_load.show();
 		
 		Ext.Ajax.request({
-				url		: m_persetujuan_anggota_d + 'submit.php'
+				url		: m_persetujuan_reg_anggota_d + 'submit.php'
 			,	params  : {
-						id_badan_usaha	: m_persetujuan_anggota_id_badan_usaha
-					,	id_propinsi		: m_persetujuan_anggota_id_propinsi
+						id_badan_usaha	: m_persetujuan_reg_anggota_id_badan_usaha
+					,	id_propinsi		: m_persetujuan_reg_anggota_id_propinsi
 					,	nrbu			: this.form_nrbu.getValue()
 				}
 			,	waitMsg	: 'Mohon Tunggu ...'
@@ -215,8 +215,8 @@ function M_PersetujuanAnggotaDetail()
 						
 						Ext.MessageBox.alert('Informasi', msg.info);
 
-						m_persetujuan_anggota_list.do_load();
-						m_persetujuan_anggota.panel.layout.setActiveItem(0);
+						m_persetujuan_reg_anggota_list.do_load();
+						m_persetujuan_reg_anggota.panel.layout.setActiveItem(0);
 					}
 			,	scope	: this
 		});
@@ -253,14 +253,14 @@ function M_PersetujuanAnggotaList()
 	);
 	
 	this.store = new Ext.data.Store({
-			url			: m_persetujuan_anggota_d + 'data_list.php'
+			url			: m_persetujuan_reg_anggota_d + 'data_list.php'
 		,	autoLoad	: false
 		,	pageSize : this.pageSize
 		,	reader : this.reader
 	});
 
 	this.store_jenis_usaha = new Ext.data.ArrayStore({
-			url			: m_persetujuan_anggota_d + 'data_jenis_usaha.php'
+			url			: m_persetujuan_reg_anggota_d + 'data_jenis_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -271,6 +271,7 @@ function M_PersetujuanAnggotaList()
 		,	width		: 200	
 		,	emptyText	: ' - Nama Perusahaan - '
 	});
+	
 	this.mask_npwp = new Ext.ux.netbox.InputTextMask('99.999.999.9-999.999', true);
 	this.form_search_npwp =  new Ext.form.TextField({
 			fieldLabel	: 'Nomor npwp'
@@ -278,6 +279,7 @@ function M_PersetujuanAnggotaList()
 		,	plugins			: [ this.mask_npwp ]
 		,	emptyText	: ' - NO NPWP - '
 	});
+	
 	this.form_jenis_usaha = new Ext.form.ComboBox({
 			store			: this.store_jenis_usaha
 		,	valueField		: 'id'
@@ -290,7 +292,7 @@ function M_PersetujuanAnggotaList()
 	});
 
 	this.store_bentuk_badan_usaha = new Ext.data.ArrayStore({
-			url			: m_persetujuan_anggota_d + 'data_bentuk_badan_usaha.php'
+			url			: m_persetujuan_reg_anggota_d + 'data_bentuk_badan_usaha.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -308,7 +310,7 @@ function M_PersetujuanAnggotaList()
 	});
 
 	this.store_propinsi = new Ext.data.ArrayStore({
-			url			: m_persetujuan_anggota_d + 'data_propinsi.php'
+			url			: m_persetujuan_reg_anggota_d + 'data_propinsi.php'
 		,	fields		: ['id', 'name']
 		,	autoLoad	: false
 		,	idIndex		: 0
@@ -407,11 +409,11 @@ function M_PersetujuanAnggotaList()
 					var data = sm.getSelections();
 					
 					if (data.length){
-						m_persetujuan_anggota_id_badan_usaha	= data[0].data['id_badan_usaha'];
-						m_persetujuan_anggota_id_propinsi 		= data[0].data['id_propinsi'];
+						m_persetujuan_reg_anggota_id_badan_usaha	= data[0].data['id_badan_usaha'];
+						m_persetujuan_reg_anggota_id_propinsi 		= data[0].data['id_propinsi'];
 					} else {
-						m_persetujuan_anggota_id_badan_usaha 	= 0;
-						m_persetujuan_anggota_id_propinsi 		= 0;
+						m_persetujuan_reg_anggota_id_badan_usaha 	= 0;
+						m_persetujuan_reg_anggota_id_propinsi 		= 0;
 					}
 				}
 			}
@@ -492,9 +494,9 @@ function M_PersetujuanAnggotaList()
 			return;
 		}
 
-		m_persetujuan_anggota_detail.do_refresh();
-		m_persetujuan_anggota_detail.do_proses(data.get('id_badan_usaha'));
-		m_persetujuan_anggota.panel.layout.setActiveItem(1);
+		m_persetujuan_reg_anggota_detail.do_refresh();
+		m_persetujuan_reg_anggota_detail.do_proses(data.get('id_badan_usaha'));
+		m_persetujuan_reg_anggota.panel.layout.setActiveItem(1);
 	}
 		
 	this.do_search = function (){
@@ -515,7 +517,7 @@ function M_PersetujuanAnggotaList()
 	{	
 		var load_type = 'user';
 
-		if (m_persetujuan_anggota_ha_level == 4) {
+		if (m_persetujuan_reg_anggota_ha_level == 4) {
 			load_type = 'all';
 		}
 		
@@ -550,7 +552,7 @@ function M_PersetujuanAnggotaList()
 
 	this.do_refresh = function()
 	{
-		if (m_persetujuan_anggota_ha_level < 1) {
+		if (m_persetujuan_reg_anggota_ha_level < 1) {
 			Ext.MessageBox.alert('Hak Akses', 'Maaf, Anda tidak memiliki hak akses untuk melihat menu ini!');
 			this.panel.setDisabled(true);
 			return;
@@ -558,7 +560,7 @@ function M_PersetujuanAnggotaList()
 			this.panel.setDisabled(false);
 		}
 
-		if (m_persetujuan_anggota_ha_level < 3) {
+		if (m_persetujuan_reg_anggota_ha_level < 3) {
 			this.btn_proses.setDisabled(true);
 		} else {
 			this.btn_proses.setDisabled(false);
@@ -570,30 +572,30 @@ function M_PersetujuanAnggotaList()
 
 function M_PersetujuanAnggota(title)
 {
-	m_persetujuan_anggota_list		= new M_PersetujuanAnggotaList();
-	m_persetujuan_anggota_detail	= new M_PersetujuanAnggotaDetail();
+	m_persetujuan_reg_anggota_list		= new M_PersetujuanAnggotaList();
+	m_persetujuan_reg_anggota_detail	= new M_PersetujuanAnggotaDetail();
 	
 	this.panel = new Ext.Panel({
-			id				: 'persetujuan_anggota_panel'
+			id				: 'persetujuan_reg_anggota_panel'
 		,	title			: title
 		,	layout			: 'card'
 		,	activeItem		: 0
 		,	autoWidth		: true
 		,	autoScroll		: true
 		,	items			: [
-					m_persetujuan_anggota_list.panel
-				,	m_persetujuan_anggota_detail.panel
+					m_persetujuan_reg_anggota_list.panel
+				,	m_persetujuan_reg_anggota_detail.panel
 			]
 	});
 	
 	this.do_refresh = function(ha_level)
 	{
-		m_persetujuan_anggota_ha_level = ha_level;
+		m_persetujuan_reg_anggota_ha_level = ha_level;
 		
-		m_persetujuan_anggota_list.do_refresh();
+		m_persetujuan_reg_anggota_list.do_refresh();
 	}
 }
 
-m_persetujuan_anggota = new M_PersetujuanAnggota('Persetujuan Anggota');
+m_persetujuan_reg_anggota = new M_PersetujuanAnggota('Persetujuan Anggota');
 
-//@ sourceURL=persetujuan_anggota.layout.js
+//@ sourceURL=persetujuan_reg_anggota.layout.js

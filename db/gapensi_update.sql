@@ -405,6 +405,18 @@ CREATE TABLE __komputer_user
 ALTER TABLE __komputer_user ADD CONSTRAINT FK_ADMIN_USER___KOMPUTER_USER FOREIGN KEY (ID_Admin_User)
       REFERENCES ADMIN_USER (ID_Admin_User) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
+CREATE TABLE kta_proses_status (
+  ID_Proses int(6) NOT NULL AUTO_INCREMENT,
+  ID_Badan_Usaha int(10) NOT NULL DEFAULT '0',
+  Status char(1) DEFAULT NULL,
+  Tahun  varchar(4) NOT NULL,
+  PRIMARY KEY (ID_Proses),
+  KEY ID_Badan_Usaha (ID_Badan_Usaha)
+);
+
+INSERT INTO kta_proses_status(ID_Badan_Usaha, Status, Tahun)
+SELECT a.ID_Badan_Usaha, '1','2011'
+FROM kta_badan_usaha as a;
 	  
 /*==============================================================*/
 /* Table: __PRINT_LOG                                           */
@@ -432,8 +444,10 @@ insert into __MENU values ('01.04'	,'Pengaturan Komputer Pengguna'				,'app_adm_
 insert into __MENU values ('02'		,'Pendaftaran'								,'pendaftaran'						,'0',1,'00','app');
 insert into __MENU values ('02.01'	,'Pendaftaran Anggota'						,'pendaftaran_anggota'				,'1',2,'02','menu_leaf');
 insert into __MENU values ('02.02'	,'Pendaftaran Komputer Pengguna'			,'pendaftaran_komputer_pengguna'	,'1',2,'02','menu_leaf');
+insert into __MENU values ('02.03'	,'Pendaftaran Ulang Anggota'				,'registrasi_anggota'				,'1',2,'02','menu_leaf');
 insert into __MENU values ('03'		,'Persetujuan'								,'persetujuan'						,'0',1,'00','app');
-insert into __MENU values ('03.01'	,'Persetujuan Anggota'						,'persetujuan_anggota'				,'1',2,'03','menu_leaf');
+insert into __MENU values ('03.01'	,'Persetujuan Pendaftaran Anggota'			,'persetujuan_anggota'				,'1',2,'03','menu_leaf');
+insert into __MENU values ('03.02'	,'Persetujuan Pendaftaran Ulang Anggota'	,'persetujuan_reg_anggota'			,'1',2,'03','menu_leaf');
 insert into __MENU values ('04'		,'Pencetakan'								,'pencetakan'						,'0',1,'00','app');
 insert into __MENU values ('04.01'	,'Print KTA'								,'print_kta'						,'1',2,'04','menu_leaf');
 
@@ -447,7 +461,9 @@ insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'01.04',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.01',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.02',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'02.03',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03.01',4);
+insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'03.02',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'04',4);
 insert into __HAK_AKSES (id_grup, menu_id, ha_level) values (1,'04.01',4);

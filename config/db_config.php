@@ -1,5 +1,11 @@
 <?php
-	include('config.php');
+	include ('config.php');
+	$base_url 		= "/gapensi/";
+	$cookie_expired = 60*60*24; // 1 day
+
+	$database		= "gapensi";
+	$username		= "gapensi";
+	$password		= "gapens1";
 	
 	$link = mysql_connect('localhost', $username, $password);
 	

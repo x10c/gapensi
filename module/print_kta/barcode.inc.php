@@ -683,7 +683,7 @@
 				$val=strtoupper($bars[$i]);
 
 				if($val==1)
-					@imagefilledrectangle($im,$xpos, $space['top'],$xpos+$scale-1, $h,$bar_color);
+					@imagefilledrectangle($im,$xpos, $space['top'],$xpos+$scale-1, $h,$bar_color);
 				$xpos+=$scale;
 			}
 			

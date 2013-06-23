@@ -13,46 +13,47 @@
 	$no_kta = retrieve_kta_bu($id_badan_usaha,$id_pro); 
 	$no_kta = sprintf("%06d",$no_kta);
 	$row = retrieve_data_badan_usaha($id_badan_usaha);
-	$no_registrasi = date("d").".".date("Y").".".$row['ID_Propinsi'].".".$row['ID_Kabupaten'].".".$no_kta;
+	$no_registrasi = date("m").".".date("Y").".".$row['ID_Propinsi'].".".$row['ID_Kabupaten'].".".$no_kta;
 
 ?>
 
-<div style="position:absolute;top:722;left:460"><span class="ft0">Berlaku dari 1 Januari 2012 sampai dengan 31 Desember 2012</span></div>
-<div style="position:absolute;top:573;left:825;width:200;text-align:center"><span class="ft1">Badan Pimpinan Cabang GAPENSI</span></div>
-<div style="position:absolute;top:672;left:468"><span class="ft2"> </span></div>
-<div style="position:absolute;top:672;left:460;width:200;text-align:center"><span class="ft2"><?php echo $row['ketum_propinsi']; ?></span></div>
-<div style="position:absolute;top:671;left:889"><span class="ft2">  </span></div>
-<div style="position:absolute;top:671;left:825;width:200;text-align:center"><span class="ft2"><?php echo $row['ketum_kabupaten'];?></span></div>
-<div style="position:absolute;top:689;left:460;width:200;text-align:center"><span class="ft1">Ketua Umum</span></div>
-<div style="position:absolute;top:687;left:825;width:200;text-align:center"><span class="ft1"> Ketua</span></div>
-<div style="position:absolute;top:595;left:460;width:200;text-align:center"><span class="ft3">Provinsi  <?php echo $row['nama_propinsi']; ?></span></div>
-<div style="position:absolute;top:595;left:825;width:200;text-align:center"><span class="ft3"> <?php echo $row['nama_kabupaten']; ?></span></div>
-<div style="position:absolute;top:573;left:460;width:200;text-align:center"><span class="ft1">Badan Pimpinan Daerah GAPENSI</span></div>
-<div style="position:absolute;top:752;left:30;width:430"><span class="ft4">Keabsahan KTA ini dapat dicek pada situs GAPENSI www.gapensi.org</span></div>
-<div style="position:absolute;top:351;left:428"><span class="ft5">:</span></div>
-<div style="position:absolute;top:319;left:445"><span class="ft6"><?php echo $row['Pimpinan_BU'];?></span></div>
-<div style="position:absolute;top:317;left:428"><span class="ft5">:</span></div>
-<div style="position:absolute;top:278;left:428"><span class="ft5">:</span></div>
-<div style="position:absolute;top:670;left:135"><span class="ft2"> </span></div>
-<div style="position:absolute;top:670;left:69;width:200;text-align:center"><span class="ft2">Ir. H. SOEHARSOJO</span></div>
-<div style="position:absolute;top:689;left:69;width:200;text-align:center"><span class="ft1">Ketua Umum</span></div>
-<div style="position:absolute;top:594;left:69;width:200;text-align:center"><span class="ft1">Badan Pimpinan Pusat GAPENSI</span></div>
-<div style="position:absolute;top:353;left:188"><span class="ft5">ALAMAT PERUSAHAAN</span></div>
-<div style="position:absolute;top:317;left:188"><span class="ft5">NAMA PIMPINAN</span></div>
-<div style="position:absolute;top:276;left:188"><span class="ft5">NAMA PERUSAHAAN</span></div>
-<div style="position:absolute;top:229;left:494"><span class="ft3"> Nomor :</span></div>
-<div style="position:absolute;top:229;left:549"><span class="ft3"> <?php echo $no_sert; ?></span></div>
-<div style="position:absolute;top:512;left:412"><span class="ft7">Nomor Registrasi</span></div>
-<div style="position:absolute;top:512;left:568"><span class="ft7"> <?php echo $no_registrasi; ?></span></div>
-<div style="position:absolute;top:422;left:445"><span class="ft5">Gred</span></div>
-<div style="position:absolute;top:420;left:428"><span class="ft5">:</span></div>
-<div style="position:absolute;top:422;left:493"><span class="ft5"> <?php echo $row['Gred'];?></span></div>
-<div style="position:absolute;top:422;left:515"><span class="ft5">( Gred <?php echo ctword($row['Gred']);?>)</span></div>
-<div style="position:absolute;top:421;left:188"><span class="ft5">KUALIFIKASI</span></div>
-<div style="position:absolute;top:353;left:445"><span class="ft1"> <?php echo $row['Alamat']; ?></span></div>
-<div style="position:absolute;top:384;left:445"><span class="ft1"><?php echo "Kode Pos ".$row['Kodepos']." Telp. ".$row['Telepon'].", Fax ".$row['Fax']; ?> </span></div>
-<div style="position:absolute;top:573;left:69;width:200;text-align:center"><span class="ft1">Jakarta, <?php echo tanggal("j M Y")?></span></div>
-<div style="position:absolute;top:712;left:69"><span class="ft8"><?php $qtstr ='encode=CODE39&bdata='.$no_registrasi.'&height=30&scale=1&bgcolor=%23FFFFFF&color=%23000000&file=&type=png&Genrate=Submit&';echo "<img src='../print_kta/barcode.php?$qtstr'>";?></span></div>
-<div style="position:absolute;top:465;left:188"><span class="ft5">Adalah Anggota <?php if ($row['Bentuk_BU'] == '4'){echo "Luar Biasa";}else{echo "Biasa";} ?> GAPENSI Provinsi</span></div>
-<div style="position:absolute;top:466;left:545"><span class="ft5"> : <?php echo $row['nama_propinsi'];?></span></div>
-<div style="position:absolute;top:276;left:445"><span class="ft9"><?php echo $row['nama_jenis_usaha'].". ".$row['Nama'];?></span></div>
+<div style="position:absolute;top:672;left:460"><span class="ft0">Berlaku dari 1 Januari 2013 sampai dengan 31 Desember 2013</span></div>
+<div style="position:absolute;top:523;left:825;width:200;text-align:center"><span class="ft1">Badan Pimpinan Cabang GAPENSI</span></div>
+<div style="position:absolute;top:622;left:468"><span class="ft2"> </span></div>
+<div style="position:absolute;top:622;left:415;width:300;text-align:center"><span class="ft2"><?php echo $row['ketum_propinsi']; ?></span></div>
+<div style="position:absolute;top:621;left:889"><span class="ft2">  </span></div>
+<div style="position:absolute;top:621;left:825;width:200;text-align:center"><span class="ft2"><?php echo $row['ketum_kabupaten'];?></span></div>
+<div style="position:absolute;top:639;left:460;width:200;text-align:center"><span class="ft1">Ketua Umum</span></div>
+<div style="position:absolute;top:637;left:825;width:200;text-align:center"><span class="ft1"> Ketua</span></div>
+<div style="position:absolute;top:545;left:460;width:200;text-align:center"><span class="ft3">Provinsi  <?php echo $row['nama_propinsi']; ?></span></div>
+<div style="position:absolute;top:545;left:825;width:200;text-align:center"><span class="ft3"> <?php echo $row['nama_kabupaten']; ?></span></div>
+<div style="position:absolute;top:523;left:460;width:200;text-align:center"><span class="ft1">Badan Pimpinan Daerah GAPENSI</span></div>
+<div style="position:absolute;top:702;left:30;width:430"><span class="ft4">Keabsahan KTA ini dapat dicek pada situs GAPENSI www.gapensi.org</span></div>
+<div style="position:absolute;top:301;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:269;left:445"><span class="ft6"><?php echo $row['Pimpinan_BU'];?></span></div>
+<div style="position:absolute;top:267;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:228;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:620;left:135"><span class="ft2"> </span></div>
+<div style="position:absolute;top:555;left:100"><img width="125" height="75" src="<?php echo $base_url; ?>images/ttd_ketum.jpg" ALT=""></div>
+<div style="position:absolute;top:620;left:69;width:200;text-align:center"><span class="ft2">Ir. H. SOEHARSOJO</span></div>
+<div style="position:absolute;top:639;left:69;width:200;text-align:center"><span class="ft1">Ketua Umum</span></div>
+<div style="position:absolute;top:544;left:69;width:200;text-align:center"><span class="ft1">Badan Pimpinan Pusat GAPENSI</span></div>
+<div style="position:absolute;top:303;left:188"><span class="ft5">ALAMAT PERUSAHAAN</span></div>
+<div style="position:absolute;top:267;left:188"><span class="ft5">NAMA PIMPINAN</span></div>
+<div style="position:absolute;top:226;left:188"><span class="ft5">NAMA PERUSAHAAN</span></div>
+<div style="position:absolute;top:179;left:494"><span class="ft3"> Nomor :</span></div>
+<div style="position:absolute;top:179;left:549"><span class="ft3"> <?php echo $no_sert; ?></span></div>
+<div style="position:absolute;top:462;left:412"><span class="ft7">Nomor Registrasi</span></div>
+<div style="position:absolute;top:462;left:568"><span class="ft7"> <?php echo $no_registrasi; ?></span></div>
+<div style="position:absolute;top:372;left:445"><span class="ft5">Gred</span></div>
+<div style="position:absolute;top:370;left:428"><span class="ft5">:</span></div>
+<div style="position:absolute;top:372;left:493"><span class="ft5"> <?php echo $row['Gred'];?></span></div>
+<div style="position:absolute;top:372;left:515"><span class="ft5">( Gred <?php echo ctword($row['Gred']);?>)</span></div>
+<div style="position:absolute;top:371;left:188"><span class="ft5">KUALIFIKASI</span></div>
+<div style="position:absolute;top:303;left:445"><span class="ft1"> <?php echo $row['Alamat']; ?></span></div>
+<div style="position:absolute;top:334;left:445"><span class="ft1"><?php echo "Kode Pos ".$row['Kodepos']." Telp. ".$row['Telepon'].", Fax ".$row['Fax']; ?> </span></div>
+<div style="position:absolute;top:523;left:69;width:200;text-align:center"><span class="ft1">Jakarta, <?php echo tanggal("j M Y")?></span></div>
+<div style="position:absolute;top:662;left:69"><span class="ft8"><?php $qtstr ='encode=CODE39&bdata='.$no_registrasi.'&height=30&scale=1&bgcolor=%23FFFFFF&color=%23000000&file=&type=png&Genrate=Submit&';echo "<img src='../print_kta/barcode.php?$qtstr'>";?></span></div>
+<div style="position:absolute;top:415;left:188"><span class="ft5">Adalah Anggota <?php if ($row['Bentuk_BU'] == '4'){echo "Luar Biasa";}else{echo "Biasa";} ?> GAPENSI Provinsi</span></div>
+<div style="position:absolute;top:416;left:545"><span class="ft5"> : <?php echo $row['nama_propinsi'];?></span></div>
+<div style="position:absolute;top:226;left:445"><span class="ft9"><?php echo $row['nama_jenis_usaha'].". ".$row['Nama'];?></span></div>

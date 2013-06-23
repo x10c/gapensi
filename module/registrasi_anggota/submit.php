@@ -17,72 +17,13 @@
 	$gred			= $_REQUEST['gred'];
 	$pimpinan_bu	= $_REQUEST['pimpinan_bu'];
 	$id_jenis_usaha	= $_REQUEST['id_jenis_usaha'];
-	$tahun_daftar = date('Y');
-	$current_date	= date('Y-m-d');
-	
+	$current_year	= date('Y');
+	$current_date	= date('d-m-Y');
 	$dbh->beginTransaction();
 	
 	try {
 		switch($dml_type) {
-			case "2" :
-				// insert into table kta_badan_usaha
-				$dbh->exec("
-					insert into kta_badan_usaha (
-							nama
-						,	alamat
-						,	kodepos
-						,	telepon
-						,	fax
-						,	email
-						,	website
-						,	npwp
-						,	bentuk_bu
-						,	id_propinsi
-						,	id_kabupaten
-						,	gred
-						,	pimpinan_bu
-						,	id_jenis_usaha
-					)
-					values (
-							'$nama'
-						,	'$alamat'
-						,	'$kodepos'
-						,	'$telepon'
-						,	'$fax'
-						,	'$email'
-						,	'$website'
-						,	'$npwp'
-						,	'$bentuk_bu'
-						,	'$id_propinsi'
-						,	'$id_kabupaten'
-						,	'$gred'
-						,	'$pimpinan_bu'
-						,	 $id_jenis_usaha
-					)
-				");
-
-				// get last insert id from table kta_badan_usaha
-				$id = $dbh->lastInsertId();
-				
-				// insert into table kta_proses with status = '1' (Pendaftaran)
-				$dbh->exec("
-					insert into kta_proses_status (
-							id_badan_usaha
-						,	status
-						,	tipe_daftar
-						,	tahun
-						,	tgl_proses
-					)
-					values (
-							$id
-						,	'1'
-						,	'1'
-						,	$tahun_daftar
-						,	now()
-					)
-				");
-				
-				break;
+			
 			case "3" :
 				$dbh->exec("
 					update	kta_badan_usaha
@@ -102,19 +43,44 @@
 						,	id_jenis_usaha	=  $id_jenis_usaha
 					where	id_badan_usaha	=  $id_badan_usaha
 				");
-			
-				break;
-			case "4" :
-				$dbh->exec("
-					delete	from kta_proses_status
-					where	id_badan_usaha	= $id_badan_usaha
-				");
-				$dbh->exec("
-					delete	from kta_badan_usaha
-					where	id_badan_usaha	= $id_badan_usaha
-				");
+				// get last insert id from table kta_badan_usaha
+				$id = $dbh->lastInsertId();
+				
+				// check if badan_usaha is already register
+				$q = "
+					SELECT		count(*) as total
+					FROM		kta_proses_status 	AS A
+					WHERE		A.id_badan_usaha	= $id_badan_usaha
+					AND			A.status		= '1'
+					AND			A.tipe_daftar		= '2'
+					AND			A.tahun		= $current_year
+				";
+				
+				$result	= $dbh->query($q)->fetchAll();
 
-
+				foreach ($result as $row){
+					$total	= $row['total'];								
+				}
+				if (($total < 1)) {
+					// insert into table kta_proses with status = '2' (Registrasi)
+					$dbh->exec("
+						insert into kta_proses_status (
+								id_badan_usaha
+							,	status
+							,	tipe_daftar
+							,	tahun
+							,	tgl_proses
+						)
+						values (
+								$id_badan_usaha
+							,	'1'
+							,	'2'
+							,	$current_year
+							,	now()
+						)
+					");
+				}
+				
 				break;
 			default	 :
 				echo "{success:false, info:'DML tipe didak diketahui (".$dml_type."')}";

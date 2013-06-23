@@ -13,8 +13,8 @@
 	
 	try {
 		$dbh->exec("
-			insert into __PRINT_LOG (no_sert, no_iujk, no_blanko, id_badan_usaha, id_user, mac_address)
-			values ('$no_sert', '$no_iujk', '$no_blanko', '$id_badan_usaha', '$id_admin_user', '$mac_address')
+			insert into __print_log (no_sert, no_iujk, no_blanko, id_badan_usaha, id_user, mac_address,tanggal)
+			values ('$no_sert', '$no_iujk', '$no_blanko', '$id_badan_usaha', '$id_admin_user', '$mac_address','$now')
 		");
 		
 		$dbh->commit();

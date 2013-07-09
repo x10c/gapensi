@@ -62,6 +62,16 @@ function M_PrintKTADetail()
 			}
 	});
 	
+	this.btn_print_test = new Ext.Button({
+			text		: 'Print Test'
+		,	iconCls		: 'print16'
+		,	disabled	: true
+		,	scope		: this
+		,	handler		: function() {
+				this.do_print_test();
+			}
+	});
+	
 	this.form_panel = new Ext.form.FormPanel({
 			title			: 'Parameter'
 		,	labelAlign		: 'right'
@@ -76,6 +86,7 @@ function M_PrintKTADetail()
 		,	buttons			: [
 					this.btn_preview
 				,	this.btn_print
+				,	this.btn_print_test
 			]
 		,	items			: [
 					this.form_badan_usaha
@@ -192,10 +203,53 @@ function M_PrintKTADetail()
 		this.do_save_print_log();
 	}
 	
+	this.do_print_test = function(){  
+		// method 1
+		// Ext.ux.Printer.print(this.print_panel);
+		
+		// method 2
+		var myWindow = window.open('', '', 'fullscreen=yes,scrollbars=yes');
+		myWindow.document.write('<html><head>');
+		myWindow.document.write('<title>' + 'KTA' + '</title>');
+		myWindow.document.write('<link rel="stylesheet" type="text/css" href="../print_kta/print.css"/>');
+		myWindow.document.write('</head><body>');
+		myWindow.document.write(this.print_panel.body.dom.innerHTML);
+		myWindow.document.write('</body></html>');
+		myWindow.print();
+		this.do_save_print_test_log();
+	}
+	
 	this.do_save_print_log = function(){
 		this.do_get_mac_address();
 		Ext.Ajax.request({
 				url		: m_print_kta_d + 'submit.php'
+			,	params	: {
+						no_sert	: this.form_no_sert.getValue()
+					,	no_blanko : this.form_no_blanko.getValue()
+					,	no_iujk : this.form_no_iujk.getValue()
+					,	id_badan_usaha	: m_print_kta_id_badan_usaha
+					,	mac_address : 	this.mac_address
+				}
+			,	waitMsg	: 'Pemuatan ...'
+			,	failure	: function(response) {
+					Ext.MessageBox.alert('Gagal', response.responseText);
+				}
+			,	success : function (response) {
+					var msg = Ext.util.JSON.decode(response.responseText);
+
+					 if (msg.success == false) {
+						 Ext.MessageBox.alert('Kesalahan', 'log print gagal di simpan :' + msg.info);
+						 return;
+					 } 					
+				}
+			,	scope	: this		
+		});
+	}
+	
+	this.do_save_print_test_log = function(){
+		this.do_get_mac_address();
+		Ext.Ajax.request({
+				url		: m_print_kta_d + 'submit_test.php'
 			,	params	: {
 						no_sert	: this.form_no_sert.getValue()
 					,	no_blanko : this.form_no_blanko.getValue()

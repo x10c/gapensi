@@ -434,6 +434,21 @@ create table __print_log
    primary key (ID)
 );
 
+/*==============================================================*/
+/* Table: __PRINT_TEST_LOG                                           */
+/*==============================================================*/
+create table __print_test_log
+(
+   id                   bigint(8) not null AUTO_INCREMENT,
+   no_sert              varchar(10) not null,
+   no_iujk              varchar(14) not null,
+   no_blanko            varchar(10) not null,
+   id_badan_usaha       INT(10) not null,
+   id_user              varchar(11) not null,
+   mac_address          varchar(20) not null,
+  tanggal timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   primary key (ID)
+);
 	  
 	  
 insert into __MENU values ('01'		,'Aplikasi'									,'app'								,'0',1,'00','beranda');
